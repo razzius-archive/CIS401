@@ -35,7 +35,7 @@ public class OrchestrationLayer {
         analytics = new Analytics();
     }
 
-    public void ProcessRequest(Request request) {
+    public static void processRequest(Request request) {
         stateManager.queryAlgorithmSolver(algorithmSolver, request);
     }
 
