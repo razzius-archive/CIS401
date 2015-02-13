@@ -16,21 +16,22 @@ import com.sun.net.httpserver.HttpServer;
 // Request Handler
 //
 // Stores Individual Tenant information
+public class RequestHandler {
+    
+    public RequestHandler() throws IOException {
+       startServer();
+    }
+    
+    private void startServer() throws IOException {
+        int port = 8080;
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        server.createContext("/requests", new RequestServer());
+        server.setExecutor(null); // creates a default executor
+        server.start();
+        System.out.println("Server running on port " + port);
+    }
 
-class RequestHandler implements HttpHandler {
-
-        public RequestHandler() throws IOException {
-            startServer();
-        }
-
-        private void startServer() throws IOException {
-            int port = 8088;
-            HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-            server.createContext("/requests", new RequestHandler());
-            server.setExecutor(null); // creates a default executor
-            server.start();
-            System.out.println("Server running on port " + port);
-        }
+    class RequestServer implements HttpHandler {
 
         public void handle(HttpExchange t) throws IOException {
             String response = "hello world";
@@ -50,10 +51,16 @@ class RequestHandler implements HttpHandler {
             while ((line = reader.readLine()) != null) {
                 out.append(line);
             }
-            System.out.println(out.toString());   //Prints the string content read from input stream
+            String[] params = out.toString().split("&");
+            System.out.println("Recieved Parameters:");
+            for (String param : params) {
+                System.out.println(param);
+            }
+            //System.out.println(out.toString());   //Prints the string content read from input stream
             reader.close();
 
         }
 
 
     }
+}
