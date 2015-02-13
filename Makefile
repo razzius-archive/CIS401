@@ -5,11 +5,8 @@ CLASSPATH=bin
 all:
 	javac -cp $(CLASSPATH) $(SOURCES) -d bin
 
-run:
+orchestration:
 	java -cp $(CLASSPATH) orchestration.OrchestrationLayer
-
-runserver:
-	java -cp $(CLASSPATH) orchestration.RequestHandler 8080 
 
 runrequest:
 	java -cp $(CLASSPATH) orchestration.HttpURLConnectionExample

@@ -16,13 +16,7 @@ public class HttpURLConnectionExample {
  
 	public static void main(String[] args) throws Exception {
 
-		// if (args.length != 8) {
-		// 	String help = "USAGE: [requestID] [startNode] [endNode] [packageRate(packages/s)] [deadline(ms)] [services requested] [packageSize(bits)] [price($)]";
-		// 	String example = "java RequestHandler r4 s3_0 s3_1 72432 44 s0-s1-s3 12000 1";
-		// 	System.out.println(help + "\n\nFor example: \n\n" + example);
-		// 	System.exit(1);
-		// }
-
+		// sample request
 		Request req = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
  
 		HttpURLConnectionExample http = new HttpURLConnectionExample();
@@ -44,7 +38,6 @@ public class HttpURLConnectionExample {
  
 		//add reuqest header
 		con.setRequestMethod("POST");
-		con.setRequestProperty("User-Agent", USER_AGENT);
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
  
 		String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
@@ -62,8 +55,7 @@ public class HttpURLConnectionExample {
 		System.out.println("Post parameters : " + urlParameters);
 		System.out.println("Response Code : " + responseCode);
  
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
  
@@ -81,17 +73,13 @@ public class HttpURLConnectionExample {
 	private void sendGet() throws Exception {
  
 		String url = "http://localhost:8080/requests";
-		// String url = "http://www.google.com";
  
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
  
 		// optional default is GET
 		con.setRequestMethod("GET");
- 
-		//add request header
-		con.setRequestProperty("User-Agent", USER_AGENT);
- 
+  
 		int responseCode = con.getResponseCode();
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);

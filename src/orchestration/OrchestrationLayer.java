@@ -27,7 +27,6 @@ public class OrchestrationLayer {
     private static Analytics analytics;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("requesthandler in orchestration layer");
         requestHandler = new RequestHandler();
         stateManager = new StateManager();
         algorithmSolver = new AlgorithmSolver();

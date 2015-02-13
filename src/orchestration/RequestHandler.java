@@ -53,10 +53,12 @@ public class RequestHandler {
             }
             String[] params = out.toString().split("&");
             System.out.println("Recieved Parameters:");
-            for (String param : params) {
-                System.out.println(param);
+            for (int i = 0; i < params.length; i++) {
+                System.out.println(params[i]);
+                params[i] = params[i].substring(params[i].indexOf("=")+1);
             }
-            //System.out.println(out.toString());   //Prints the string content read from input stream
+            Request newRequest = new Request(params[0], params[1], params[2], params[3],
+                params[4], params[5], params[6], params[7]);
             reader.close();
 
         }
