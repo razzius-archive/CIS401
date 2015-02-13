@@ -20,16 +20,17 @@ import com.sun.net.httpserver.HttpServer;
 
 public class OrchestrationLayer {
 
-    private static StateManager statemanager;
+    private static StateManager stateManager;
 	private static RequestHandler requestHandler;
-    private static AlgorithmSolver algorithmsolver;
-    private static HardwareCluster hardwarecluster;
-
+    private static AlgorithmSolver algorithmSolver;
+    private static HardwareCluster hardwareCluster;
+    private static Analytics analytics;
 
     public static void main(String[] args) throws Exception {
         RequestHandler requestHandler = new RequestHandler();
-        
-
+        StateManager stateManager = new StateManager();
+        AlgorithmSolver algorithmSolver = new AlgorithmSolver();
+        HardwareCluster hardwareCluster = new HardwareCluster();
     }
 
 
