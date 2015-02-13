@@ -11,6 +11,7 @@ public class VM {
 	int vmID;
 	double coresAllocated;	// VMs can request fractions of cores.
 	String ipAddress;
+	String status; // Booting, Running, Stopped, Crashed, Terminated
 	
 	public VM(int vmID, double coresAllocated) {
 		this.vmID = vmID;

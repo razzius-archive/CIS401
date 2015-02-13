@@ -52,13 +52,6 @@ public class StateManager {
 	private static HashMap<Integer, Double> linkUtilization;
 
 	/*
-	* Platform components
-	*/
-
-	private static AlgorithmSolver algorithmsolver;
-	private static HardwareCluster hardwarecluster;
-
-	/*
 	* StateManager Class constructor
 	*/
 
