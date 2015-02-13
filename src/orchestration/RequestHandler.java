@@ -1,5 +1,12 @@
 package orchestration;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.net.InetSocketAddress;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -12,11 +19,11 @@ import com.sun.net.httpserver.HttpServer;
 
 class RequestHandler implements HttpHandler {
 
-        public RequestHandler() {
+        public RequestHandler() throws IOException {
             startServer();
         }
 
-        private void startServer() {
+        private void startServer() throws IOException {
             int port = 8080;
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/requests", new RequestHandler());

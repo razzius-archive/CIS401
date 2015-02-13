@@ -1,10 +1,14 @@
+package orchestration;
+
+import java.util.HashMap;
+
 public class AlgorithmSolver implements AlgorithmSolverInterface {
 
-    SystemLoad myLoad;
+    double myLoad;
 
     // TODO: Define SystemLoad class. 
-    public AlgorithmSolver(SystemLoad load) {
-        myLoad = load;
+    public AlgorithmSolver() {
+        //myLoad = load;
     }
     
     // TODO: Define Configuration class.
@@ -13,7 +17,19 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     //  for the fleet.
     // If algorithm cannot solve given the load, 
     //  then the method returns null and an appropriate log message is set.
-    public Configuration solve() {
+    public void solve() {
         
+    }
+
+    public boolean satisfiable(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
+        HashMap<Integer, Machine> machines, HashMap<Integer, Service> services) {
+
+        return false;
+    }
+
+
+    public void updateConfig(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
+        HashMap<Integer, Machine> machines, HashMap<Integer, Service> services) throws IllegalStateException {
+
     }
 }
