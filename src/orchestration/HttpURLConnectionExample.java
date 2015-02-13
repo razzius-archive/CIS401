@@ -81,6 +81,7 @@ public class HttpURLConnectionExample {
 	private void sendGet() throws Exception {
  
 		String url = "http://localhost:8080/requests";
+		// String url = "http://www.google.com";
  
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();

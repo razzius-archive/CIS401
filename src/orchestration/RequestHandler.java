@@ -31,23 +31,25 @@ public class RequestHandler {
     static class MyHandler implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
             String response = "hello world";
-            InputStream is = t.getRequestBody();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-	        StringBuilder out = new StringBuilder();
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            out.append(line);
-	        }
-	        System.out.println(out.toString());   //Prints the string content read from input stream
-	        reader.close();
-
-
+            System.out.println("RECIEVED: " + t.getRequestMethod());
+            processRequest(t);
             t.sendResponseHeaders(200, response.length());
-            System.out.println(t.getRequestMethod());
-            System.out.println(response);
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
+        }
+
+        public void processRequest(HttpExchange t) throws IOException {
+            InputStream is = t.getRequestBody();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            StringBuilder out = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                out.append(line);
+            }
+            System.out.println(out.toString());   //Prints the string content read from input stream
+            reader.close();
+
         }
     }
 }
