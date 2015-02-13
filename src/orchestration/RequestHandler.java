@@ -24,7 +24,7 @@ class RequestHandler implements HttpHandler {
         }
 
         private void startServer() throws IOException {
-            int port = 8080;
+            int port = 8088;
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/requests", new RequestHandler());
             server.setExecutor(null); // creates a default executor
