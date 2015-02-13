@@ -1,3 +1,5 @@
+package orchestration;
+
 import java.rmi.*;
 /**
  * Interface for the Hardware Cluster to communicate with the State Manager.

@@ -1,4 +1,4 @@
-public class AlgorithmSolver {
+public class AlgorithmSolver implements AlgorithmSolverInterface {
 
     SystemLoad myLoad;
 

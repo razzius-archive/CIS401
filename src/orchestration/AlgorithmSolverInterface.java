@@ -1,3 +1,5 @@
+package orchestration;
+
 import java.rmi.*;
 /**
  * Interface for the Algorithm Solver to communicate with the State
