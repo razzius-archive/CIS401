@@ -1,8 +1,9 @@
 package orchestration;
 
+import java.io.*;
 import java.rmi.*;
 import java.rmi.Naming;
-import java.io.*;
+import java.util.HashMap;
 
 //
 //
@@ -33,7 +34,7 @@ public class StateManager {
 	private static HashMap<Integer, Link> links;
 	private static HashMap<Integer, Switch> switches;
 	private static HashMap<Integer, Machine> machines;
-	private static HashSet<Integer, Tenant> tenants;
+	private static HashMap<Integer, Tenant> tenants;
 
 	/* 
 	* Dynamic Network Attributes change over the course of program
@@ -49,13 +50,6 @@ public class StateManager {
 	private static HashMap<Integer, Double> switchUtilization;
 	private static HashMap<Integer, Double> machineUtilization;
 	private static HashMap<Integer, Double> linkUtilization;
-
-	/*
-	* Platform components
-	*/
-
-	private static AlgorithmSolver algorithmsolver;
-	private static HardwareCluster hardwarecluster;
 
 	/*
 	* StateManager Class constructor
