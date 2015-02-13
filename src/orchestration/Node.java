@@ -8,8 +8,8 @@ package orchestration;
 
 public abstract class Node {
 
-	private int nodeID;
-	private double bandwidth;
+	protected int nodeID;
+	protected double bandwidth;
 
 	public int getID() {
 		return nodeID;

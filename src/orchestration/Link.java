@@ -14,11 +14,12 @@ public class Link {
 	private int delay;			// Link Delay in ms
 	private double bandwidth;	// Link Bandwidth in GB/sec
 
-	public Link(int linkID, int node1ID, int node2ID, double bandwidth) {
+	public Link(int linkID, int node1ID, int node2ID, int delay, double bandwidth) {
 		this.linkID = linkID;
 		this.node1ID = node1ID;
 		this.node2ID = node2ID;
-		this.node3ID = node3ID;
+		this.delay = delay;
+		this.bandwidth = bandwidth;
 	}
 
 	public int getID() {
