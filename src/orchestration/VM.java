@@ -10,9 +10,12 @@ public class VM {
 
 	int vmID;
 	double coresAllocated;	// VMs can request fractions of cores.
+	String ipAddress;
 	
-	public VM(double numCores) {
-		coresAllocated = numCores;
+	public VM(int vmID, double coresAllocated) {
+		this.vmID = vmID;
+		this.coresAllocated = coresAllocated;
+		// Set IP Address automatically
 	}
 
 	public int getID() {

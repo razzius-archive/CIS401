@@ -55,7 +55,7 @@ public class StateManager {
 	*/
 
 	private static AlgorithmSolver algorithmsolver;
-	private static HardwareCluster hardwarecluster;
+	private static HardwareCluster hardwarecluster;g
 
 	/*
 	* StateManager Class constructor
