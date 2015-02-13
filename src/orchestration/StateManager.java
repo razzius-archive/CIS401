@@ -75,14 +75,9 @@ public class StateManager {
 		// Network Operations
 	}
 
-
-
-
-
-
-
-
-
+	public void queryAlgorithmSolver(AlgorithmSolver algorithmSolver, Request request) {
+		System.out.println("[StateManager] Error: No Algorithm Solver Implemented");
+	}
 
 	/*
 	* Read and Update State Parameters
