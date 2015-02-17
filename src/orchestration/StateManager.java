@@ -65,6 +65,45 @@ public class StateManager {
 		switchUtilization = new HashMap<Integer,Double>();
 		machineUtilization = new HashMap<Integer,Double>();
 		linkUtilization = new HashMap<Integer,Double>();
+
+		// Spawn 5 Virtual Machines
+		addVM(0, new VM(0, 1.0, 32));
+		addVM(1, new VM(1, 1.0, 32));
+		addVM(2, new VM(2, 1.0, 32));
+		addVM(3, new VM(3, 1.0, 32));
+		addVM(4, new VM(4, 1.0, 32));
+
+		// Create 6 Services
+		addService(0, new Service(0, 100, 8));
+		addService(1, new Service(1, 100, 8));
+		addService(2, new Service(2, 100, 16));
+		addService(3, new Service(3, 100, 16));
+		addService(4, new Service(4, 100, 32));
+		addService(5, new Service(5, 100, 64));
+
+		// Create a bunch of switches, machines, and links
+		// Create sample network
+		addSwitch(0, new Switch(0, 100, SwitchType.TOP_OF_ROW));
+		addSwitch(1, new Switch(1, 100, SwitchType.CORE));
+		addSwitch(2, new Switch(2, 100, SwitchType.CORE));
+
+		addMachine(3, new Machine(3, 100, 32, 4096));		
+		addMachine(4, new Machine(4, 100, 32, 4096));		
+		addMachine(5, new Machine(5, 100, 32, 4096));		
+		addMachine(6, new Machine(6, 100, 32, 4096));
+
+		addLink(0, new Link(0, 0, 1, 10, 20));
+		addLink(1, new Link(1, 0, 2, 10, 20));
+		addLink(2, new Link(2, 1, 3, 10, 20));
+		addLink(3, new Link(3, 1, 4, 10, 20));
+		addLink(4, new Link(4, 2, 5, 10, 20));
+		addLink(5, new Link(5, 2, 6, 10, 20));
+		
+
+		// Create some sample requests to take in from the server
+
+		// Use Log4J to log significant events
+
 	}
 
 	/*
@@ -75,14 +114,9 @@ public class StateManager {
 		// Network Operations
 	}
 
-
-
-
-
-
-
-
-
+	public void queryAlgorithmSolver(AlgorithmSolver algorithmSolver, Request request) {
+		System.out.println("[StateManager] Error: No Algorithm Solver Implemented");
+	}
 
 	/*
 	* Read and Update State Parameters

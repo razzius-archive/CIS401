@@ -1,12 +1,12 @@
-CLASSES=Request,RequestHandler,HttpURLConnectionExample
+CLASSES=Request,RequestHandler,HttpURLConnectionExample,OrchestrationLayer,AlgorithmSolver,AlgorithmSolverInterface,StateManager,Analytics,Machine,Link,Service,Node,Switch,Tenant,VM
 SOURCES=src/orchestration/{$(CLASSES)}.java
 CLASSPATH=bin
 
 all:
 	javac -cp $(CLASSPATH) $(SOURCES) -d bin
 
-runserver:
-	java -cp $(CLASSPATH) orchestration.RequestHandler 8080 
+orchestration:
+	java -cp $(CLASSPATH) orchestration.OrchestrationLayer
 
 runrequest:
 	java -cp $(CLASSPATH) orchestration.HttpURLConnectionExample

@@ -23,14 +23,20 @@ public class OrchestrationLayer {
     private static StateManager stateManager;
 	private static RequestHandler requestHandler;
     private static AlgorithmSolver algorithmSolver;
-    private static HardwareCluster hardwareCluster;
+    // private static HardwareCluster hardwareCluster;
     private static Analytics analytics;
 
-    public static void main(String[] args) throws Exception {
-        RequestHandler requestHandler = new RequestHandler();
-        StateManager stateManager = new StateManager();
-        AlgorithmSolver algorithmSolver = new AlgorithmSolver();
-        HardwareCluster hardwareCluster = new HardwareCluster();
+    public static void main(String[] args) throws IOException {
+        requestHandler = new RequestHandler();
+        stateManager = new StateManager();
+        algorithmSolver = new AlgorithmSolver();
+        // hardwareCluster = new HardwareCluster();
+        analytics = new Analytics();
+    }
+
+    public static void processRequest(Request request) {
+        System.out.println("[OrchestrationLayer] Passing request to StateManager...\n");
+        stateManager.queryAlgorithmSolver(algorithmSolver, request);
     }
 
 
