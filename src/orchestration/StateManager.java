@@ -65,6 +65,29 @@ public class StateManager {
 		switchUtilization = new HashMap<Integer,Double>();
 		machineUtilization = new HashMap<Integer,Double>();
 		linkUtilization = new HashMap<Integer,Double>();
+
+		// Spawn 5 Virtual Machines
+		addVM(0, new VM(0, 1.0, 32));
+		addVM(1, new VM(1, 1.0, 32));
+		addVM(2, new VM(2, 1.0, 32));
+		addVM(3, new VM(3, 1.0, 32));
+		addVM(4, new VM(4, 1.0, 32));
+
+		// Create 6 Services
+		addService(0, new Service(0, 100, 8));
+		addService(1, new Service(1, 100, 8));
+		addService(2, new Service(2, 100, 16));
+		addService(3, new Service(3, 100, 16));
+		addService(4, new Service(4, 100, 32));
+		addService(5, new Service(5, 100, 64));
+
+		// Create a bunch of switches, machines, and links
+		
+
+		// Create some sample requests to take in from the server
+
+		// Use Log4J to log significant events
+
 	}
 
 	/*
