@@ -35,6 +35,7 @@ public class OrchestrationLayer {
     }
 
     public static void processRequest(Request request) {
+        System.out.println("[OrchestrationLayer] Passing request to StateManager...\n");
         stateManager.queryAlgorithmSolver(algorithmSolver, request);
     }
 

@@ -35,7 +35,7 @@ public class RequestHandler {
 
         public void handle(HttpExchange t) throws IOException {
             String response = "hello world";
-            System.out.println("RECIEVED: " + t.getRequestMethod());
+            System.out.println("\nRECIEVED: " + t.getRequestMethod());
             processRequest(t);
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
@@ -57,8 +57,12 @@ public class RequestHandler {
                 System.out.println(params[i]);
                 params[i] = params[i].substring(params[i].indexOf("=")+1);
             }
-            Request newRequest = new Request(params[0], params[1], params[2], params[3],
-                params[4], params[5], params[6], params[7]);
+            // blank line after requests
+            System.out.println();
+
+            Request req = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+            OrchestrationLayer.processRequest(req);
+
             reader.close();
 
         }
