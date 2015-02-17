@@ -82,6 +82,22 @@ public class StateManager {
 		addService(5, new Service(5, 100, 64));
 
 		// Create a bunch of switches, machines, and links
+		// Create sample network
+		addSwitch(0, new Switch(0, 100, SwitchType.TOP_OF_ROW));
+		addSwitch(1, new Switch(1, 100, SwitchType.CORE));
+		addSwitch(2, new Switch(2, 100, SwitchType.CORE));
+
+		addMachine(3, new Machine(3, 100, 32, 4096));		
+		addMachine(4, new Machine(4, 100, 32, 4096));		
+		addMachine(5, new Machine(5, 100, 32, 4096));		
+		addMachine(6, new Machine(6, 100, 32, 4096));
+
+		addLink(0, new Link(0, 0, 1, 10, 20));
+		addLink(1, new Link(1, 0, 2, 10, 20));
+		addLink(2, new Link(2, 1, 3, 10, 20));
+		addLink(3, new Link(3, 1, 4, 10, 20));
+		addLink(4, new Link(4, 2, 5, 10, 20));
+		addLink(5, new Link(5, 2, 6, 10, 20));
 		
 
 		// Create some sample requests to take in from the server
