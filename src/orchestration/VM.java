@@ -1,5 +1,7 @@
 package orchestration;
 
+import java.util.ArrayList;
+
 //
 //
 // VM
@@ -13,7 +15,7 @@ public class VM {
 	int memoryAllocated; 	// MB of memory allocated
 	String ipAddress;		// Get the IP address after booting
 	String status; 			// Booting, Running, Stopped, Crashed, Terminated
-	private static id = 0;
+	private static int id = 0;
 	
 	public VM(double coresAllocated, int memoryAllocated) {
 		id++;

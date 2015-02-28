@@ -15,6 +15,6 @@ import java.rmi.*;
 
 public interface AlgorithmSolverInterface {
 
-    public void updateConfig(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
-    	HashMap<Integer, Machine> machines, HashMap<Integer, Service> services) throws IllegalStateException;
+    public AlgorithmSolution solve(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
+    	HashMap<Integer, Machine> machines, HashMap<Integer, Service> services, Request req) throws IllegalStateException;
 }

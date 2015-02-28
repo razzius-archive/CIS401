@@ -67,11 +67,11 @@ public class StateManager {
 		linkUtilization = new HashMap<Integer,Double>();
 
 		// Spawn 5 Virtual Machines
-		addVM(0, new VM(0, 1.0, 32));
-		addVM(1, new VM(1, 1.0, 32));
-		addVM(2, new VM(2, 1.0, 32));
-		addVM(3, new VM(3, 1.0, 32));
-		addVM(4, new VM(4, 1.0, 32));
+		// addVM(0, new VM(0, 1.0, 32));
+		// addVM(1, new VM(1, 1.0, 32));
+		// addVM(2, new VM(2, 1.0, 32));
+		// addVM(3, new VM(3, 1.0, 32));
+		// addVM(4, new VM(4, 1.0, 32));
 
 		// Create 6 Services
 		addService(0, new Service(0, 100, 8));
@@ -83,9 +83,9 @@ public class StateManager {
 
 		// Create a bunch of switches, machines, and links
 		// Create sample network
-		addSwitch(0, new Switch(0, 100, SwitchType.TOP_OF_ROW));
-		addSwitch(1, new Switch(1, 100, SwitchType.CORE));
-		addSwitch(2, new Switch(2, 100, SwitchType.CORE));
+		addSwitch(0, new Switch(0, 100, Switch.SwitchType.TOP_OF_ROW));
+		addSwitch(1, new Switch(1, 100, Switch.SwitchType.CORE));
+		addSwitch(2, new Switch(2, 100, Switch.SwitchType.CORE));
 
 		addMachine(3, new Machine(3, 100, 32, 4096));		
 		addMachine(4, new Machine(4, 100, 32, 4096));		
@@ -101,10 +101,10 @@ public class StateManager {
 		
 
 		// Create some sample requests to take in from the server
-		Request req = new Request("r1","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
- 		Request req = new Request("r2","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
- 		Request req = new Request("r3","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
- 		Request req = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+		Request req0 = new Request("r1","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+ 		Request req1 = new Request("r2","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+ 		Request req2 = new Request("r3","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+ 		Request req3 = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
  
 
 		// Use Log4J to log significant events
