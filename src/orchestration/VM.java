@@ -13,9 +13,11 @@ public class VM {
 	int memoryAllocated; 	// MB of memory allocated
 	String ipAddress;		// Get the IP address after booting
 	String status; 			// Booting, Running, Stopped, Crashed, Terminated
+	private static id = 0;
 	
-	public VM(int vmID, double coresAllocated, int memoryAllocated) {
-		this.vmID = vmID;
+	public VM(double coresAllocated, int memoryAllocated) {
+		id++;
+		this.vmID = id;
 		this.coresAllocated = coresAllocated;
 		this.memoryAllocated = memoryAllocated;
 		// Set IP Address automatically
