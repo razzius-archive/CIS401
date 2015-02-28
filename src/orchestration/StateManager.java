@@ -101,6 +101,11 @@ public class StateManager {
 		
 
 		// Create some sample requests to take in from the server
+		Request req = new Request("r1","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+ 		Request req = new Request("r2","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+ 		Request req = new Request("r3","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+ 		Request req = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+ 
 
 		// Use Log4J to log significant events
 
