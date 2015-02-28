@@ -4,28 +4,28 @@ package orchestration;
 public class Request {
 
 	// requestID "r4"
-	private String requestID; 
+	public String requestID; 
 
 	// startnode "s3_0"
-	private String startNode; 
+	public String startNode; 
 
 	// endnode "s3_1" 
-	private String endNode;   
+	public String endNode;   
 
 	// packageRate(#packages/s) "72432"
-	private int packageRate;
+	public int packageRate;
 
 	// deadline(ms) "44"
-	private int deadline;
+	public int deadline;
 
 	// services "s0-s1-s3"
-	private String services;
+	public String[] services;
 
 	// PackageSize(bits) "12000"
-	private int packageSize;
+	public int packageSize;
 
 	// price($) "1"
-	private int price;
+	public int price;
 
 	public Request(String requestID, String startNode, String endNode, int packageRate, int deadline, String services, int packageSize, int price) {
 		this.requestID = requestID;
@@ -33,7 +33,7 @@ public class Request {
 		this.endNode = endNode;
 		this.packageRate = packageRate;
 		this.deadline = deadline;
-		this.services = services;
+		this.services = services.split("-");
 		this.packageSize = packageSize;
 		this.price = price;
 	}

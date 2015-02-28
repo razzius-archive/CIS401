@@ -15,10 +15,6 @@ import java.rmi.*;
 
 public interface AlgorithmSolverInterface {
 
-    public boolean satisfiable(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
-    	HashMap<Integer, Machine> machines, HashMap<Integer, Service> services);
-
-
     public void updateConfig(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
     	HashMap<Integer, Machine> machines, HashMap<Integer, Service> services) throws IllegalStateException;
 }

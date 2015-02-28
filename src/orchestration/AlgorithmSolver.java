@@ -17,19 +17,14 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     //  for the fleet.
     // If algorithm cannot solve given the load, 
     //  then the method returns null and an appropriate log message is set.
-    public void solve() {
-        
-    }
-
-    public boolean satisfiable(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
-        HashMap<Integer, Machine> machines, HashMap<Integer, Service> services) {
-
-        return false;
-    }
 
 
     public void updateConfig(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
-        HashMap<Integer, Machine> machines, HashMap<Integer, Service> services) throws IllegalStateException {
+        HashMap<Integer, Machine> machines, HashMap<String, Service> services, Request req) throws IllegalStateException {
+
+        for (String serviceID : req.services) {
+
+        }
 
     }
 }

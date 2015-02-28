@@ -1,4 +1,4 @@
-CLASSES=Request,RequestHandler,HttpURLConnectionExample,OrchestrationLayer,AlgorithmSolver,AlgorithmSolverInterface,StateManager,Analytics,Machine,Link,Service,Node,Switch,Tenant,VM
+CLASSES=AlgorithmSolution,Request,RequestHandler,HttpURLConnectionExample,OrchestrationLayer,AlgorithmSolver,AlgorithmSolverInterface,StateManager,Analytics,Machine,Link,Service,Node,Switch,Tenant,VM
 SOURCES=src/orchestration/{$(CLASSES)}.java
 CLASSPATH=bin
 
