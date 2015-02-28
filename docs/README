@@ -1,0 +1,9 @@
+to install requirements
+
+    sudo pip install -r requirements.txt
+
+to build
+
+    make html
+
+the docs are then in the _build directory

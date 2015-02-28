@@ -3,3 +3,4 @@
 *.war
 .DS_Store
 .vagrant
+_build
