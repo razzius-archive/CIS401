@@ -11,7 +11,7 @@ public class ServiceInstance {
 	public int serviceID;
 	public int bandwidth;
 	public int memory;
-	public ServiceInstance.Status status = ServiceInstance.Status.STARTING;
+	public ServiceInstance.Status status = ServiceInstance.Status.PENDING;
 	public int port;
 	public int PID;
 
