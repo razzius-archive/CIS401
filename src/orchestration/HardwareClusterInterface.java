@@ -10,7 +10,8 @@ import orchestration.RunningService;
 
 public interface HardwareClusterInterface {
 
-    public void bootVM(VM vm);
+    public void bootVM(VM vm, double coresAllocated, int memoryAllocated);
+    public void modifyVM(VM vm, double coresAllocated, int memoryAllocated);
     public void shutdownVM(VM vm);
     public void startService(VM vm, RunningService runningservice);
     public void terminateRunningService(VM vm, RunningService runningservice);

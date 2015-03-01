@@ -53,7 +53,7 @@ public class StateManager {
 
 	private static HashMap<Integer, VM> vms = new HashMap<Integer, VM>();
 	private static HashMap<Integer, Service> services = new HashMap<Integer, Service>();
-	private static HashMap<Integer, RunningService> runningServices = new HashMap<Integer, RunningService>();
+	private static HashMap<Integer, ServiceInstance> serviceInstances = new HashMap<Integer, ServiceInstance>();
 	private static HashMap<Integer, Double> switchUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> machineUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> linkUtilization = new HashMap<Integer, Double>();
