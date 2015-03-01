@@ -22,13 +22,11 @@ public class OrchestrationLayer {
     private static StateManager stateManager;
 	private static RequestHandler requestHandler;
     private static AlgorithmSolver algorithmSolver;
-    // private static HardwareCluster hardwareCluster;
     private static Analytics analytics;
 
     public static void main(String[] args) throws IOException {
         requestHandler = new RequestHandler();
-        stateManager = new StateManager();  // Contains an instance of AlgorithmSolver
-        // hardwareCluster = new HardwareCluster();
+        stateManager = new StateManager();  // Contains instances of AlgorithmSolver and HardwareCluster
         analytics = new Analytics();
 
         stateManager.addService(0, new Service(0, 100, 8));
