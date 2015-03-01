@@ -53,6 +53,7 @@ public class StateManager {
 
 	private static HashMap<Integer, VM> vms = new HashMap<Integer, VM>();
 	private static HashMap<Integer, Service> services = new HashMap<Integer, Service>();
+	private static HashMap<Integer, RunningService> runningServices = new HashMap<Integer, RunningService>();
 	private static HashMap<Integer, Double> switchUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> machineUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> linkUtilization = new HashMap<Integer, Double>();
@@ -74,6 +75,8 @@ public class StateManager {
 
 	// TODO
 	private static void updateCluster(AlgorithmSolution solution) throws IllegalStateException {
+		// Calculate the differences between the current configuration and the new configuration.
+		// Direct the Hardware Cluster as necessary.
 	}
 
 	public static CustomerResponse queryAlgorithmSolver(Request request) {

@@ -15,7 +15,7 @@ import com.sun.net.httpserver.HttpServer;
 //
 // Orchestration Layer
 //
-// Top-Level Platform Organization
+// Top-Level Platform Class
 
 public class OrchestrationLayer {
 
@@ -27,8 +27,7 @@ public class OrchestrationLayer {
 
     public static void main(String[] args) throws IOException {
         requestHandler = new RequestHandler();
-        stateManager = new StateManager();
-        algorithmSolver = new AlgorithmSolver();
+        stateManager = new StateManager();  // Contains an instance of AlgorithmSolver
         // hardwareCluster = new HardwareCluster();
         analytics = new Analytics();
 

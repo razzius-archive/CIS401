@@ -15,10 +15,10 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     
     // TODO: Define Configuration class.
     // solve() function should use the current state of the fleet (myLoad)
-    //  and return a Configuration object that gives the suggested configuration
-    //  for the fleet.
+    // and return a Configuration object that gives the suggested configuration
+    // for the fleet.
     // If algorithm cannot solve given the load, 
-    //  then the method returns null and an appropriate log message is set.
+    // then the method returns null and an appropriate log message is set.
 
 
     public AlgorithmSolution solve(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
