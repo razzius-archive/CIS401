@@ -13,7 +13,6 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 //
-//
 // Orchestration Layer
 //
 // Top-Level Platform Organization
@@ -33,12 +32,4 @@ public class OrchestrationLayer {
         // hardwareCluster = new HardwareCluster();
         analytics = new Analytics();
     }
-
-    public static void processRequest(Request request) {
-        System.out.println("[OrchestrationLayer] Passing request to StateManager...\n");
-        stateManager.queryAlgorithmSolver(algorithmSolver, request);
-    }
-
-
-
 }

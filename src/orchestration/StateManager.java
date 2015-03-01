@@ -1,11 +1,14 @@
 package orchestration;
 
-import java.io.*;
-import java.rmi.*;
 import java.rmi.Naming;
 import java.util.HashMap;
 
-//
+import orchestration.Link;
+import orchestration.Switch;
+import orchestration.Machine;
+import orchestration.Tenant;
+import orchestration.CustomerResponse;
+
 //
 // State Manager
 //
@@ -23,20 +26,21 @@ import java.util.HashMap;
 //
 
 public class StateManager {
+	private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
 
-	/* 
+	/*
 	* Static Network Attributes do not change during the course
 	* of program execution. Links, Switches, Machines, and Tenants
 	* are all static attributes with their IDs mapped to the
 	* object.
 	*/
 
-	private static HashMap<Integer, Link> links;
-	private static HashMap<Integer, Switch> switches;
-	private static HashMap<Integer, Machine> machines;
-	private static HashMap<Integer, Tenant> tenants;
+	private static HashMap<Integer, Link> links = new HashMap<Integer, Link>();
+	private static HashMap<Integer, Switch> switches = new HashMap<Integer, Switch>();
+	private static HashMap<Integer, Machine> machines = new HashMap<Integer, Machine>();
+	private static HashMap<Integer, Tenant> tenants = new HashMap<Integer, Tenant>();
 
-	/* 
+	/*
 	* Dynamic Network Attributes change over the course of program
 	* execution. VMs spawned, services processed, and the
 	* utilization of different network hardware components
@@ -45,82 +49,44 @@ public class StateManager {
 	* percent utilization.
 	*/
 
-	private static HashMap<Integer, VM> vms;
-	private static HashMap<Integer, Service> services;
-	private static HashMap<Integer, Double> switchUtilization;
-	private static HashMap<Integer, Double> machineUtilization;
-	private static HashMap<Integer, Double> linkUtilization;
+	private static HashMap<Integer, VM> vms = new HashMap<Integer, VM>();
+	private static HashMap<Integer, Service> services = new HashMap<Integer, Service>();
+	private static HashMap<Integer, Double> switchUtilization = new HashMap<Integer, Double>();
+	private static HashMap<Integer, Double> machineUtilization = new HashMap<Integer, Double>();
+	private static HashMap<Integer, Double> linkUtilization = new HashMap<Integer, Double>();
 
 	/*
 	* StateManager Class constructor
 	*/
 
 	public StateManager() {
-		links = new HashMap<Integer,Link>();
-		switches = new HashMap<Integer,Switch>();
-		machines = new HashMap<Integer,Machine>();
-		tenants = new HashMap<Integer,Tenant>();
-		vms = new HashMap<Integer,VM>();
-		services = new HashMap<Integer,Service>();
-		switchUtilization = new HashMap<Integer,Double>();
-		machineUtilization = new HashMap<Integer,Double>();
-		linkUtilization = new HashMap<Integer,Double>();
-
-		// Spawn 5 Virtual Machines
-		// addVM(0, new VM(0, 1.0, 32));
-		// addVM(1, new VM(1, 1.0, 32));
-		// addVM(2, new VM(2, 1.0, 32));
-		// addVM(3, new VM(3, 1.0, 32));
-		// addVM(4, new VM(4, 1.0, 32));
-
-		// Create 6 Services
-		addService(0, new Service(0, 100, 8));
-		addService(1, new Service(1, 100, 8));
-		addService(2, new Service(2, 100, 16));
-		addService(3, new Service(3, 100, 16));
-		addService(4, new Service(4, 100, 32));
-		addService(5, new Service(5, 100, 64));
-
-		// Create a bunch of switches, machines, and links
-		// Create sample network
-		addSwitch(0, new Switch(0, 100, Switch.SwitchType.TOP_OF_ROW));
-		addSwitch(1, new Switch(1, 100, Switch.SwitchType.CORE));
-		addSwitch(2, new Switch(2, 100, Switch.SwitchType.CORE));
-
-		addMachine(3, new Machine(3, 100, 32, 4096));		
-		addMachine(4, new Machine(4, 100, 32, 4096));		
-		addMachine(5, new Machine(5, 100, 32, 4096));		
-		addMachine(6, new Machine(6, 100, 32, 4096));
-
-		addLink(0, new Link(0, 0, 1, 10, 20));
-		addLink(1, new Link(1, 0, 2, 10, 20));
-		addLink(2, new Link(2, 1, 3, 10, 20));
-		addLink(3, new Link(3, 1, 4, 10, 20));
-		addLink(4, new Link(4, 2, 5, 10, 20));
-		addLink(5, new Link(5, 2, 6, 10, 20));
-		
-
-		// Create some sample requests to take in from the server
-		Request req0 = new Request("r1","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
- 		Request req1 = new Request("r2","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
- 		Request req2 = new Request("r3","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
- 		Request req3 = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
- 
-
-		// Use Log4J to log significant events
-
 	}
 
 	/*
 	* Initialize virtual machine cluster
 	*/
-	
+
 	public void initializeCluster() {
 		// Network Operations
 	}
 
-	public void queryAlgorithmSolver(AlgorithmSolver algorithmSolver, Request request) {
-		System.out.println("[StateManager] Error: No Algorithm Solver Implemented");
+	// TODO
+	private static void updateCluster(AlgorithmSolution solution) throws IllegalStateException {
+	}
+
+	public static CustomerResponse queryAlgorithmSolver(Request request) {
+		AlgorithmSolution solution = algorithmSolver.solve(
+			links,
+			switches,
+			machines,
+			services,
+			request);
+		if (solution == null) {
+			return new CustomerResponse(false);
+		} else {
+			updateCluster(solution);
+			return new CustomerResponse(true);
+		}
 	}
 
 	/*

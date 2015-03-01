@@ -11,17 +11,19 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import orchestration.OrchestrationLayer;
+
 //
 //
 // Request Handler
 //
 // Stores Individual Tenant information
 public class RequestHandler {
-    
+
     public RequestHandler() throws IOException {
        startServer();
     }
-    
+
     private void startServer() throws IOException {
         int port = 8080;
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -32,7 +34,6 @@ public class RequestHandler {
     }
 
     class RequestServer implements HttpHandler {
-
         public void handle(HttpExchange t) throws IOException {
             String response = "hello world";
             System.out.println("\nRECIEVED: " + t.getRequestMethod());
@@ -60,8 +61,10 @@ public class RequestHandler {
             // blank line after requests
             System.out.println();
 
-            Request req = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
-            OrchestrationLayer.processRequest(req);
+            Request request = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+            CustomerResponse response = StateManager.queryAlgorithmSolver(request);
+
+            // TODO write response
 
             reader.close();
 
