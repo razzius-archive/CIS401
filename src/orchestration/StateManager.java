@@ -29,6 +29,7 @@ import orchestration.CustomerResponse;
 
 public class StateManager {
 	private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
+	// private static HardwareCluster hardwareCluster = new HardwareCluster();
 
 	/*
 	* Static Network Attributes do not change during the course
@@ -77,17 +78,27 @@ public class StateManager {
 	private static void updateCluster(AlgorithmSolution solution) throws IllegalStateException {
 		// Calculate the differences between the current configuration and the new configuration.
 		// Direct the Hardware Cluster as necessary.
+
+		// Step 1: Boot new VMs
+			for (VM vm : solution.vms) {
+				if (!this.vms.contains(vm)) {
+					hardwareCluster.boot(vm, vm.getCores, vm.getMemory);
+				}
+			}
+
+		// Step 2: Start or Transfer services
+
+		// Step 3: Shutdown VMs
+
 	}
 
 	public static CustomerResponse queryAlgorithmSolver(Request request) {
-		System.out.println("in queryalgorithmsolver");
 		AlgorithmSolution solution = algorithmSolver.solve(
 			links,
 			switches,
 			machines,
 			services,
 			request);
-		System.out.println("queryAlgorithmSolver returned");
 		if (solution == null) {
 			return new CustomerResponse(false);
 		} else {
