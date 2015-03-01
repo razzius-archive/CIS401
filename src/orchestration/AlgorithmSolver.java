@@ -35,15 +35,19 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             requestedServices.add(services.get(serviceint));
         }
 
+
         // update to put a different service onto a different VM
         AlgorithmSolution as = new AlgorithmSolution();
 
         for (Service s : requestedServices) {
-            VM vm = new VM(1, s.maxMemory);
-            as.vms.add(vm);
-            as.requestedServices.add(s);
+            try {
+                VM vm = new VM(1, s.maxMemory);
+                as.vms.add(vm);
+                as.requestedServices.add(s);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
         return as;
 
     }

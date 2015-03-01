@@ -31,5 +31,12 @@ public class OrchestrationLayer {
         algorithmSolver = new AlgorithmSolver();
         // hardwareCluster = new HardwareCluster();
         analytics = new Analytics();
+
+        stateManager.addService(0, new Service(0, 100, 8));
+        stateManager.addService(1, new Service(1, 100, 8));
+        stateManager.addService(2, new Service(2, 100, 16));
+        stateManager.addService(3, new Service(3, 100, 16));
+        stateManager.addService(4, new Service(4, 100, 32));
+        stateManager.addService(5, new Service(5, 100, 64));
     }
 }

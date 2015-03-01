@@ -3,6 +3,8 @@ package orchestration;
 import java.rmi.Naming;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 import orchestration.Link;
 import orchestration.Switch;
 import orchestration.Machine;
@@ -75,12 +77,14 @@ public class StateManager {
 	}
 
 	public static CustomerResponse queryAlgorithmSolver(Request request) {
+		System.out.println("in queryalgorithmsolver");
 		AlgorithmSolution solution = algorithmSolver.solve(
 			links,
 			switches,
 			machines,
 			services,
 			request);
+		System.out.println("queryAlgorithmSolver returned");
 		if (solution == null) {
 			return new CustomerResponse(false);
 		} else {

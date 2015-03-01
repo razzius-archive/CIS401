@@ -10,6 +10,7 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.apache.log4j.Logger;
 
 import orchestration.OrchestrationLayer;
 
@@ -19,6 +20,8 @@ import orchestration.OrchestrationLayer;
 //
 // Stores Individual Tenant information
 public class RequestHandler {
+
+    private static Logger logger = Logger.getLogger(RequestHandler.class.getName());
 
     public RequestHandler() throws IOException {
        startServer();
@@ -36,17 +39,21 @@ public class RequestHandler {
     class RequestServer implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
             String response = "hello world";
-            System.out.println("\nRECIEVED: " + t.getRequestMethod());
-            processRequest(t);
-            t.sendResponseHeaders(200, response.length());
+            System.out.println("\nRECIEVED: " + t.getRequestMethod()); 
+            InputStream is = t.getRequestBody();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            response = processRequest(t, reader);
             OutputStream os = t.getResponseBody();
+            t.sendResponseHeaders(200, response.length());
             os.write(response.getBytes());
+            
+
+            reader.close();
             os.close();
         }
 
-        public void processRequest(HttpExchange t) throws IOException {
-            InputStream is = t.getRequestBody();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        public String processRequest(HttpExchange t, BufferedReader reader) throws IOException {
+            System.out.println("In process request");
             StringBuilder out = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -62,11 +69,16 @@ public class RequestHandler {
             System.out.println();
 
             Request request = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
-            CustomerResponse response = StateManager.queryAlgorithmSolver(request);
+            CustomerResponse cr = StateManager.queryAlgorithmSolver(request);
 
-            // TODO write response
+            String response = "";
+            if (cr.accepted) {
+                response += "Request Accepted";
+            } else {
+                response += "Request Denied";
+            }
 
-            reader.close();
+            return response;
 
         }
 

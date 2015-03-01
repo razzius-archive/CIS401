@@ -2,9 +2,9 @@ package orchestration;
 
 
 public class CustomerResponse {
-    private Boolean accepted;
+    public boolean accepted;
 
-    public CustomerResponse(Boolean accepted) {
+    public CustomerResponse(boolean accepted) {
         this.accepted = accepted;
     }
 }

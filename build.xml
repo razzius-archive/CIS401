@@ -1,0 +1,19 @@
+<project name="SeniorDesign" default="build" basedir=".">
+    <description>
+        simple build file
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src/orchestration"/>
+  <property name="buildd" location="bin"/>
+
+  <target name="build" description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${buildd}" deprecation="off" debug="on" includeAntRuntime="no">
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+    </javac>
+  </target>
+</project>

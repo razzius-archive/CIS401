@@ -1,6 +1,7 @@
 package orchestration;
 
-import java.rmi.*;
+import orchestration.VM;
+import orchestration.RunningService;
 /**
  * Interface for the Hardware Cluster to communicate with the State Manager.
  * reconfigure method reorganizes the hardware cluster based on components

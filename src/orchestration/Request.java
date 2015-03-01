@@ -44,7 +44,7 @@ public class Request {
 						"endNode=" + this.endNode + "&" +
 						"packageRate=" + this.packageRate + "&" +
 						"deadline=" + this.deadline + "&" +
-						"services=" + this.services + "&" +
+						"services=" + this.services[0] + "&" +
 						"packageSize=" + this.packageSize + "&" +
 						"price=" + this.price;
 		return params;
