@@ -14,6 +14,8 @@ public class ServiceInstance {
 	public ServiceInstance.Status status = ServiceInstance.Status.PENDING;
 	public int port;
 	public int PID;
+	private static int id = 0;
+	public int serviceInstanceID;
 
 
 	public enum Status {
@@ -23,5 +25,7 @@ public class ServiceInstance {
 	public ServiceInstance(int serviceID, int vmID) {
 		this.serviceID = serviceID;
 		this.vmID = vmID;
+		id++;
+		this.serviceInstanceID = id;
 	}
 }
