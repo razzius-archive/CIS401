@@ -35,7 +35,7 @@ public class VM {
 		return coresAllocated;
 	}
 
-	public double getMemory() {
+	public int getMemory() {
 		return memoryAllocated;
 	}
 
