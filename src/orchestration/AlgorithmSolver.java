@@ -3,6 +3,10 @@ package orchestration;
 import java.util.HashMap;
 import java.util.ArrayList;
 
+import orchestration.Link;
+import orchestration.Switch;
+import orchestration.Machine;
+import orchestration.ServiceInstance;
 
 public class AlgorithmSolver implements AlgorithmSolverInterface {
 
@@ -43,7 +47,8 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             try {
                 VM vm = new VM(1, s.maxMemory);
                 as.vms.add(vm);
-                as.requestedServices.add(s);
+                ServiceInstance si = new ServiceInstance(s.serviceID, vm.vmID);
+                as.requestedServices.add(si);
             } catch (Exception e) {
                 e.printStackTrace();
             }
