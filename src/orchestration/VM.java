@@ -1,6 +1,7 @@
 package orchestration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 //
 //
@@ -16,6 +17,7 @@ public class VM {
 	String ipAddress;		// Get the IP address after booting
 	String status; 			// Booting, Running, Stopped, Crashed, Terminated
 	private static int id = 0;
+	HashSet<Integer> serviceInstanceIDs = new HashSet<Integer>();
 	
 	public VM(double coresAllocated, int memoryAllocated) {
 		id++;
