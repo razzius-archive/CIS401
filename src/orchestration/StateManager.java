@@ -29,6 +29,7 @@ import orchestration.CustomerResponse;
 
 public class StateManager {
 	private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
+	private static HardwareCluster hardwareCluster;
 
 	/*
 	* Static Network Attributes do not change during the course
@@ -53,7 +54,7 @@ public class StateManager {
 
 	private static HashMap<String, VM> virtualMachines = new HashMap<String, VM>();
 	private static HashMap<Integer, Service> services = new HashMap<Integer, Service>();
-	private static HashMap<Integer, ServiceInstance> serviceInstances = new HashMap<Integer, ServiceInstance>();
+	private static HashMap<String, ServiceInstance> serviceInstances = new HashMap<ServiceInstance>();
 	private static HashMap<Integer, Double> switchUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> machineUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> linkUtilization = new HashMap<Integer, Double>();
@@ -62,7 +63,8 @@ public class StateManager {
 	* StateManager Class constructor
 	*/
 
-	public StateManager() {
+	public StateManager(HardwareCluster hardwareCluster) {
+		this.hardwareCluster = hardwareCluster;
 	}
 
 	/*
@@ -80,18 +82,24 @@ public class StateManager {
 	*/
 
 	private static void updateCluster(AlgorithmSolution solution) throws IllegalStateException {
-		for (VM vm : solution.vms) {
-			if (!virtualMachines.values().contains(vm)) {
-				virtualMachines.put(vm.getID(), vm);
-				hardwareCluster.bootVM(vm);
+		
+		for (RemoteHost host : solution.vms) {
+			for (VM vm : solution.get(host)) {
+				if (!virtualMachines.values().contains(vm)) {
+					virtualMachines.put(vm.getID(), vm);
+					hardwareCluster.bootVM(host, vm);
+				}
 			}
 		}
 
+
+
+
 		for (ServiceInstance si : solution.requestedServices) {
 			if (serviceInstances.keySet().contains(si.serviceInstanceID)) {
-				int oldVMID = serviceInstances.get(si.serviceInstanceID).vmID;
-				int newVMID = si.vmID;
-				if (oldVMID != newVMID) {	// Service is running on a different VM than it should be.
+				String oldVMID = serviceInstances.get(si.serviceInstanceID).vmID;
+				String newVMID = si.vmID;
+				if (!oldVMID.equals(newVMID)) {	// Service is running on a different VM than it should be.
 					serviceInstances.get(si.serviceInstanceID).vmID = newVMID;
 					hardwareCluster.transferRunningService(virtualMachines.get(oldVMID), virtualMachines.get(newVMID), si);
 				}
@@ -102,7 +110,9 @@ public class StateManager {
 		}
 
 		for (VM vm : virtualMachines.values()) {
-			if (!solution.vms.contains(vm)) hardwareCluster.shutdownVM(vm);	// If there are services running on these VMs, system is inconsistent.
+			if (!solution.vms.contains(vm)) {
+				hardwareCluster.shutdownVM(vm);	// If there are services running on these VMs, system is inconsistent.
+			}
 		}
 	}
 
@@ -154,8 +164,8 @@ public class StateManager {
 		tenants.put(tenantID, tenant);
 	}
 
-	public void addVM(int vmID, VM vm) {
-		virtualMachines.put(vmID, vm);
+	public void addVM(VM vm) {
+		virtualMachines.put(vm.getID(), vm);
 	}
 
 	public void addService(int serviceID, Service service) {

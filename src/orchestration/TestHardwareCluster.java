@@ -14,9 +14,9 @@ import orchestration.VM;
 
 public class TestHardwareCluster implements HardwareClusterInterface {
 
-    private static Logger logger = Logger.getLogger(HardwareCluster.class.getName());
+    private static Logger logger = Logger.getLogger(TestHardwareCluster.class.getName());
 
-    public HardwareCluster() {
+    public TestHardwareCluster() {
     }
 
     public void bootVM(VM vm, double coresAllocated, int memoryAllocated) {

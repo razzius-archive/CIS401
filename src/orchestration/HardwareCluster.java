@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-
 import orchestration.Link;
 import orchestration.Switch;
 import orchestration.Machine;
@@ -26,11 +25,14 @@ public class HardwareCluster implements HardwareClusterInterface {
     }
 
     public void bootVM(RemoteHost host, VM vm) {
+        host.bootVM(vm);
         logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
     }
+    /*
     public void modifyVM(VM vm, double coresAllocated, int memoryAllocated) {
         logger.info("[HardwareCluster] Modifying the VM: " + vm.getID());
     }
+    */
     public void shutdownVM(VM vm) {
         logger.info("[HardwareCluster] Shutting down the VM: " + vm.getID());
     }

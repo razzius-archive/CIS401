@@ -47,7 +47,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             try {
                 VM vm = new VM(1, s.maxMemory);
                 as.vms.add(vm);
-                ServiceInstance si = new ServiceInstance(s.serviceID, vm.vmID);
+                ServiceInstance si = new ServiceInstance(s.serviceID, vm.getID());
                 as.requestedServices.add(si);
             } catch (Exception e) {
                 e.printStackTrace();

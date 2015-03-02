@@ -23,8 +23,8 @@ public class VM {
 		status = "booting";
 	}
 
-	public int getID() {
-		return vmID;
+	public String getID() {
+		return id;
 	}
 
 	public double getCores() {
