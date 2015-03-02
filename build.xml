@@ -44,14 +44,27 @@
   </target>
 
   <target name="test" description="Starts OrchestrationLayer and server">
-    <java fork="true" failonerror="yes" classname="test.ExampleTest">
+    <junit printsummary="yes" haltonfailure="yes">
       <classpath>
         <fileset dir="lib">
           <include name="*.jar"/>
         </fileset>
         <pathelement path="bin"/>
       </classpath>
-    </java>
+
+      <formatter type="plain"/>
+      <formatter type="xml"/>
+
+      <test name="test.ExampleTest"
+             haltonfailure="no" outfile="result">
+
+      <formatter type="plain"/>
+      <formatter type="xml"/>
+
+    </test>
+
+
+    </junit>
   </target>
 
 </project>
