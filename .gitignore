@@ -1,5 +1,6 @@
 *.class
 *.jar
+*.swap
 *.war
 .DS_Store
 .vagrant

@@ -23,11 +23,14 @@ public class OrchestrationLayer {
 	private static RequestHandler requestHandler;
     private static AlgorithmSolver algorithmSolver;
     private static Analytics analytics;
+    private static HardwareCluster;
 
     public static void main(String[] args) throws IOException {
+        // TODO read network topology file from arg values
         requestHandler = new RequestHandler();
-        stateManager = new StateManager();  // Contains instances of AlgorithmSolver and HardwareCluster
+        stateManager = new StateManager(); // Contains AlgorithmSolver
         analytics = new Analytics();
+        hardwareCluster = new HardwareCluster(topology.hostIPs);
 
         stateManager.addService(0, new Service(0, 100, 8));
         stateManager.addService(1, new Service(1, 100, 8));

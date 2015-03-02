@@ -11,21 +11,15 @@ import orchestration.Switch;
 import orchestration.Machine;
 import orchestration.ServiceInstance;
 import orchestration.VM;
-import orchestration.RemoteHost;
 
+public class TestHardwareCluster implements HardwareClusterInterface {
 
-public class HardwareCluster implements HardwareClusterInterface {
     private static Logger logger = Logger.getLogger(HardwareCluster.class.getName());
-    ArrayList<RemoteHost> remoteHosts = new ArrayList<RemoteHost>();
 
-    public HardwareCluster(ArrayList<String> hostIPs) {
-        for (String ip : hostIPs) {
-            RemoteHost host = new RemoteHost(ip);
-            remoteHosts.add(host);
-        }
+    public HardwareCluster() {
     }
 
-    public void bootVM(RemoteHost host, VM vm) {
+    public void bootVM(VM vm, double coresAllocated, int memoryAllocated) {
         logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
     }
     public void modifyVM(VM vm, double coresAllocated, int memoryAllocated) {
