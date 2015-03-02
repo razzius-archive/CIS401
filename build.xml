@@ -1,4 +1,4 @@
-<project name="SeniorDesign" default="build">
+<project name="SeniorDesign" default="build" basedir=".">
   <description>Daar Algorithm Testing Framework</description>
 
   <property name="src" location="src/orchestration"/>
@@ -19,4 +19,16 @@
       </classpath>
     </javac>
   </target>
+
+  <target name="run" description="Starts OrchestrationLayer and server">
+    <java fork="true" failonerror="yes" classname="orchestration.OrchestrationLayer">
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.jar"/>
+        </fileset>
+        <pathelement path="bin"/>
+      </classpath>
+    </java>
+  </target>
+
 </project>
