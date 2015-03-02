@@ -2,6 +2,7 @@
   <description>Daar Algorithm Testing Framework</description>
 
   <property name="src" location="src/orchestration"/>
+  <property name="test" location="src/test"/>
   <property name="build" location="bin"/>
 
   <target name="install">
@@ -21,8 +22,29 @@
     </javac>
   </target>
 
+  <target name="buildtest" description="Compile the main classes">
+    <javac srcdir="${test}" destdir="${build}" debug="on" includeAntRuntime="no">
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+    </javac>
+  </target>
+
   <target name="run" description="Starts OrchestrationLayer and server">
     <java fork="true" failonerror="yes" classname="orchestration.OrchestrationLayer">
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.jar"/>
+        </fileset>
+        <pathelement path="bin"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="test" description="Starts OrchestrationLayer and server">
+    <java fork="true" failonerror="yes" classname="test.ExampleTest">
       <classpath>
         <fileset dir="lib">
           <include name="*.jar"/>

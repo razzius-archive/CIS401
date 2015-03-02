@@ -3,6 +3,9 @@ package orchestration;
 import java.util.HashMap;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
+
 import orchestration.Link;
 import orchestration.Switch;
 import orchestration.Machine;
@@ -11,7 +14,7 @@ import orchestration.VM;
 
 public class HardwareCluster implements HardwareClusterInterface {
     
-    private static Logger logger = Logger.getLogger(RequestHandler.class.getName());
+    private static Logger logger = Logger.getLogger(HardwareCluster.class.getName());
 
     public HardwareCluster() {
     }
