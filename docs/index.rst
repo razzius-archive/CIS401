@@ -22,11 +22,12 @@ It refers to the section itself, see :ref:`my-reference-label`.
 
 
 sigh :ref:`algorithms` heres
+:ref:`Overview`
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   maths
+   Overview
    algorithms
    my-reference-label
 
