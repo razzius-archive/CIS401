@@ -1,14 +1,17 @@
-<project name="SeniorDesign" default="build" basedir=".">
-    <description>
-        simple build file
-    </description>
-  <!-- set global properties for this build -->
-  <property name="src" location="src/orchestration"/>
-  <property name="buildd" location="bin"/>
+<project name="SeniorDesign" default="build">
+  <description>Daar Algorithm Testing Framework</description>
 
-  <target name="build" description="compile the source " >
-    <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${buildd}" deprecation="off" debug="on" includeAntRuntime="no">
+  <property name="src" location="src/orchestration"/>
+  <property name="build" location="bin"/>
+
+  <target name="install">
+    <get dest="lib">
+      <url url="http://mirrors.ibiblio.org/maven2/log4j/log4j/1.2.12/log4j-1.2.12.jar"/>
+    </get>
+  </target>
+
+  <target name="build" description="Compile the main classes">
+    <javac srcdir="${src}" destdir="${build}" debug="on" includeAntRuntime="no">
       <classpath>
         <fileset dir="lib">
           <include name="*.jar"/>
