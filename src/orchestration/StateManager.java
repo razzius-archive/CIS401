@@ -71,7 +71,8 @@ public class StateManager {
 	*/
 
 	public void initializeCluster() {
-		// Network Operations
+		// Perform Network Operations
+		// Update the internal state accordingly.
 	}
 
 	/*
@@ -102,7 +103,7 @@ public class StateManager {
 			}
 
 			for (VM vm : virtualMachines.values()) {
-				if (!solution.vms.contains(vm)) hardwareCluster.shutdownVM(vm);	// If there are services running on these VMs, something is inconsistent.
+				if (!solution.vms.contains(vm)) hardwareCluster.shutdownVM(vm);	// If there are services running on these VMs, system is inconsistent.
 			}
 	}
 
@@ -120,6 +121,19 @@ public class StateManager {
 			return new CustomerResponse(true);
 		}
 	}
+
+	public static void serviceInstanceFinished(ServiceInstance si) {
+		serviceInstances.remove(si.serviceInstanceID);
+	}
+
+	public static void serviceInstanceCrashed(ServiceInstance si) {
+
+	}
+
+
+
+
+
 
 	/*
 	* Read and Update State Parameters
