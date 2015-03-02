@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 public class ServiceInstance {
 
+	public int serviceInstanceID;
 	public int vmID;
 	public int serviceID;
 	public int bandwidth;
@@ -15,8 +16,6 @@ public class ServiceInstance {
 	public int port;
 	public int PID;
 	private static int id = 0;
-	public int serviceInstanceID;
-
 
 	public enum Status {
 		STARTING, PENDING, RUNNING, PAUSED, FINISHED, TERMINATED, CRASHED
