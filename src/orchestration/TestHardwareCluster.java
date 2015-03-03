@@ -1,48 +1,30 @@
 package orchestration;
 
-import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+
 
 import orchestration.Link;
 import orchestration.Switch;
 import orchestration.Machine;
 import orchestration.ServiceInstance;
 import orchestration.VM;
-import orchestration.RemoteHost;
 
+public class TestHardwareCluster implements HardwareClusterInterface {
 
-public class HardwareCluster implements HardwareClusterInterface {
-    private static Logger logger = Logger.getLogger(HardwareCluster.class.getName());
-    private ArrayList<RemoteHost> remoteHosts = new ArrayList<RemoteHost>();
+    private static Logger logger = Logger.getLogger(TestHardwareCluster.class.getName());
 
-    public HardwareCluster(ArrayList<HostConfig> hostConfigs) {
-        for (HostConfig config : hostConfigs) {
-            RemoteHost host = new RemoteHost(config);
-            this.remoteHosts.add(host);
-        }
-    }
-
-    public ArrayList<RemoteHost> getRemoteHosts() {
-        return this.remoteHosts;
+    public TestHardwareCluster() {
     }
 
     public void bootVM(RemoteHost host, VM vm) {
-        try {
-            host.bootVM(vm);
-            logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
-        } catch (RemoteException e) {
-            // TODO think about how we will handle RemoteExceptions
-            logger.fatal(e);
-        }
+        logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
     }
-    /*
     public void modifyVM(VM vm, double coresAllocated, int memoryAllocated) {
         logger.info("[HardwareCluster] Modifying the VM: " + vm.getID());
     }
-    */
     public void shutdownVM(VM vm) {
         logger.info("[HardwareCluster] Shutting down the VM: " + vm.getID());
     }

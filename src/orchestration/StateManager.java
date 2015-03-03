@@ -29,7 +29,7 @@ import orchestration.CustomerResponse;
 
 public class StateManager {
 	private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
-	private static HardwareCluster hardwareCluster = new HardwareCluster();
+	private static HardwareCluster hardwareCluster;
 
 	/*
 	* Static Network Attributes do not change during the course
@@ -52,9 +52,9 @@ public class StateManager {
 	* percent utilization.
 	*/
 
-	private static HashMap<Integer, VM> virtualMachines = new HashMap<Integer, VM>();
+	private static HashMap<String, VM> virtualMachines = new HashMap<String, VM>();
 	private static HashMap<Integer, Service> services = new HashMap<Integer, Service>();
-	private static HashMap<Integer, ServiceInstance> serviceInstances = new HashMap<Integer, ServiceInstance>();
+	private static HashMap<String, ServiceInstance> serviceInstances = new HashMap<String, ServiceInstance>();
 	private static HashMap<Integer, Double> switchUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> machineUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> linkUtilization = new HashMap<Integer, Double>();
@@ -63,7 +63,8 @@ public class StateManager {
 	* StateManager Class constructor
 	*/
 
-	public StateManager() {
+	public StateManager(HardwareCluster hardwareCluster) {
+		this.hardwareCluster = hardwareCluster;
 	}
 
 	/*
@@ -71,7 +72,8 @@ public class StateManager {
 	*/
 
 	public void initializeCluster() {
-		// Network Operations
+		// Perform Network Operations
+		// Update the internal state accordingly.
 	}
 
 	/*
@@ -80,37 +82,45 @@ public class StateManager {
 	*/
 
 	private static void updateCluster(AlgorithmSolution solution) throws IllegalStateException {
-			for (VM vm : solution.vms) {
+
+		for (RemoteHost host : solution.vms.keySet()) {
+			for (VM vm : solution.vms.get(host)) {
 				if (!virtualMachines.values().contains(vm)) {
 					virtualMachines.put(vm.getID(), vm);
-					hardwareCluster.bootVM(vm, vm.getCores(), vm.getMemory());
+					hardwareCluster.bootVM(host, vm);
 				}
 			}
+		}
 
-			for (ServiceInstance si : solution.requestedServices) {
-				if (serviceInstances.keySet().contains(si.serviceInstanceID)) {
-					int oldVMID = serviceInstances.get(si.serviceInstanceID).vmID;
-					int newVMID = si.vmID;
-					if (oldVMID != newVMID) {	// Service is running on a different VM than it should be.
-						serviceInstances.get(si.serviceInstanceID).vmID = newVMID;
-						hardwareCluster.transferRunningService(virtualMachines.get(oldVMID), virtualMachines.get(newVMID), si);
-					}
-				} else {																// Service is not running yet.
-					serviceInstances.put(si.serviceInstanceID, si);
-					hardwareCluster.startService(virtualMachines.get(si.vmID), si);
+
+
+
+		for (ServiceInstance si : solution.requestedServices) {
+			if (serviceInstances.keySet().contains(si.serviceInstanceID)) {
+				String oldVMID = serviceInstances.get(si.serviceInstanceID).vmID;
+				String newVMID = si.vmID;
+				if (!oldVMID.equals(newVMID)) {	// Service is running on a different VM than it should be.
+					serviceInstances.get(si.serviceInstanceID).vmID = newVMID;
+					hardwareCluster.transferRunningService(virtualMachines.get(oldVMID), virtualMachines.get(newVMID), si);
 				}
+			} else {																// Service is not running yet.
+				serviceInstances.put(si.serviceInstanceID, si);
+				hardwareCluster.startService(virtualMachines.get(si.vmID), si);
 			}
+		}
 
-			for (VM vm : virtualMachines.values()) {
-				if (!solution.vms.contains(vm)) hardwareCluster.shutdownVM(vm);	// If there are services running on these VMs, something is inconsistent.
+		for (VM vm : virtualMachines.values()) {
+			if (!solution.vms.get(0).contains(vm)) {
+				hardwareCluster.shutdownVM(vm);	// If there are services running on these VMs, system is inconsistent.
 			}
+		}
 	}
 
 	public static CustomerResponse queryAlgorithmSolver(Request request) {
 		AlgorithmSolution solution = algorithmSolver.solve(
 			links,
 			switches,
-			machines,
+			hardwareCluster.getRemoteHosts(),
 			services,
 			request);
 		if (solution == null) {
@@ -120,6 +130,19 @@ public class StateManager {
 			return new CustomerResponse(true);
 		}
 	}
+
+	public static void serviceInstanceFinished(ServiceInstance si) {
+		serviceInstances.remove(si.serviceInstanceID);
+	}
+
+	public static void serviceInstanceCrashed(ServiceInstance si) {
+
+	}
+
+
+
+
+
 
 	/*
 	* Read and Update State Parameters
@@ -141,8 +164,8 @@ public class StateManager {
 		tenants.put(tenantID, tenant);
 	}
 
-	public void addVM(int vmID, VM vm) {
-		virtualMachines.put(vmID, vm);
+	public void addVM(VM vm) {
+		virtualMachines.put(vm.getID(), vm);
 	}
 
 	public void addService(int serviceID, Service service) {
@@ -177,7 +200,7 @@ public class StateManager {
 		return tenants;
 	}
 
-	public HashMap<Integer, VM> getVMs() {
+	public HashMap<String, VM> getVMs() {
 		return virtualMachines;
 	}
 

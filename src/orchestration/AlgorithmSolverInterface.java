@@ -2,19 +2,15 @@ package orchestration;
 
 import java.util.HashMap;
 
-import java.rmi.*;
 /**
- * Interface for the Algorithm Solver to communicate with the State
- * Manager.
- *
- * satisfiable method lets the Algorithm Solver tell the State Manager
- * if the desired workload is manageable.
- * updateConfig method updates the State Manager with the optimal
- * configuration, if one is possible.
+ * Interface for the Algorithm Solver to be queried by the StateManager.
  */
 
 public interface AlgorithmSolverInterface {
-
+    /**
+     * Solves for a configuration that fulfills the specification.
+     * If none can be produced, returns null.
+     */
     public AlgorithmSolution solve(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
-    	HashMap<Integer, Machine> machines, HashMap<Integer, Service> services, Request req) throws IllegalStateException;
+    	HashMap<Integer, RemoteHost> remoteHosts, HashMap<Integer, Service> services, Request req) throws IllegalStateException;
 }

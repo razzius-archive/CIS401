@@ -12,21 +12,21 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
 
     double myLoad;
 
-    // TODO: Define SystemLoad class. 
+    // TODO: Define SystemLoad class.
     public AlgorithmSolver() {
         //myLoad = load;
     }
-    
+
     // TODO: Define Configuration class.
     // solve() function should use the current state of the fleet (myLoad)
     // and return a Configuration object that gives the suggested configuration
     // for the fleet.
-    // If algorithm cannot solve given the load, 
+    // If algorithm cannot solve given the load,
     // then the method returns null and an appropriate log message is set.
 
 
     public AlgorithmSolution solve(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
-        HashMap<Integer, Machine> machines, HashMap<Integer, Service> services, Request req) throws IllegalStateException {
+        HashMap<Integer, RemoteHost> remoteHosts, HashMap<Integer, Service> services, Request req) {
 
         // compile all requested services
         ArrayList<Service> requestedServices = new ArrayList<Service>();
@@ -40,18 +40,22 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         }
 
 
-        // update to put a different service onto a different VM
+        // Naive solution: put each different service on a different VM, all on the first host
         AlgorithmSolution as = new AlgorithmSolution();
 
+        // For testing purposes, the machine running the orchestration layer can act as a remote host
+        // TODO ensure the localhost has id 0
+        // TODO all these hashmaps should be hashsets, ask Razzi
+        RemoteHost localhost = remoteHosts.get(0);
+        ArrayList<VM> vmsAssignedToLocalhost = new ArrayList<VM>();
+        as.vms.put(localhost, vmsAssignedToLocalhost);
+
         for (Service s : requestedServices) {
-            try {
-                VM vm = new VM(1, s.maxMemory);
-                as.vms.add(vm);
-                ServiceInstance si = new ServiceInstance(s.serviceID, vm.vmID);
-                as.requestedServices.add(si);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            VM vm = new VM(1, s.maxMemory);
+            vmsAssignedToLocalhost.add(vm);
+
+            ServiceInstance si = new ServiceInstance(s.serviceID, vm.getID());
+            as.requestedServices.add(si);
         }
         return as;
 
