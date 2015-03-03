@@ -2,6 +2,7 @@ package orchestration;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -16,7 +17,7 @@ import orchestration.RemoteHost;
 
 public class HardwareCluster implements HardwareClusterInterface {
     private static Logger logger = Logger.getLogger(HardwareCluster.class.getName());
-    private ArrayList<RemoteHost> remoteHosts = new ArrayList<RemoteHost>();
+    private HashSet<RemoteHost> remoteHosts = new HashSet<RemoteHost>();
 
     public HardwareCluster(ArrayList<HostConfig> hostConfigs) {
         for (HostConfig config : hostConfigs) {
@@ -25,7 +26,7 @@ public class HardwareCluster implements HardwareClusterInterface {
         }
     }
 
-    public ArrayList<RemoteHost> getRemoteHosts() {
+    public HashSet<RemoteHost> getRemoteHosts() {
         return this.remoteHosts;
     }
 

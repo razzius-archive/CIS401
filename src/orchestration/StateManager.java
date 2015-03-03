@@ -120,7 +120,7 @@ public class StateManager {
 		AlgorithmSolution solution = algorithmSolver.solve(
 			links,
 			switches,
-			hardwareCluster.getRemoteHosts(),
+			hardwareCluster.getRemoteHosts(),	// 
 			services,
 			request);
 		if (solution == null) {

@@ -1,6 +1,7 @@
 package orchestration;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ArrayList;
 
 import orchestration.Link;
@@ -26,7 +27,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
 
 
     public AlgorithmSolution solve(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
-        HashMap<Integer, RemoteHost> remoteHosts, HashMap<Integer, Service> services, Request req) {
+        HashSet<RemoteHost> remoteHosts, HashMap<Integer, Service> services, Request req) {
 
         // compile all requested services
         ArrayList<Service> requestedServices = new ArrayList<Service>();
@@ -46,7 +47,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         // For testing purposes, the machine running the orchestration layer can act as a remote host
         // TODO ensure the localhost has id 0
         // TODO all these hashmaps should be hashsets, ask Razzi
-        RemoteHost localhost = remoteHosts.get(0);
+        RemoteHost localhost = remoteHosts.iterator().next();
         ArrayList<VM> vmsAssignedToLocalhost = new ArrayList<VM>();
         as.vms.put(localhost, vmsAssignedToLocalhost);
 
