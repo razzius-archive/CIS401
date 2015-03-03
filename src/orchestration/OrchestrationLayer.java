@@ -28,12 +28,18 @@ public class OrchestrationLayer {
 
     public static void main(String[] args) throws IOException {
         // TODO read network topology file from arg values
-        ArrayList<String> topology = new ArrayList<String>();
-        topology.add("127.0.0.1");
+
+        ArrayList<HostConfig> hostConfigs = new ArrayList<HostConfig>();
+
+        // Create a HostConfig for the local machine with 1Mbps of bandwidth, 4 cores, 2048 MB of RAM
+        HostConfig localhostConfig = new HostConfig(1048576, 2048, 4, "127.0.0.1");
+        hostConfigs.add(localhostConfig);
+
         requestHandler = new RequestHandler();
         analytics = new Analytics();
-        hardwareCluster = new HardwareCluster(topology);
-        stateManager = new StateManager(hardwareCluster); // Contains AlgorithmSolver
+        hardwareCluster = new HardwareCluster(hostConfigs);
+
+        stateManager = new StateManager(hardwareCluster);
 
         stateManager.addService(0, new Service(0, 100, 8));
         stateManager.addService(1, new Service(1, 100, 8));

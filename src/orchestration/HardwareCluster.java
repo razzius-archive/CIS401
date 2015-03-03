@@ -1,5 +1,6 @@
 package orchestration;
 
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -15,18 +16,27 @@ import orchestration.RemoteHost;
 
 public class HardwareCluster implements HardwareClusterInterface {
     private static Logger logger = Logger.getLogger(HardwareCluster.class.getName());
-    ArrayList<RemoteHost> remoteHosts = new ArrayList<RemoteHost>();
+    private ArrayList<RemoteHost> remoteHosts = new ArrayList<RemoteHost>();
 
-    public HardwareCluster(ArrayList<String> hostIPs) {
-        for (String ip : hostIPs) {
-            RemoteHost host = new RemoteHost(ip);
-            remoteHosts.add(host);
+    public HardwareCluster(ArrayList<HostConfig> hostConfigs) {
+        for (HostConfig config : hostConfigs) {
+            RemoteHost host = new RemoteHost(config);
+            this.remoteHosts.add(host);
         }
     }
 
+    public ArrayList<RemoteHost> getRemoteHosts() {
+        return this.remoteHosts;
+    }
+
     public void bootVM(RemoteHost host, VM vm) {
-        host.bootVM(vm);
-        logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
+        try {
+            host.bootVM(vm);
+            logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
+        } catch (RemoteException e) {
+            // TODO think about how we will handle RemoteExceptions
+            logger.fatal(e);
+        }
     }
     /*
     public void modifyVM(VM vm, double coresAllocated, int memoryAllocated) {

@@ -54,7 +54,7 @@ public class StateManager {
 
 	private static HashMap<String, VM> virtualMachines = new HashMap<String, VM>();
 	private static HashMap<Integer, Service> services = new HashMap<Integer, Service>();
-	private static HashMap<String, ServiceInstance> serviceInstances = new HashMap<ServiceInstance>();
+	private static HashMap<String, ServiceInstance> serviceInstances = new HashMap<String, ServiceInstance>();
 	private static HashMap<Integer, Double> switchUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> machineUtilization = new HashMap<Integer, Double>();
 	private static HashMap<Integer, Double> linkUtilization = new HashMap<Integer, Double>();
@@ -82,9 +82,9 @@ public class StateManager {
 	*/
 
 	private static void updateCluster(AlgorithmSolution solution) throws IllegalStateException {
-		
-		for (RemoteHost host : solution.vms) {
-			for (VM vm : solution.get(host)) {
+
+		for (RemoteHost host : solution.vms.keySet()) {
+			for (VM vm : solution.vms.get(host)) {
 				if (!virtualMachines.values().contains(vm)) {
 					virtualMachines.put(vm.getID(), vm);
 					hardwareCluster.bootVM(host, vm);
@@ -110,7 +110,7 @@ public class StateManager {
 		}
 
 		for (VM vm : virtualMachines.values()) {
-			if (!solution.vms.contains(vm)) {
+			if (!solution.vms.get(0).contains(vm)) {
 				hardwareCluster.shutdownVM(vm);	// If there are services running on these VMs, system is inconsistent.
 			}
 		}
@@ -120,7 +120,7 @@ public class StateManager {
 		AlgorithmSolution solution = algorithmSolver.solve(
 			links,
 			switches,
-			machines,
+			hardwareCluster.getRemoteHosts(),
 			services,
 			request);
 		if (solution == null) {
@@ -200,7 +200,7 @@ public class StateManager {
 		return tenants;
 	}
 
-	public HashMap<Integer, VM> getVMs() {
+	public HashMap<String, VM> getVMs() {
 		return virtualMachines;
 	}
 

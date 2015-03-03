@@ -19,7 +19,7 @@ public class TestHardwareCluster implements HardwareClusterInterface {
     public TestHardwareCluster() {
     }
 
-    public void bootVM(VM vm, double coresAllocated, int memoryAllocated) {
+    public void bootVM(RemoteHost host, VM vm) {
         logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
     }
     public void modifyVM(VM vm, double coresAllocated, int memoryAllocated) {

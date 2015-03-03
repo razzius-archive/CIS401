@@ -12,8 +12,9 @@ public class RemoteHost {
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
     private RemoteHostInterface rmiServer;
 
-    public RemoteHost(String ip) {
-        this.ip = ip;
+    public RemoteHost(HostConfig config) {
+        // TODO set static parameters like memory, numcores, bandwidth
+        this.ip = config.getIpAddress();
         try {
         	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/");
         } catch (RemoteException e) {

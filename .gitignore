@@ -2,6 +2,7 @@
 *.jar
 *.swap
 *.war
+TEST-*
 .DS_Store
 .vagrant
 _build
