@@ -1,0 +1,9 @@
+{
+	"machines": [
+	{
+		"ipaddress": "165.123.176.181",
+		"memory": "4",
+		"cores": "2",
+		"bandwidth": "200"
+		}]
+}
