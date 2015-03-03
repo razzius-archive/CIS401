@@ -12,6 +12,7 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import com.cedarsoftware.util.io.JsonReader;
 
 //
 // Orchestration Layer
@@ -29,7 +30,10 @@ public class OrchestrationLayer {
     public static void main(String[] args) throws IOException {
         // TODO read network topology file from arg values
 
+        HostConfig testconfig = new HostConfig(100, 4, 2, "165.123.176.181");
+
         ArrayList<HostConfig> hostConfigs = new ArrayList<HostConfig>();
+        hostConfigs.add(testconfig);
 
         // Create a HostConfig for the local machine with 1Mbps of bandwidth, 4 cores, 2048 MB of RAM
         HostConfig localhostConfig = new HostConfig(1048576, 2048, 4, "127.0.0.1");

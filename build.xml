@@ -35,6 +35,7 @@
 
   <target name="run" description="Starts OrchestrationLayer and server">
     <java fork="true" failonerror="yes" classname="orchestration.OrchestrationLayer">
+      <jvmarg value="-Dlog4j.configuration=log4j.properties"/>
       <classpath>
         <fileset dir="lib">
           <include name="*.jar"/>

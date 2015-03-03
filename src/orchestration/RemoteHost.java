@@ -18,8 +18,10 @@ public class RemoteHost {
         try {
         	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/");
         } catch (RemoteException e) {
+            e.printStackTrace();
         	logger.fatal("Unable to connect to remote server " + e);
         } catch (Exception e) {
+            e.printStackTrace();
         	logger.fatal(e);
         	System.exit(1);
         }
