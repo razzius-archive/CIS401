@@ -7,9 +7,9 @@ import org.apache.log4j.Logger;
 
 public class ServiceInstance {
 
-	public int serviceInstanceID;
+	public String serviceInstanceID;
 	public String vmID;
-	public int serviceID;
+	public String serviceID;
 	public int bandwidth;
 	public int memory;
 	public ServiceInstance.Status status = ServiceInstance.Status.PENDING;
@@ -20,7 +20,7 @@ public class ServiceInstance {
 		STARTING, PENDING, RUNNING, PAUSED, FINISHED, TERMINATED, CRASHED
 	}
 
-	public ServiceInstance(int serviceID, String vmID) {
+	public ServiceInstance(String serviceID, String vmID) {
 		this.serviceID = serviceID;
 		this.vmID = vmID;
 	}
