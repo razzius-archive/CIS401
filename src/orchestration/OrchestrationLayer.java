@@ -1,13 +1,17 @@
 package orchestration;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.List;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStreamReader;
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.net.InetSocketAddress;
+import com.google.gson.Gson;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -21,6 +25,10 @@ import com.cedarsoftware.util.io.JsonReader;
 
 public class OrchestrationLayer {
 
+    public static class Container {
+      public List<Map> hosts;
+   }
+
     private static StateManager stateManager;
 	private static RequestHandler requestHandler;
     private static AlgorithmSolver algorithmSolver;
@@ -30,10 +38,20 @@ public class OrchestrationLayer {
     public static void main(String[] args) throws IOException {
         // TODO read network topology file from arg values
 
-        HostConfig testconfig = new HostConfig(100, 4, 2, "165.123.176.181");
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("config.json")));
+        Gson g = new Gson();
+        Container c = g.fromJson(br, Container.class);
+        System.out.println(c.hosts.get(0).get("memory"));
 
         ArrayList<HostConfig> hostConfigs = new ArrayList<HostConfig>();
-        hostConfigs.add(testconfig);
+        for (Map host : c.hosts) {
+            int bandwidth = Integer.parseInt((String) host.get("bandwidth"));
+            int memory = Integer.parseInt((String) host.get("memory"));
+            int numCores = Integer.parseInt((String) host.get("numCores"));
+            String ipAddress = (String) host.get("ipAddress");
+            HostConfig hc = new HostConfig(bandwidth, memory, numCores, ipAddress);
+            hostConfigs.add(hc);
+        }
 
         // Create a HostConfig for the local machine with 1Mbps of bandwidth, 4 cores, 2048 MB of RAM
         HostConfig localhostConfig = new HostConfig(1048576, 2048, 4, "127.0.0.1");
