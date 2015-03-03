@@ -13,6 +13,7 @@ import java.util.ArrayList;
 // The state manager will send information about the current state of the machines to the analytics component.
 // The state manager can send raw data.
 // What if we have a logger print out logging statements, then run the analytics component on the output?
+// We can log to two separate files.
 // 
 // Platform Data to be gathered:
 // Time required to accept a request before data input begins
