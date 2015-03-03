@@ -45,6 +45,18 @@
     </java>
   </target>
 
+  <target name="remote" description="Starts RMI server on localhost">
+    <java fork="true" failonerror="yes" classname="orchestration.RemoteHostServer">
+      <sysproperty key="log4j.configuration" value="file:src/orchestration/log4j.properties"/>
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.jar"/>
+        </fileset>
+        <pathelement path="bin"/>
+      </classpath>
+    </java>
+  </target>
+
   <target name="test" description="Starts OrchestrationLayer and server">
     <junit printsummary="yes" haltonfailure="yes">
       <classpath>

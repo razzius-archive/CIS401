@@ -18,8 +18,9 @@ public class RemoteHost {
     public RemoteHost(HostConfig config) {
         // TODO set static parameters like memory, numcores, bandwidth
         this.ip = config.getIpAddress();
+        logger.info("ip is: " + ip);
         try {
-        	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/");
+        	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
         } catch (RemoteException e) {
             e.printStackTrace();
         	logger.fatal("Unable to connect to remote server " + e);

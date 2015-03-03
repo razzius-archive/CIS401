@@ -4,12 +4,18 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+
 import org.apache.log4j.Logger;
+
 import orchestration.VM;
 import orchestration.RemoteHostInterface;
 
-public class RemoteHostServer implements RemoteHostInterface {
-	private static Logger logger = Logger.getLogger(RemoteHostServer.class.getName());
+
+public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostInterface {
+	static final long serialVersionUID = 0;
+	private static transient Logger logger = Logger.getLogger(RemoteHostServer.class.getName());
 
 	public RemoteHostServer() throws RemoteException {
 		super();
@@ -22,10 +28,12 @@ public class RemoteHostServer implements RemoteHostInterface {
 	public static void main(String[] args) {
 		try {
 			RemoteHostInterface server = new RemoteHostServer();
-			LocateRegistry.createRegistry(1099);
-			Naming.rebind("rmi://0.0.0.0/", server);
+			Registry registry = LocateRegistry.createRegistry(1099);
+
+			Naming.rebind("rmi://localhost/remote", server);
 			logger.info("Server is running...");
 		} catch (Exception e) {
+			System.out.println(e);
 			logger.fatal(e);
 		}
 	}

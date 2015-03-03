@@ -1,5 +1,6 @@
 package orchestration;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
 //
 // Stores Virtual Machine information
 
-public class VM {
+public class VM implements Serializable {
 	private String id = UUID.randomUUID().toString(); // uuid as string
 	double coresAllocated;	// VMs can request fractions of cores.
 	int memoryAllocated; 	// MB of memory allocated
