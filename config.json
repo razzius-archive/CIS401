@@ -1,9 +1,9 @@
 {
-	"machines": [
+	"hosts": [
 	{
-		"ipaddress": "165.123.176.181",
-		"memory": "4",
-		"cores": "2",
-		"bandwidth": "200"
+		"ipAddress": "165.123.176.181",
+		"memory": "4096",
+		"numCores": "2",
+		"bandwidth": "1048576"
 		}]
 }
