@@ -9,7 +9,7 @@
     <get dest="lib">
       <url url="http://mirrors.ibiblio.org/maven2/log4j/log4j/1.2.12/log4j-1.2.12.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/junit/junit/4.10/junit-4.10.jar"/>
-      <url url="http://grepcode.com/snapshot/repo1.maven.org/maven2/com.cedarsoftware/json-io/2.2.31/json-io-2.2.31.jar"/>
+      <url url="http://repo1.maven.org/maven2/com/cedarsoftware/json-io/2.9.4/json-io-2.9.4.jar"/>
     </get>
   </target>
 
@@ -35,7 +35,7 @@
 
   <target name="run" description="Starts OrchestrationLayer and server">
     <java fork="true" failonerror="yes" classname="orchestration.OrchestrationLayer">
-      <jvmarg value="-Dlog4j.configuration=log4j.properties"/>
+      <sysproperty key="log4j.configuration" value="file:src/orchestration/log4j.properties"/>
       <classpath>
         <fileset dir="lib">
           <include name="*.jar"/>

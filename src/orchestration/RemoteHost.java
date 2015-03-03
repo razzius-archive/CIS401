@@ -3,9 +3,12 @@ package orchestration;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.Naming;
+
 import org.apache.log4j.Logger;
+
 import orchestration.VM;
 import orchestration.RemoteHostInterface;
+
 
 public class RemoteHost {
     private final String ip;
