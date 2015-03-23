@@ -3,7 +3,7 @@ package orchestration;
 import java.util.UUID;
 
 /**
- * Represents a machine specified in the config.json file.
+ * Represents a machine as specified in the config.json file.
  *
  * Stores the specifics of the machine's hardware and its IP address.
  */

@@ -1,7 +1,6 @@
-.. Daar Docs:
-.. =====================================
+.. Daar Docs
+.. =========
 
-.. TODO: Come up with official project name
 
 
 

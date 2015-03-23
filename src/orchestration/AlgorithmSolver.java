@@ -1,8 +1,10 @@
 package orchestration;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import orchestration.Link;
 import orchestration.Switch;
@@ -26,9 +28,17 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     // then the method returns null and an appropriate log message is set.
 
 
-    public AlgorithmSolution solve(HashMap<Integer, Link> links, HashMap<Integer, Switch> switches,
-        HashSet<RemoteHost> remoteHosts, HashMap<Integer, Service> services, Request req) {
-
+    public boolean solve(
+        List<Link> links,
+        List<Switch> switches,
+        List<Service> services,
+        Map<RemoteHost, List<VM>> vmAssignments,
+        Map<VM, Set<ServiceInstance>> serviceAssignments,
+        Map<Request, List<Node>> serviceChainAssignments,
+        Request request
+    ) {
+        return true;
+    /* TODO Rewrite
         // compile all requested services
         ArrayList<Service> requestedServices = new ArrayList<Service>();
 
@@ -59,6 +69,6 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             as.requestedServices.add(si);
         }
         return as;
-
+    */
     }
 }

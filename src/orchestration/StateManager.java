@@ -1,7 +1,12 @@
 package orchestration;
 
 import java.rmi.Naming;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -28,196 +33,103 @@ import orchestration.CustomerResponse;
 //
 
 public class StateManager {
-	private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
-	private static HardwareCluster hardwareCluster;
+    private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
+    private static HardwareCluster hardwareCluster;
+    private static boolean changesFlag = false;
 
-	/*
-	* Static Network Attributes do not change during the course
-	* of program execution. Links, Switches, Machines, and Tenants
-	* are all static attributes with their IDs mapped to the
-	* object.
-	*/
+    /**
+     * Static Network Attributes that do not change.
+     */
 
-	private static HashMap<Integer, Link> links = new HashMap<Integer, Link>();
-	private static HashMap<Integer, Switch> switches = new HashMap<Integer, Switch>();
-	private static HashMap<Integer, Machine> machines = new HashMap<Integer, Machine>();
-	private static HashMap<Integer, Tenant> tenants = new HashMap<Integer, Tenant>();
+    private static List<Link> links = new ArrayList<Link>();
+    private static List<Switch> switches = new ArrayList<Switch>();
+    private static List<Machine> machines = new ArrayList<Machine>();
+    private static List<Tenant> tenants = new ArrayList<Tenant>();
+    private static List<Service> services = new ArrayList<Service>();
 
-	/*
-	* Dynamic Network Attributes change over the course of program
-	* execution. VMs spawned, services processed, and the
-	* utilization of different network hardware components
-	* are all dynamic attributes. VMs and Services have their IDs
-	* mapped to the object. Utilization maps component ID to
-	* percent utilization.
-	*/
+    /**
+     * Dynamic Network Attributes that change over the course of a trial.
+     */
 
-	private static HashMap<String, VM> virtualMachines = new HashMap<String, VM>();
-	private static HashMap<Integer, Service> services = new HashMap<Integer, Service>();
-	private static HashMap<String, ServiceInstance> serviceInstances = new HashMap<String, ServiceInstance>();
-	private static HashMap<Integer, Double> switchUtilization = new HashMap<Integer, Double>();
-	private static HashMap<Integer, Double> machineUtilization = new HashMap<Integer, Double>();
-	private static HashMap<Integer, Double> linkUtilization = new HashMap<Integer, Double>();
+    private static Map<RemoteHost, List<VM>> vmAssignments = new HashMap<RemoteHost, List<VM>>();
+    private static Map<VM, Set<ServiceInstance>> serviceAssignments = new HashMap<VM, Set<ServiceInstance>>();
+    private static Map<Request, List<Node>> serviceChainAssignments = new HashMap<Request, List<Node>>();
 
-	/*
-	* StateManager Class constructor
-	*/
+    public StateManager(HardwareCluster hardwareCluster) {
+        this.hardwareCluster = hardwareCluster;
+    }
 
-	public StateManager(HardwareCluster hardwareCluster) {
-		this.hardwareCluster = hardwareCluster;
-	}
+    /*
+    * Initialize virtual machine cluster
+    */
 
-	/*
-	* Initialize virtual machine cluster
-	*/
+    public void initializeCluster() {
+        // Perform Network Operations
+        // Update the internal state accordingly.
+    }
 
-	public void initializeCluster() {
-		// Perform Network Operations
-		// Update the internal state accordingly.
-	}
+    /**
+     * Let the update thread know that there are changes to be enacted.
+     */
+    private static void setChangesFlag() {
+        changesFlag = true;
+    }
 
-	/*
-	* Calculate the differences between the current configuration and the new configuration.
-	* Update State structures and direct Hardware Cluster as necessary.
-	*/
+    public static CustomerResponse queryAlgorithmSolver(Request request) {
+        boolean solvable = algorithmSolver.solve(
+            links,
+            switches,
+            services,
+            vmAssignments,
+            serviceAssignments,
+            serviceChainAssignments,
+            request);
+        if (solvable) {
+            setChangesFlag();
+            return new CustomerResponse(true);
+        } else {
+            return new CustomerResponse(false);
+        }
+    }
 
-	private static void updateCluster(AlgorithmSolution solution) throws IllegalStateException {
+    /**
+     * Methods to read and update state parameters.
+     */
 
-		for (RemoteHost host : solution.vms.keySet()) {
-			for (VM vm : solution.vms.get(host)) {
-				if (!virtualMachines.values().contains(vm)) {
-					virtualMachines.put(vm.getID(), vm);
-					hardwareCluster.bootVM(host, vm);
-				}
-			}
-		}
+    public void addLink(Link link) {
+        links.add(link);
+    }
 
+    public void addSwitch(Switch netswitch) {
+        switches.add(netswitch);
+    }
 
+    public void addTenant(Tenant tenant) {
+        tenants.add(tenant);
+    }
 
+    public void addService(Service service) {
+        services.add(service);
+    }
 
-		for (ServiceInstance si : solution.requestedServices) {
-			if (serviceInstances.keySet().contains(si.serviceInstanceID)) {
-				String oldVMID = serviceInstances.get(si.serviceInstanceID).vmID;
-				String newVMID = si.vmID;
-				if (!oldVMID.equals(newVMID)) {	// Service is running on a different VM than it should be.
-					serviceInstances.get(si.serviceInstanceID).vmID = newVMID;
-					hardwareCluster.transferRunningService(virtualMachines.get(oldVMID), virtualMachines.get(newVMID), si);
-				}
-			} else {																// Service is not running yet.
-				serviceInstances.put(si.serviceInstanceID, si);
-				hardwareCluster.startService(virtualMachines.get(si.vmID), si);
-			}
-		}
+    public List<Link> getLinks() {
+        return links;
+    }
 
-		for (VM vm : virtualMachines.values()) {
-			if (!solution.vms.get(0).contains(vm)) {
-				hardwareCluster.shutdownVM(vm);	// If there are services running on these VMs, system is inconsistent.
-			}
-		}
-	}
+    public List<Switch> getSwitches() {
+        return switches;
+    }
 
-	public static CustomerResponse queryAlgorithmSolver(Request request) {
-		AlgorithmSolution solution = algorithmSolver.solve(
-			links,
-			switches,
-			hardwareCluster.getRemoteHosts(),	// 
-			services,
-			request);
-		if (solution == null) {
-			return new CustomerResponse(false);
-		} else {
-			updateCluster(solution);
-			return new CustomerResponse(true);
-		}
-	}
+    public List<Machine> getMachines() {
+        return machines;
+    }
 
-	public static void serviceInstanceFinished(ServiceInstance si) {
-		serviceInstances.remove(si.serviceInstanceID);
-	}
+    public List<Tenant> getTenants() {
+        return tenants;
+    }
 
-	public static void serviceInstanceCrashed(ServiceInstance si) {
-
-	}
-
-
-
-
-
-
-	/*
-	* Read and Update State Parameters
-	*/
-
-	public void addLink(int linkID, Link link) {
-		links.put(linkID, link);
-	}
-
-	public void addSwitch(int switchID, Switch netswitch) {
-		switches.put(switchID, netswitch);
-	}
-
-	public void addMachine(int machineID, Machine machine) {
-		machines.put(machineID, machine);
-	}
-
-	public void addTenant(int tenantID, Tenant tenant) {
-		tenants.put(tenantID, tenant);
-	}
-
-	public void addVM(VM vm) {
-		virtualMachines.put(vm.getID(), vm);
-	}
-
-	public void addService(int serviceID, Service service) {
-		services.put(serviceID, service);
-	}
-
-	public void updateSwitchUtilization(int switchID, double utilization) {
-		switchUtilization.put(switchID, utilization);
-	}
-
-	public void updateMachineUtilization(int machineID, double utilization) {
-		machineUtilization.put(machineID, utilization);
-	}
-
-	public void updateLinkUtilization(int linkID, double utilization) {
-		linkUtilization.put(linkID, utilization);
-	}
-
-	public HashMap<Integer, Link> getLinks() {
-		return links;
-	}
-
-	public HashMap<Integer, Switch> getSwitches() {
-		return switches;
-	}
-
-	public HashMap<Integer, Machine> getMachines() {
-		return machines;
-	}
-
-	public HashMap<Integer, Tenant> getTenants() {
-		return tenants;
-	}
-
-	public HashMap<String, VM> getVMs() {
-		return virtualMachines;
-	}
-
-	public HashMap<Integer, Service> getServices() {
-		return services;
-	}
-
-	public HashMap<Integer, Double> getSwitchUtilization() {
-		return switchUtilization;
-	}
-
-	public HashMap<Integer, Double> getMachineUtilization() {
-		return machineUtilization;
-	}
-
-	public HashMap<Integer, Double> getLinkUtilization() {
-		return linkUtilization;
-	}
+    public List<Service> getServices() {
+        return services;
+    }
 
 }
