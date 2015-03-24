@@ -33,9 +33,17 @@ import orchestration.CustomerResponse;
 //
 
 public class StateManager {
+
+	/**
+	 * State Manager contains instances of the algorithm solver and hardware cluster.
+	 * The changesFlag indicates if the hardware cluster needs to be modified.
+	 * The State Manager sets the flag when it receives input from the algorithm solver.
+	 * The State Manager also maintains a worker thread which updates the cluster and resets the flag.
+	 */
+
     private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
     private static HardwareCluster hardwareCluster;
-    private static boolean changesFlag = false;
+    private static synchronized boolean changesFlag = false;
 
     /**
      * Static Network Attributes that do not change.
