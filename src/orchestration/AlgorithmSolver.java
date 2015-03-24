@@ -29,10 +29,10 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
 
 
     public boolean solve(
-        List<Link> links,
-        List<Switch> switches,
-        List<Service> services,
-        Map<RemoteHost, List<VM>> vmAssignments,
+        Set<Link> links,
+        Set<Switch> switches,
+        Set<Service> services,
+        Map<RemoteHost, Set<VM>> vmAssignments,
         Map<VM, Set<ServiceInstance>> serviceAssignments,
         Map<Request, List<Node>> serviceChainAssignments,
         Request request
