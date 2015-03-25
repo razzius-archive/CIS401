@@ -27,17 +27,15 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     // If algorithm cannot solve given the load,
     // then the method returns null and an appropriate log message is set.
 
+    // static topology includes links, switches, and services
 
-    public boolean solve(
-        List<Link> links,
-        List<Switch> switches,
-        List<Service> services,
-        Map<RemoteHost, List<VM>> vmAssignments,
-        Map<VM, Set<ServiceInstance>> serviceAssignments,
-        Map<Request, List<Node>> serviceChainAssignments,
-        Request request
+    public State solve(
+        Set<Link> links,
+        Set<Switch> switches,
+        Set<Service> services,
+        State currentState
     ) {
-        return true;
+        return null;
     /* TODO Rewrite
         // compile all requested services
         ArrayList<Service> requestedServices = new ArrayList<Service>();
