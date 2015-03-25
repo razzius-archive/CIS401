@@ -4,7 +4,7 @@ package orchestration;
  * Abstract class for any node specified in config.json.
  */
 
-public abstract class NodeConfig {
+public abstract class Node {
     /**
      * Bandwidth in bps
      *
