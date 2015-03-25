@@ -76,7 +76,7 @@ public class StateManager {
     }
 
     public static CustomerResponse queryAlgorithmSolver(Request request) {
-        boolean solvable = algorithmSolver.solve(
+        State solution = algorithmSolver.solve(
             links,
             switches,
             services,
@@ -84,12 +84,12 @@ public class StateManager {
             serviceAssignments,
             serviceChainAssignments,
             request);
-        if (solvable) {
-            setChangesFlag();
-            return new CustomerResponse(true);
-        } else {
-            return new CustomerResponse(false);
-        }
+        // if (solvable) {
+        //     setChangesFlag();
+        //     return new CustomerResponse(true);
+        // } else {
+        //     return new CustomerResponse(false);
+        // }
     }
 
     /**
