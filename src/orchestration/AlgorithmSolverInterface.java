@@ -1,7 +1,6 @@
 package orchestration;
 
 import java.util.Map;
-import java.util.List;
 import java.util.Set;
 
 import orchestration.State;
@@ -16,9 +15,9 @@ public interface AlgorithmSolverInterface {
      * If none can be produced, returns null.
      */
     public State solve(
-        List<Link> links,
-        List<Switch> switches,
-        List<Service> services,
+        Set<Link> links,
+        Set<Switch> switches,
+        Set<Service> services,
         State currentState
     );
 }

@@ -30,9 +30,9 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     // static topology includes links, switches, and services
 
     public State solve(
-        List<Link> links,
-        List<Switch> switches,
-        List<Service> services,
+        Set<Link> links,
+        Set<Switch> switches,
+        Set<Service> services,
         State currentState
     ) {
         return null;

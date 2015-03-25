@@ -33,30 +33,71 @@ import orchestration.CustomerResponse;
 //
 
 public class StateManager {
+
+
+
+	class ClusterUpdateThread extends Thread {
+
+	    public ClusterUpdateThread() {}
+
+	    public void run() {
+	    	while (true) {
+		    	while (changesFlag == false) {
+		    		try {
+						wait();
+					} catch (InterruptedException e) {
+
+					}
+		    	}
+		    	if (changesFlag == true) {
+		    		changesFlag = false;
+		    		updateCluster();
+		    	}
+		    }
+	    }
+
+	    public void updateCluster() {
+
+	    	// ACTUALLY UPDATE THE CLUSTER
+
+	    }
+	}
+
+	/**
+	 * State Manager contains instances of the algorithm solver and hardware cluster.
+	 * The changesFlag indicates if the hardware cluster needs to be modified.
+	 * The State Manager sets the flag when it receives input from the algorithm solver.
+	 * The State Manager also maintains a worker thread which updates the cluster and resets the flag.
+	 */
+
     private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
     private static HardwareCluster hardwareCluster;
     private static boolean changesFlag = false;
+    private static ClusterUpdateThread clusterUpdateThread;
 
     /**
      * Static Network Attributes that do not change.
      */
 
-    private static List<Link> links = new ArrayList<Link>();
-    private static List<Switch> switches = new ArrayList<Switch>();
-    private static List<Machine> machines = new ArrayList<Machine>();
-    private static List<Tenant> tenants = new ArrayList<Tenant>();
-    private static List<Service> services = new ArrayList<Service>();
+    private static Set<Link> links = new HashSet<Link>();
+    private static Set<Switch> switches = new HashSet<Switch>();
+    private static Set<Machine> machines = new HashSet<Machine>();
+    private static Set<Tenant> tenants = new HashSet<Tenant>();
+    private static Set<Service> services = new HashSet<Service>();
 
     /**
      * Dynamic Network Attributes that change over the course of a trial.
      */
 
-    private static Map<RemoteHost, List<VM>> vmAssignments = new HashMap<RemoteHost, List<VM>>();
+    private static Map<RemoteHost, Set<VM>> vmAssignments = new HashMap<RemoteHost, Set<VM>>();
     private static Map<VM, Set<ServiceInstance>> serviceAssignments = new HashMap<VM, Set<ServiceInstance>>();
     private static Map<Request, List<Node>> serviceChainAssignments = new HashMap<Request, List<Node>>();
 
+
     public StateManager(HardwareCluster hardwareCluster) {
         this.hardwareCluster = hardwareCluster;
+        clusterUpdateThread = new ClusterUpdateThread();
+        clusterUpdateThread.run();
     }
 
     /*
@@ -84,12 +125,14 @@ public class StateManager {
             serviceAssignments,
             serviceChainAssignments,
             request);
-        // if (solvable) {
-        //     setChangesFlag();
-        //     return new CustomerResponse(true);
-        // } else {
-        //     return new CustomerResponse(false);
-        // }
+
+        if (solution != null) {
+            setChangesFlag();
+            clusterUpdateThread.notify();
+            return new CustomerResponse(true);
+        } else {
+            return new CustomerResponse(false);
+        }
     }
 
     /**
@@ -112,23 +155,23 @@ public class StateManager {
         services.add(service);
     }
 
-    public List<Link> getLinks() {
+    public Set<Link> getLinks() {
         return links;
     }
 
-    public List<Switch> getSwitches() {
+    public Set<Switch> getSwitches() {
         return switches;
     }
 
-    public List<Machine> getMachines() {
+    public Set<Machine> getMachines() {
         return machines;
     }
 
-    public List<Tenant> getTenants() {
+    public Set<Tenant> getTenants() {
         return tenants;
     }
 
-    public List<Service> getServices() {
+    public Set<Service> getServices() {
         return services;
     }
 
