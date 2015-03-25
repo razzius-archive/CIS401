@@ -49,17 +49,19 @@ public class StateManager {
 
 					}
 		    	}
-		    	if (changesFlag == true) {
-		    		changesFlag = false;
-		    		updateCluster();
-		    	}
+                checkUpdate();
 		    }
 	    }
 
+        public synchronized void checkUpdate() {
+            if (changesFlag == true) {
+                setChangesFlag(false);
+                updateCluster();
+            }
+        }
+
 	    public void updateCluster() {
 	    	
-	    	// ACTUALLY UPDATE THE CLUSTER
-
 	    }
 	}
 
@@ -112,8 +114,8 @@ public class StateManager {
     /**
      * Let the update thread know that there are changes to be enacted.
      */
-    private static void setChangesFlag() {
-        changesFlag = true;
+    private static synchronized void setChangesFlag(boolean flag) {
+        changesFlag = flag;
     }
 
     public static CustomerResponse queryAlgorithmSolver(Request request) {
@@ -126,7 +128,7 @@ public class StateManager {
             serviceChainAssignments,
             request);
         if (solvable) {
-            setChangesFlag();
+            setChangesFlag(true);
             clusterUpdateThread.notify();
             return new CustomerResponse(true);
         } else {
