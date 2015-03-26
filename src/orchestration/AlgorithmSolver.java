@@ -54,7 +54,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             // TODO: update parameters
             VM vm = new VM(1, 1);
 
-            currentHost.put(vm.getID(), vm);
+            currentHost.getvms().put(vm.getID(), vm);
 
             ServiceInstance si = new ServiceInstance(service, vm.getID());
             path.add(vm);
