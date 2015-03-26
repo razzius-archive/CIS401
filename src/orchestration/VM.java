@@ -31,6 +31,7 @@ public class VM extends Node implements Serializable {
 	}
 
 	public VM(double coresAllocated, int memoryAllocated) {
+		id = "1";
 		this.coresAllocated = coresAllocated;
 		this.memoryAllocated = memoryAllocated;
 	}

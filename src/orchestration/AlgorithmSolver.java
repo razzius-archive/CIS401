@@ -34,43 +34,56 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         State currentState,
         Request request
     ) {
-        State newState = new State(currentState.getRemoteHosts());
-        newState.copyServiceChains(currentState);
+        try {
 
-        Map<String, RemoteHost> remoteHosts = currentState.getRemoteHosts();
+            State newState = new State(currentState.getRemoteHosts());
+            newState.copyServiceChains(currentState);
 
-        // initialize startnode and endnode
-        RemoteHost currentHost = remoteHosts.get(request.startNode);
-        RemoteHost endHost = remoteHosts.get(request.endNode);
+            Map<String, RemoteHost> remoteHosts = currentState.getRemoteHosts();
+            logger.info("zize " + remoteHosts.size());
+            logger.info("key " + remoteHosts.keySet().iterator().next());
+            logger.info("startNode " + request.startNode);
+            logger.info("endNode " + request.endNode);
 
-        logger.info("startnode " + currentHost.getID() + " -> " + endHost.getID());
+            // initialize startNode and endNode
+            RemoteHost currentHost = remoteHosts.get(request.startNode);
+            logger.info("currentHost " + currentHost);
+            RemoteHost endHost = remoteHosts.get(request.endNode);
 
-        List<Node> path = new ArrayList<Node>();
-        path.add(currentHost);
-        path.add(new VirtualSwitch());
+            logger.info("endHost " + currentHost);
 
-        // loop through services and create VMs for each on startnode
-        // if startnode no longer has space move to a different remoteHost
-        for (String service : request.services) {
+            logger.info("startnode " + currentHost.getID() + " -> " + endHost.getID());
 
-            // TODO: update parameters
-            VM vm = new VM(1, 1);
-
-            currentHost.getVMs().put(vm.getID(), vm);
-            logger.info("Put vm " + vm.getID());
-
-            ServiceInstance si = new ServiceInstance(service, vm.getID());
-            path.add(vm);
+            List<Node> path = new ArrayList<Node>();
+            path.add(currentHost);
             path.add(new VirtualSwitch());
 
+            // loop through services and create VMs for each on startnode
+            // if startnode no longer has space move to a different remoteHost
+            for (String service : request.services) {
+
+                // TODO: update parameters
+                VM vm = new VM(1, 1);
+
+                currentHost.getVMs().put(vm.getID(), vm);
+                logger.info("Put vm " + vm.getID());
+
+                ServiceInstance si = new ServiceInstance(service, vm.getID());
+                path.add(vm);
+                path.add(new VirtualSwitch());
+
+            }
+
+            path.add(endHost);
+
+            // add serviceChain path to new state
+            newState.getServiceChains().put(request, path);
+            logger.info("done making new ideal state");
+
+            return newState;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-
-        path.add(endHost);
-
-        // add serviceChain path to new state
-        newState.getServiceChains().put(request, path);
-        logger.info("done making new ideal state");
-
-        return newState;
     }
 }
