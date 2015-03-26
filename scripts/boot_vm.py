@@ -1,21 +1,25 @@
 from subprocess import Popen
 import sys
 
-from .config import XEN_CONFIG_HOME, IMG_PATH
+from config import XEN_CONFIG_PATH, IMG_NAME, CONFIG_NAME
 
 
 def main():
     vm_name = sys.argv[1]
     memory = sys.argv[2]
 
+    img_path = "{}/{}".format(XEN_CONFIG_PATH, IMG_NAME)
+    config_path = "{}/{}".format(XEN_CONFIG_PATH, CONFIG_NAME)
+
     xen_options="""
         name="{}"
         memory={}
         disk=["file:{},xvda,w"]
-        """.format(vm_name, memory, IMG_PATH)
+        """.format(vm_name, memory, img_path)
 
-    Popen("xl create -c {}/default.cfg {}"
-        .format(XEN_CONFIG_HOME, xen_options)
+    Popen("xl create -c {} {}"
+        .format(config_path, xen_options)
+        .split()
     )
 
 if __name__ == '__main__':

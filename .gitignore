@@ -3,6 +3,7 @@
 *.jar
 *.swap
 *.war
+*.pyc
 TEST-*
 .DS_Store
 .vagrant

@@ -38,7 +38,6 @@ public class StateManager {
         public ClusterUpdateThread() {}
 
         public void run() {
-            System.out.println("thread run");
             while (true) {
                 try {
                     synchronized (changesFlag) {
@@ -54,7 +53,8 @@ public class StateManager {
 
         public void updateCluster() {
             System.out.println("ACTUALLY UPDATE THE CLUSTER");
-            
+
+            logger.info("Updating the cluster");
 
             for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
 	            RemoteHost currentHost = currentState.getRemoteHosts().get(idealHost.getID());
@@ -98,6 +98,10 @@ public class StateManager {
         }
     }
 
+
+
+    private static Logger logger = Logger.getLogger(StateManager.class.getName());
+
     /**
      * State Manager contains instances of the algorithm solver and hardware cluster.
      * The changesFlag indicates if the hardware cluster needs to be modified.
@@ -129,12 +133,10 @@ public class StateManager {
     private State idealState = new State();
 
     public StateManager(HardwareCluster hardwareCluster) {
-        System.out.println("[stateManager] starting stateManager");
         this.hardwareCluster = hardwareCluster;
         this.clusterUpdateThread = new ClusterUpdateThread();
-        System.out.println("clusterUpdateThread: " + clusterUpdateThread);
         clusterUpdateThread.start();
-        System.out.println("thread going");
+        logger.info("clusterUpdateThread started");
     }
 
     /*
@@ -153,18 +155,17 @@ public class StateManager {
         synchronized (changesFlag) {
             changesFlag.notify();
         }
-        System.out.println("Changes ready set");
+        logger.info("changes ready set");
     }
 
     public CustomerResponse queryAlgorithmSolver(Request request) {
-        System.out.println("[queryAlgorithmSolver] calling solve");
         State newState = algorithmSolver.solve(
             links,
             switches,
             services,
             idealState,
             request);
-        System.out.println("[queryAlgorithmSolver] solve returned");
+        logger.info("AlgorithmSolver returned: " + newState);
         if (newState != null) {
             this.idealState = newState;
             try {
