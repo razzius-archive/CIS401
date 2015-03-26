@@ -16,7 +16,19 @@ public class VM implements Serializable {
 	int memoryAllocated; 	// MB of memory allocated
 	String ipAddress;		// Get the IP address after booting
 	String status; 			// Booting, Running, Stopped, Crashed, Terminated
-	HashSet<Integer> serviceInstanceIDs = new HashSet<Integer>();
+	// HashSet<Integer> serviceInstanceIDs = new HashSet<Integer>();
+	HashSet<ServiceInstance> serviceInstances = new HashSet<ServiceInstance>();
+
+	public VM(VM other) {
+		id = other.getID();
+		coresAllocated = other.coresAllocated;
+		memoryAllocated = other.memoryAllocated;
+		ipAddress = other.ipAddress;
+		status = other.status;
+		for (ServiceInstance otherServiceInstance : other.serviceInstances) {
+			myServiceInstances.add(new ServiceInstance(otherServiceInstance));
+		}
+	}
 
 	public VM(double coresAllocated, int memoryAllocated) {
 		this.coresAllocated = coresAllocated;
@@ -27,14 +39,4 @@ public class VM implements Serializable {
 	public String getID() {
 		return id;
 	}
-
-	public double getCores() {
-		return coresAllocated;
-	}
-
-	public int getMemory() {
-		return memoryAllocated;
-	}
-
-
 }

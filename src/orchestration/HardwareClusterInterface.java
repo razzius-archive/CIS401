@@ -11,13 +11,19 @@ import orchestration.RemoteHost;
 
 public interface HardwareClusterInterface {
 
+    // VM Actions
+
     public void bootVM(RemoteHost host, VM vm);
     // public void modifyVM(VM vm, double coresAllocated, int memoryAllocated);
     public void shutdownVM(VM vm);
+
+    // Service Actions
+
     public void startService(VM vm, ServiceInstance serviceInstance);
     public void terminateRunningService(VM vm, ServiceInstance serviceInstance);
-    public void transferRunningService(VM oldVM, VM newVM, ServiceInstance serviceInstance);
 
-    // Networking and routing methods
+    // Network Actions
+    // public void addFlow(RemoteHost host, Flow flow);
+
 
 }
