@@ -5,5 +5,12 @@
 		"memory": "4096",
 		"numCores": "2",
 		"bandwidth": "1048576"
-		}]
+	}],
+	"services": [
+	{
+		"name": "snort",
+		"wcet": 50,
+		"command": "snort"
+	}]
+
 }
