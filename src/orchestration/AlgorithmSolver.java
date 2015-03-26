@@ -43,6 +43,8 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         RemoteHost currentHost = remoteHosts.get(request.startNode);
         RemoteHost endHost = remoteHosts.get(request.endNode);
 
+        logger.info("startnode " + currentHost.getID() + " -> " + endHost.getID());
+
         List<Node> path = new ArrayList<Node>();
         path.add(currentHost);
         path.add(new VirtualSwitch());
@@ -55,6 +57,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             VM vm = new VM(1, 1);
 
             currentHost.getVMs().put(vm.getID(), vm);
+            logger.info("Put vm " + vm.getID());
 
             ServiceInstance si = new ServiceInstance(service, vm.getID());
             path.add(vm);
@@ -66,6 +69,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
 
         // add serviceChain path to new state
         newState.getServiceChains().put(request, path);
+        logger.info("done making new ideal state");
 
         return newState;
     }
