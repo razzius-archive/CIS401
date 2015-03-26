@@ -81,6 +81,7 @@ public class StateManager {
 			                }
 		                }
 	            	} else {
+	            		logger.info("Booting new VM");
 	            		hardwareCluster.bootVM(currentHost, idealVM);
 	                	for (String idealServiceInstanceID : idealVM.getServiceInstances().keySet()) {
 	                		ServiceInstance idealService = idealVM.getServiceInstances().get(idealServiceInstanceID);
