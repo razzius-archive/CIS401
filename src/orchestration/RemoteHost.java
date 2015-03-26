@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.rmi.Naming;
 
 import java.util.List;
+import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 
@@ -15,7 +16,28 @@ import orchestration.RemoteHostInterface;
 public class RemoteHost {
     private final String ip;
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
+    private HostConfig hostConfig;
     private RemoteHostInterface rmiServer;
+    private HashSet<VM> vms;
+
+    public RemoteHost(RemoteHost other) {
+        this.hostConfig = other.getHostConfig();
+        this.ip = hostConfig.getIpAddress();
+        logger.info("ip is: " + ip);
+        try {
+            rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            logger.fatal("Unable to connect to remote server " + e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.fatal(e);
+            System.exit(1);
+        }
+        for (VM otherVM : other.getRemoteHostVMs()) {
+            vms.add(new VM(otherVM));
+        }
+    }
 
     public RemoteHost(HostConfig config) {
         // TODO set static parameters like memory, numcores, bandwidth
@@ -35,6 +57,10 @@ public class RemoteHost {
 
     public String getIp() {
         return this.ip;
+    }
+
+    public HostConfig getHostConfig() {
+        return hostConfig;
     }
 
     public void bootVM(VM vm) throws RemoteException {

@@ -9,6 +9,8 @@ import java.rmi.server.UnicastRemoteObject;
 
 import java.util.List;
 
+import java.io.*;
+
 import org.apache.log4j.Logger;
 
 import orchestration.VM;
@@ -25,6 +27,15 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 
 	public void bootVM(VM vm) throws RemoteException {
 		System.out.println("bootVM message received");
+		try {
+			Process p = Runtime.getRuntime().exec("bootVM.py");
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		} catch (Exception e) {
+
+		}
+		
 	}
 
 	public void shutdownVM(VM vm) throws RemoteException {

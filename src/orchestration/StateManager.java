@@ -49,17 +49,26 @@ public class StateManager {
 
 					}
 		    	}
-		    	if (changesFlag == true) {
-		    		changesFlag = false;
-		    		updateCluster();
-		    	}
+                checkUpdate();
 		    }
 	    }
 
+        public synchronized void checkUpdate() {
+            if (changesFlag == true) {
+                setChangesFlag(false);
+                updateCluster();
+            }
+        }
+
 	    public void updateCluster() {
-
 	    	// ACTUALLY UPDATE THE CLUSTER
-
+            // use idealState
+            for (RemoteHost host : currentState.getRemoteHosts()) {
+                // compare idealState vs. currentState
+                //for (VM vm : host.vms) {
+                    // if this vm is not in 
+                //}
+            }
 	    }
 	}
 
@@ -89,10 +98,9 @@ public class StateManager {
      * Dynamic Network Attributes that change over the course of a trial.
      */
 
-    private static Map<RemoteHost, Set<VM>> vmAssignments = new HashMap<RemoteHost, Set<VM>>();
-    private static Map<VM, Set<ServiceInstance>> serviceAssignments = new HashMap<VM, Set<ServiceInstance>>();
-    private static Map<Request, List<Node>> serviceChainAssignments = new HashMap<Request, List<Node>>();
-
+    // State
+    private static State currentState = new State();
+    private static State idealState = new State();
 
     public StateManager(HardwareCluster hardwareCluster) {
         this.hardwareCluster = hardwareCluster;
@@ -112,19 +120,32 @@ public class StateManager {
     /**
      * Let the update thread know that there are changes to be enacted.
      */
-    private static void setChangesFlag() {
-        changesFlag = true;
+    private static synchronized void setChangesFlag(boolean flag) {
+        changesFlag = flag;
     }
 
     public static CustomerResponse queryAlgorithmSolver(Request request) {
-        State solution = null;
-
-        if (solution != null) {
-            setChangesFlag();
+        idealState = algorithmSolver.solve(
+            links,
+            switches,
+            services,
+            idealState);
+        if (idealState != null) {
+            setChangesFlag(true);
             clusterUpdateThread.notify();
             return new CustomerResponse(true);
         } else {
             return new CustomerResponse(false);
+        }
+    }
+
+    /**
+     *  Poll the hardware cluster to update ideal state
+     */
+
+    public void poll() {
+        for (RemoteHost host : currentState.getRemoteHosts()) {
+            // update ideal state (as well as current state)
         }
     }
 

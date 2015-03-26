@@ -11,10 +11,28 @@ import orchestration.Node;
 import orchestration.Request;
 
 public class State {
-    private Set<RemoteHost> hosts = new HashSet<RemoteHost>();
-    private Map<Request, List<Node>> serviceChains = new HashMap<Request, List<Node>>();
+
+    private Set<RemoteHost> remoteHosts;
+    private Map<Request, List<Node>> serviceChains;
 
     public State() {
-
+    	remoteHosts = new HashSet<RemoteHost>();
+    	serviceChains = new HashMap<Request, List<Node>>();
     }
+
+    public Set<RemoteHost> getRemoteHosts() {
+    	return this.remoteHosts;
+    }
+
+    public Map<Request, List<Node>> getServiceChains() {
+    	return this.serviceChains;
+    }
+
+    public void duplicate(State otherState) {
+    	// Copy otherState's remote hosts into this state
+    	for (RemoteHost otherHost : otherState.getRemoteHosts()) {
+    		remoteHosts.add(new RemoteHost(otherHost));
+    	}
+    }
+
 }

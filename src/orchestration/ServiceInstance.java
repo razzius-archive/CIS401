@@ -12,12 +12,23 @@ public class ServiceInstance {
 	public String serviceID;
 	public int bandwidth;
 	public int memory;
-	public ServiceInstance.Status status = ServiceInstance.Status.PENDING;
+	public ServiceInstance.Status status = ServiceInstance.Status.PENDING; 
 	public int port;
 	public int PID;
 
 	public enum Status {
 		STARTING, PENDING, RUNNING, PAUSED, FINISHED, TERMINATED, CRASHED
+	}
+
+	public ServiceInstance(ServiceInstance other) {
+		this.serviceInstanceID = other.serviceInstanceID;
+		this.vmID = other.vmID;
+		this.serviceID = other.serviceID;
+		this.bandwidth = other.bandwidth;
+		this.memory = other.memory;
+		this.status = other.status;
+		this.port = other.port;
+		this.PID = other.PID;
 	}
 
 	public ServiceInstance(String serviceID, String vmID) {
