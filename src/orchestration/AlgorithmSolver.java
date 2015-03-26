@@ -12,14 +12,9 @@ import orchestration.ServiceInstance;
 
 public class AlgorithmSolver implements AlgorithmSolverInterface {
 
-    double myLoad;
-
-    // TODO: Define SystemLoad class.
     public AlgorithmSolver() {
-        //myLoad = load;
     }
 
-    // TODO: Define Configuration class.
     // solve() function should use the current state of the fleet (myLoad)
     // and return a Configuration object that gives the suggested configuration
     // for the fleet.
@@ -32,40 +27,42 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         Set<Link> links,
         Set<Switch> switches,
         Set<Service> services,
-        State currentState
+        State currentState,
+        Request request
     ) {
-        return null;
-    /* TODO Rewrite
-        // compile all requested services
-        ArrayList<Service> requestedServices = new ArrayList<Service>();
 
-        for (String serviceID : req.services) {
+        State newState = new State();
 
-            // serviceID comes in form "s0" or "s2" need to get integer out
-            int serviceint = Integer.parseInt(serviceID.substring(1));
+        // why does it not duplicate the service chains as well??
+        newState.duplicate(currentState);
+        
+        Map<String, RemoteHost> remoteHosts = currentState.getRemoteHosts();
 
-            requestedServices.add(services.get(serviceint));
+        // initialize startnode and endnode
+        RemoteHost currentHost = remoteHosts.get(request.startNode);
+        RemoteHost endHost = remoteHosts.get(request.endNode);
+
+        List<Node> path = new ArrayList<Node>();
+        path.add(currentHost);
+        path.add(new VirtualSwitch());
+
+        // loop through services and create VMs for each on startnode
+        // if startnode no longer has space move to a different remoteHost
+        for (String service : request.services) {
+            
+            // TODO: update parameters
+            VM vm = new VM(1, 1);
+            ServiceInstance si = new ServiceInstance(service, vm.getID());
+            path.add(vm);
+            path.add(new VirtualSwitch());
+
         }
 
+        path.add(endHost);
 
-        // Naive solution: put each different service on a different VM, all on the first host
-        AlgorithmSolution as = new AlgorithmSolution();
+        // add serviceChain path to new state
+        newState.getServiceChains().put(request, path);
 
-        // For testing purposes, the machine running the orchestration layer can act as a remote host
-        // TODO ensure the localhost has id 0
-        // TODO all these hashmaps should be hashsets, ask Razzi
-        RemoteHost localhost = remoteHosts.iterator().next();
-        ArrayList<VM> vmsAssignedToLocalhost = new ArrayList<VM>();
-        as.vms.put(localhost, vmsAssignedToLocalhost);
-
-        for (Service s : requestedServices) {
-            VM vm = new VM(1, s.maxMemory);
-            vmsAssignedToLocalhost.add(vm);
-
-            ServiceInstance si = new ServiceInstance(s.serviceID, vm.getID());
-            as.requestedServices.add(si);
-        }
-        return as;
-    */
+        return newState;
     }
 }

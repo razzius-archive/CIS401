@@ -10,7 +10,7 @@ import java.util.UUID;
 //
 // Stores Virtual Machine information
 
-public class VM implements Serializable {
+public class VM extends Node implements Serializable {
 	private String id = UUID.randomUUID().toString(); // uuid as string
 	double coresAllocated;	// VMs can request fractions of cores.
 	int memoryAllocated; 	// MB of memory allocated
@@ -33,7 +33,6 @@ public class VM implements Serializable {
 	public VM(double coresAllocated, int memoryAllocated) {
 		this.coresAllocated = coresAllocated;
 		this.memoryAllocated = memoryAllocated;
-		status = "booting";
 	}
 
 	public String getID() {
