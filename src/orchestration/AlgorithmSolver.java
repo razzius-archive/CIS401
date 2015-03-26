@@ -29,11 +29,17 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         Set<Link> links,
         Set<Switch> switches,
         Set<Service> services,
-        State currentState
+        State currentState,
+        Request request
     ) {
-        return null;
 
+        State newState = new State();
+
+        // why does it not duplicate the service chains as well??
+        newState.duplicate(currentState);
         
+        Map<String, RemoteHost> remoteHosts = currentState.getRemoteHosts();
+
         // initialize startnode and endnode
         RemoteHost currentHost = remoteHosts.get(request.startNode);
         RemoteHost endHost = remoteHosts.get(request.endNode);
@@ -48,13 +54,17 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             
             // TODO: update parameters
             VM vm = new VM(1, 1);
-            
-
             ServiceInstance si = new ServiceInstance(service, vm.getID());
             path.add(vm);
             path.add(new VirtualSwitch());
 
-    
         }
+
+        path.add(endHost);
+
+        // add serviceChain path to new state
+        newState.getServiceChains().put(request, path);
+
+        return newState;
     }
 }

@@ -18,6 +18,7 @@ public interface AlgorithmSolverInterface {
         Set<Link> links,
         Set<Switch> switches,
         Set<Service> services,
-        State currentState
+        State currentState,
+        Request request
     );
 }
