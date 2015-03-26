@@ -2,10 +2,13 @@ package orchestration;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.NotBoundException;
+import java.net.MalformedURLException;
+
 import java.rmi.Naming;
 
 import java.util.List;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -18,7 +21,7 @@ public class RemoteHost {
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
     private HostConfig hostConfig;
     private RemoteHostInterface rmiServer;
-    private HashSet<VM> vms;
+    private Set<VM> vms;
 
     public RemoteHost(RemoteHost other) {
         this.hostConfig = other.getHostConfig();
@@ -29,14 +32,25 @@ public class RemoteHost {
         } catch (RemoteException e) {
             e.printStackTrace();
             logger.fatal("Unable to connect to remote server " + e);
-        } catch (Exception e) {
+        } catch (NotBoundException | MalformedURLException e) {
             e.printStackTrace();
             logger.fatal(e);
             System.exit(1);
         }
-        for (VM otherVM : other.getRemoteHostVMs()) {
-            vms.add(new VM(otherVM));
+
+        Set<VM> otherVMs = null;
+
+        try {
+            otherVMs = other.getRemoteHostVMs();
+            for (VM otherVM : otherVMs) {
+                vms.add(new VM(otherVM));
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            logger.fatal(e);
+            System.exit(1);
         }
+
     }
 
     public RemoteHost(HostConfig config) {
@@ -83,7 +97,7 @@ public class RemoteHost {
         rmiServer.stopService(vm, serviceInstance);
     }
 
-    public List<VM> getRemoteHostVMs() throws RemoteException {
+    public Set<VM> getRemoteHostVMs() throws RemoteException {
         return rmiServer.getRemoteHostVMs();
     }
 
@@ -99,7 +113,7 @@ public class RemoteHost {
         return rmiServer.getRemoteHostNetworkUtilization();
     }
 
-    public List<ServiceInstance> getVMServiceInstances() throws RemoteException {
+    public Set<ServiceInstance> getVMServiceInstances() throws RemoteException {
         return rmiServer.getVMServiceInstances();
     }
 
