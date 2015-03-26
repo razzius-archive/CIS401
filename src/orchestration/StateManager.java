@@ -117,14 +117,7 @@ public class StateManager {
     }
 
     public static CustomerResponse queryAlgorithmSolver(Request request) {
-        State solution = algorithmSolver.solve(
-            links,
-            switches,
-            services,
-            vmAssignments,
-            serviceAssignments,
-            serviceChainAssignments,
-            request);
+        State solution = null;
 
         if (solution != null) {
             setChangesFlag();

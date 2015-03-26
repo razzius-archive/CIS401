@@ -10,12 +10,12 @@ public class Service {
 
 	String serviceID;
 	int wcet;		// Worst-Case Execution Time in ms
-	int maxMemory;	// Maximum memory required
+	String command;	// Maximum memory required
 	
-	public Service(String serviceID, int wcet, int maxMemory) {
+	public Service(String serviceID, int wcet, String command) {
 		this.serviceID = serviceID;
 		this.wcet = wcet;
-		this.maxMemory = maxMemory;
+		this.command = command;
 	}
 
 	public String getID() {

@@ -27,6 +27,7 @@ public class OrchestrationLayer {
 
     public static class Container {
       public List<Map> hosts;
+      public List<Map> services;
    }
 
     private static StateManager stateManager;
@@ -42,7 +43,9 @@ public class OrchestrationLayer {
         Gson g = new Gson();
         Container c = g.fromJson(br, Container.class);
         System.out.println(c.hosts.get(0).get("memory"));
+        System.out.println(c.services.get(0).get("command"));
 
+        // set up hosts from config.json
         ArrayList<HostConfig> hostConfigs = new ArrayList<HostConfig>();
         for (Map host : c.hosts) {
             int bandwidth = Integer.parseInt((String) host.get("bandwidth"));
@@ -64,11 +67,14 @@ public class OrchestrationLayer {
 
         stateManager = new StateManager(hardwareCluster);
 
-        stateManager.addService(new Service("0", 100, 8));
-        stateManager.addService(new Service("1", 100, 8));
-        stateManager.addService(new Service("2", 100, 16));
-        stateManager.addService(new Service("3", 100, 16));
-        stateManager.addService(new Service("4", 100, 32));
-        stateManager.addService(new Service("5", 100, 64));
+        // set up services from config.json
+        for (Map service : c.services) {
+            String name = (String) service.get("name");
+            int wcet = (Integer) service.get("wcet");
+            String command = (String) service.get("command");
+
+            stateManager.addService(new Service(name, wcet, command));
+        }
+
     }
 }

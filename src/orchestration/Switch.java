@@ -16,8 +16,7 @@ public class Switch extends Node {
 
 	private SwitchType type;
 
-	public Switch(int nodeID, double bandwidth, SwitchType type) {
-		this.nodeID = nodeID;
+	public Switch(int bandwidth, SwitchType type) {
 		this.bandwidth = bandwidth;
 		this.type = type;
 	}
