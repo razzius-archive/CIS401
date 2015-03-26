@@ -23,8 +23,11 @@ public class RequestHandler {
 
     private static Logger logger = Logger.getLogger(RequestHandler.class.getName());
 
-    public RequestHandler() throws IOException {
-       startServer();
+    private StateManager stateManager;
+
+    public RequestHandler(StateManager stateManager) throws IOException {
+        this.stateManager = stateManager;
+        startServer();
     }
 
     private void startServer() throws IOException {
@@ -36,7 +39,7 @@ public class RequestHandler {
         System.out.println("Server running on port " + port);
     }
 
-    class RequestServer implements HttpHandler {
+    private class RequestServer implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
             String response = "hello world";
             System.out.println("\nRECIEVED: " + t.getRequestMethod()); 
@@ -60,16 +63,18 @@ public class RequestHandler {
                 out.append(line);
             }
             String[] params = out.toString().split("&");
-            System.out.println("Recieved Parameters:");
+            System.out.println("Recieved Parameters");
             for (int i = 0; i < params.length; i++) {
-                System.out.println(params[i]);
+                //System.out.println(params[i]);
                 params[i] = params[i].substring(params[i].indexOf("=")+1);
             }
             // blank line after requests
             System.out.println();
 
             Request request = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
-            CustomerResponse cr = StateManager.queryAlgorithmSolver(request);
+            System.out.println("Querying AlgorithmSolver...");
+            CustomerResponse cr = stateManager.queryAlgorithmSolver(request);
+            System.out.println("AlgorithmSolver returned");
 
             String response = "";
             if (cr.accepted) {

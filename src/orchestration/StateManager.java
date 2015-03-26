@@ -33,7 +33,7 @@ import orchestration.CustomerResponse;
 
 public class StateManager {
 
-    private static class ClusterUpdateThread extends Thread {
+    private class ClusterUpdateThread extends Thread {
 
         public ClusterUpdateThread() {}
 
@@ -76,19 +76,19 @@ public class StateManager {
      * The State Manager also maintains a worker thread which updates the cluster and resets the flag.
      */
 
-    private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
-    private static HardwareCluster hardwareCluster;
-    private static Boolean changesFlag = false;
-    private static ClusterUpdateThread clusterUpdateThread;
+    private AlgorithmSolver algorithmSolver = new AlgorithmSolver();
+    private HardwareCluster hardwareCluster;
+    private Boolean changesFlag = false;
+    private ClusterUpdateThread clusterUpdateThread;
 
     /**
-     * Static Network Attributes that do not change.
+     * Network Attributes that do not change.
      */
 
-    private static Set<Link> links = new HashSet<Link>();
-    private static Set<Switch> switches = new HashSet<Switch>();
-    private static Set<Tenant> tenants = new HashSet<Tenant>();
-    private static Set<Service> services = new HashSet<Service>();
+    private Set<Link> links = new HashSet<Link>();
+    private Set<Switch> switches = new HashSet<Switch>();
+    private Set<Tenant> tenants = new HashSet<Tenant>();
+    private Set<Service> services = new HashSet<Service>();
 
 
     /**
@@ -96,12 +96,14 @@ public class StateManager {
      */
 
     // State
-    private static State currentState = new State();
-    private static State idealState = new State();
+    private State currentState = new State();
+    private State idealState = new State();
 
     public StateManager(HardwareCluster hardwareCluster) {
+        System.out.println("[stateManager] starting stateManager");
         this.hardwareCluster = hardwareCluster;
-        clusterUpdateThread = new ClusterUpdateThread();
+        this.clusterUpdateThread = new ClusterUpdateThread();
+        System.out.println("clusterUpdateThread: " + clusterUpdateThread);
         clusterUpdateThread.run();
     }
 
@@ -117,20 +119,24 @@ public class StateManager {
     /**
      * Let the update thread know that there are changes to be enacted.
      */
-    private static synchronized void setChangesFlag(boolean flag) {
+    private synchronized void setChangesFlag(boolean flag) {
         changesFlag = flag;
+        clusterUpdateThread.notify();
     }
 
-    public static CustomerResponse queryAlgorithmSolver(Request request) {
+    public CustomerResponse queryAlgorithmSolver(Request request) {
+        System.out.println("[queryAlgorithmSolver] calling solve");
         idealState = algorithmSolver.solve(
             links,
             switches,
             services,
             idealState,
             request);
+        System.out.println("[queryAlgorithmSolver] solve returned");
         if (idealState != null) {
+            try {
             setChangesFlag(true);
-            clusterUpdateThread.notify();
+            } catch (Exception e) { e.printStackTrace(); }
             return new CustomerResponse(true);
         } else {
             return new CustomerResponse(false);
