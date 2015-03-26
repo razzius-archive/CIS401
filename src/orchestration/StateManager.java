@@ -60,12 +60,12 @@ public class StateManager {
         public void updateCluster() {
             // ACTUALLY UPDATE THE CLUSTER
             // use idealState
-            for (RemoteHost host : currentState.getRemoteHosts()) {
+            //for (RemoteHost host : currentState.getRemoteHosts()) {
                 // compare idealState vs. currentState
                 //for (VM vm : host.vms) {
                     // if this vm is not in
                 //}
-            }
+            //}
         }
     }
 
@@ -126,7 +126,8 @@ public class StateManager {
             links,
             switches,
             services,
-            idealState);
+            idealState,
+            request);
         if (idealState != null) {
             setChangesFlag(true);
             clusterUpdateThread.notify();
@@ -141,9 +142,9 @@ public class StateManager {
      */
 
     public void poll() {
-        for (RemoteHost host : currentState.getRemoteHosts()) {
+        //for (RemoteHost host : currentState.getRemoteHosts()) {
             // update ideal state (as well as current state)
-        }
+        //}
     }
 
     /**

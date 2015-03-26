@@ -12,15 +12,15 @@ import orchestration.Request;
 
 public class State {
 
-    private Set<RemoteHost> remoteHosts;
+    private Map<String, RemoteHost> remoteHosts;
     private Map<Request, List<Node>> serviceChains;
 
     public State() {
-    	remoteHosts = new HashSet<RemoteHost>();
+    	remoteHosts = new HashMap<String, RemoteHost>();
     	serviceChains = new HashMap<Request, List<Node>>();
     }
 
-    public Set<RemoteHost> getRemoteHosts() {
+    public Map<String, RemoteHost> getRemoteHosts() {
     	return this.remoteHosts;
     }
 
@@ -30,8 +30,8 @@ public class State {
 
     public void duplicate(State otherState) {
     	// Copy otherState's remote hosts into this state
-    	for (RemoteHost otherHost : otherState.getRemoteHosts()) {
-    		remoteHosts.add(new RemoteHost(otherHost));
+    	for (String key : otherState.getRemoteHosts().keySet()) {
+    		remoteHosts.put(key, otherState.getRemoteHosts().get(key));
     	}
     }
 
