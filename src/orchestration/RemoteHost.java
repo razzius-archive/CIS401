@@ -39,18 +39,11 @@ public class RemoteHost extends Node {
             System.exit(1);
         }
 
+
         HashMap<Integer, VM> otherVMs = other.getVMs();
-
-        try {
-            for (Integer i : otherVMs.keySet()) {
-                vms.put(i, new VM(otherVMs.get(i)));
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            logger.fatal(e);
-            System.exit(1);
+        for (Integer i : otherVMs.keySet()) {
+            vms.put(i, new VM(otherVMs.get(i)));
         }
-
     }
 
     public RemoteHost(HostConfig config) {
@@ -61,11 +54,11 @@ public class RemoteHost extends Node {
         	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
         } catch (RemoteException e) {
             e.printStackTrace();
-        	logger.fatal("Unable to connect to remote server " + e);
+            logger.fatal("Unable to connect to remote server " + e);
         } catch (Exception e) {
             e.printStackTrace();
-        	logger.fatal(e);
-        	System.exit(1);
+            logger.fatal(e);
+            System.exit(1);
         }
     }
 
@@ -82,56 +75,56 @@ public class RemoteHost extends Node {
     }
 
     public void bootVM(VM vm) throws RemoteException {
-		rmiServer.bootVM(vm);
-    }
+      rmiServer.bootVM(vm);
+  }
 
-    public void shutdownVM(VM vm) throws RemoteException {
-        rmiServer.shutdownVM(vm);
-    }
+  public void shutdownVM(VM vm) throws RemoteException {
+    rmiServer.shutdownVM(vm);
+}
 
-    public void addNetworkRoute(VM vm) throws RemoteException {
-        rmiServer.addNetworkRoute(vm);
-    }
+public void addNetworkRoute(VM vm) throws RemoteException {
+    rmiServer.addNetworkRoute(vm);
+}
 
-    public void startService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
-        rmiServer.startService(vm, serviceInstance);
-    }
+public void startService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
+    rmiServer.startService(vm, serviceInstance);
+}
 
-    public void stopService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
-        rmiServer.stopService(vm, serviceInstance);
-    }
+public void stopService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
+    rmiServer.stopService(vm, serviceInstance);
+}
 
-    public Set<VM> getRemoteHostVMs() throws RemoteException {
-        return rmiServer.getRemoteHostVMs();
-    }
+public Set<VM> getRemoteHostVMs() throws RemoteException {
+    return rmiServer.getRemoteHostVMs();
+}
 
-    public double getRemoteHostMemoryUtilization() throws RemoteException {
-        return rmiServer.getRemoteHostMemoryUtilization();
-    }
+public double getRemoteHostMemoryUtilization() throws RemoteException {
+    return rmiServer.getRemoteHostMemoryUtilization();
+}
 
-    public double getRemoteHostCPUUtilization() throws RemoteException {
-        return rmiServer.getRemoteHostCPUUtilization();
-    }
+public double getRemoteHostCPUUtilization() throws RemoteException {
+    return rmiServer.getRemoteHostCPUUtilization();
+}
 
-    public double getRemoteHostNetworkUtilization() throws RemoteException {
-        return rmiServer.getRemoteHostNetworkUtilization();
-    }
+public double getRemoteHostNetworkUtilization() throws RemoteException {
+    return rmiServer.getRemoteHostNetworkUtilization();
+}
 
-    public Set<ServiceInstance> getVMServiceInstances() throws RemoteException {
-        return rmiServer.getVMServiceInstances();
-    }
+public Set<ServiceInstance> getVMServiceInstances() throws RemoteException {
+    return rmiServer.getVMServiceInstances();
+}
 
-    public double getVMMemoryUtilization() throws RemoteException {
-        return rmiServer.getVMMemoryUtilization();
-    }
+public double getVMMemoryUtilization() throws RemoteException {
+    return rmiServer.getVMMemoryUtilization();
+}
 
-    public double getVMCPUUtilization() throws RemoteException {
-        return rmiServer.getVMCPUUtilization();
-    }
+public double getVMCPUUtilization() throws RemoteException {
+    return rmiServer.getVMCPUUtilization();
+}
 
-    public void getServiceTrafficStatistics() throws RemoteException {
+public void getServiceTrafficStatistics() throws RemoteException {
         // TODO : IMPLEMENT
-    }
+}
 
 
 }
