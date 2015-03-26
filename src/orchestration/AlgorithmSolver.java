@@ -12,6 +12,9 @@ import orchestration.ServiceInstance;
 
 public class AlgorithmSolver implements AlgorithmSolverInterface {
 
+
+    private static Logger logger = Logger.getLogger(AlgorithmSolver.class.getName());
+
     public AlgorithmSolver() {
     }
 
@@ -34,7 +37,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
 
         // why does it not duplicate the service chains as well??
         newState.duplicate(currentState);
-        
+
         Map<String, RemoteHost> remoteHosts = currentState.getRemoteHosts();
 
         // initialize startnode and endnode
@@ -48,7 +51,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         // loop through services and create VMs for each on startnode
         // if startnode no longer has space move to a different remoteHost
         for (String service : request.services) {
-            
+
             // TODO: update parameters
             VM vm = new VM(1, 1);
             ServiceInstance si = new ServiceInstance(service, vm.getID());

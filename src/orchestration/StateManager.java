@@ -57,7 +57,7 @@ public class StateManager {
             // ACTUALLY UPDATE THE CLUSTER
             // use idealState
 
-            
+
 
             for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
 	            RemoteHost currentHost = currentState.getRemoteHosts().get(idealHost.getID());
@@ -81,6 +81,10 @@ public class StateManager {
 	        }
         }
     }
+
+
+
+    private static Logger logger = Logger.getLogger(StateManager.class.getName());
 
     /**
      * State Manager contains instances of the algorithm solver and hardware cluster.

@@ -29,6 +29,7 @@ public class OrchestrationLayer {
       public List<Map> services;
    }
 
+    private static Logger logger = Logger.getLogger(OrchestrationLayer.class.getName());
     private static StateManager stateManager;
     private static RequestHandler requestHandler;
     private static AlgorithmSolver algorithmSolver;
