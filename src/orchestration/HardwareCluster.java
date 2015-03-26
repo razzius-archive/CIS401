@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 
 import orchestration.Link;
 import orchestration.Switch;
-import orchestration.Machine;
 import orchestration.ServiceInstance;
 import orchestration.VM;
 import orchestration.RemoteHost;

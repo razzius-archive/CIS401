@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import orchestration.Link;
 import orchestration.Switch;
-import orchestration.Machine;
 import orchestration.Tenant;
 import orchestration.CustomerResponse;
 
@@ -90,7 +89,6 @@ public class StateManager {
 
     private static Set<Link> links = new HashSet<Link>();
     private static Set<Switch> switches = new HashSet<Switch>();
-    private static Set<Machine> machines = new HashSet<Machine>();
     private static Set<Tenant> tenants = new HashSet<Tenant>();
     private static Set<Service> services = new HashSet<Service>();
 
@@ -176,10 +174,6 @@ public class StateManager {
 
     public Set<Switch> getSwitches() {
         return switches;
-    }
-
-    public Set<Machine> getMachines() {
-        return machines;
     }
 
     public Set<Tenant> getTenants() {

@@ -8,7 +8,13 @@ import java.util.UUID;
  * Stores the specifics of the machine's hardware and its IP address.
  */
 
-public class HostConfig extends NodeConfig {
+public class HostConfig {
+
+	/**
+	 * Network Bandwidth in kB/s
+	 */
+	private int bandwidth;
+
 	/**
 	 * RAM in MB
 	 */

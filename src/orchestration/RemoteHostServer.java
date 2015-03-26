@@ -7,7 +7,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-import java.util.List;
+import java.util.Set;
 
 import java.io.*;
 
@@ -54,7 +54,7 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
         // TODO : IMPLEMENT
     }
 
-    public List<VM> getRemoteHostVMs() throws RemoteException {
+    public Set<VM> getRemoteHostVMs() throws RemoteException {
         // TODO : IMPLEMENT
         return null;
     }
@@ -74,7 +74,7 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
         return 0;
     }
 
-    public List<ServiceInstance> getVMServiceInstances() throws RemoteException {
+    public Set<ServiceInstance> getVMServiceInstances() throws RemoteException {
         // TODO : IMPLEMENT
         return null;
     }
