@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 
 import java.util.List;
+import java.util.HashMap;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -21,7 +22,7 @@ public class RemoteHost extends Node {
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
     private HostConfig hostConfig;
     private RemoteHostInterface rmiServer;
-    private Set<VM> vms;
+    private HashMap<Integer, VM> vms;
 
     public RemoteHost(RemoteHost other) {
         this.hostConfig = other.getHostConfig();
@@ -38,12 +39,11 @@ public class RemoteHost extends Node {
             System.exit(1);
         }
 
-        Set<VM> otherVMs = null;
+        HashMap<Integer, VM> otherVMs = other.getVMs();
 
         try {
-            otherVMs = other.getRemoteHostVMs();
-            for (VM otherVM : otherVMs) {
-                vms.add(new VM(otherVM));
+            for (Integer i : otherVMs.keySet()) {
+                vms.put(i, new VM(otherVMs.get(i)));
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -69,12 +69,16 @@ public class RemoteHost extends Node {
         }
     }
 
+    public HashMap<Integer, VM> getVMs() {
+        return this.vms;
+    }
+
     public String getIp() {
         return this.ip;
     }
 
     public HostConfig getHostConfig() {
-        return hostConfig;
+        return this.hostConfig;
     }
 
     public void bootVM(VM vm) throws RemoteException {

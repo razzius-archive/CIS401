@@ -15,8 +15,6 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     public AlgorithmSolver() {
     }
 
-<<<<<<< Updated upstream
-    // TODO: Define Configuration class.
     // solve() function should use the current state of the fleet (myLoad)
     // and return a Configuration object that gives the suggested configuration
     // for the fleet.
