@@ -13,13 +13,10 @@ import orchestration.ServiceInstance;
 
 public class AlgorithmSolver implements AlgorithmSolverInterface {
 
-    double myLoad;
-
-    // TODO: Define SystemLoad class.
     public AlgorithmSolver() {
-        //myLoad = load;
     }
 
+<<<<<<< Updated upstream
     // TODO: Define Configuration class.
     // solve() function should use the current state of the fleet (myLoad)
     // and return a Configuration object that gives the suggested configuration
@@ -36,37 +33,29 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         State currentState
     ) {
         return null;
-    /* TODO Rewrite
-        // compile all requested services
-        ArrayList<Service> requestedServices = new ArrayList<Service>();
 
-        for (String serviceID : req.services) {
+        
+        // initialize startnode and endnode
+        RemoteHost currentHost = remoteHosts.get(request.startNode);
+        RemoteHost endHost = remoteHosts.get(request.endNode);
 
-            // serviceID comes in form "s0" or "s2" need to get integer out
-            int serviceint = Integer.parseInt(serviceID.substring(1));
+        List<Node> path = new ArrayList<Node>();
+        path.add(currentHost);
+        path.add(new VirtualSwitch());
 
-            requestedServices.add(services.get(serviceint));
+        // loop through services and create VMs for each on startnode
+        // if startnode no longer has space move to a different remoteHost
+        for (String service : request.services) {
+            
+            // TODO: update parameters
+            VM vm = new VM(1, 1);
+            
+
+            ServiceInstance si = new ServiceInstance(service, vm.getID());
+            path.add(vm);
+            path.add(new VirtualSwitch());
+
+    
         }
-
-
-        // Naive solution: put each different service on a different VM, all on the first host
-        AlgorithmSolution as = new AlgorithmSolution();
-
-        // For testing purposes, the machine running the orchestration layer can act as a remote host
-        // TODO ensure the localhost has id 0
-        // TODO all these hashmaps should be hashsets, ask Razzi
-        RemoteHost localhost = remoteHosts.iterator().next();
-        ArrayList<VM> vmsAssignedToLocalhost = new ArrayList<VM>();
-        as.vms.put(localhost, vmsAssignedToLocalhost);
-
-        for (Service s : requestedServices) {
-            VM vm = new VM(1, s.maxMemory);
-            vmsAssignedToLocalhost.add(vm);
-
-            ServiceInstance si = new ServiceInstance(s.serviceID, vm.getID());
-            as.requestedServices.add(si);
-        }
-        return as;
-    */
     }
 }

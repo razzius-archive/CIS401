@@ -13,7 +13,7 @@ import orchestration.VM;
 import orchestration.RemoteHostInterface;
 
 
-public class RemoteHost {
+public class RemoteHost extends Node {
     private final String ip;
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
     private HostConfig hostConfig;

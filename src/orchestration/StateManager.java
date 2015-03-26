@@ -94,6 +94,7 @@ public class StateManager {
     private static Set<Tenant> tenants = new HashSet<Tenant>();
     private static Set<Service> services = new HashSet<Service>();
 
+
     /**
      * Dynamic Network Attributes that change over the course of a trial.
      */
@@ -182,6 +183,7 @@ public class StateManager {
     }
 
     public Set<Tenant> getTenants() {
+
         return tenants;
     }
 
