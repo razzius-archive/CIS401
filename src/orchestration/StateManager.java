@@ -52,11 +52,13 @@ public class StateManager {
         }
 
         public void updateCluster() {
-            System.out.println("ACTUALLY UPDATE THE CLUSTER");
-
             logger.info("Updating the cluster");
 
+            logger.info("Ideal remote hosts: " + idealState.getRemoteHosts().size());
+            logger.info("Current remote hosts: " + currentState.getRemoteHosts().size());
             for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
+
+                logger.info("Updating ideal host " + idealHost.getID());
 	            RemoteHost currentHost = currentState.getRemoteHosts().get(idealHost.getID());
 
 	            // Get the VM Maps from each host
@@ -88,13 +90,7 @@ public class StateManager {
 		                	hardwareCluster.startService(idealVM, idealService);
 		                }
 	            	}
-
-	                
-
-
 	            }
-
-
 	        }
         }
     }
