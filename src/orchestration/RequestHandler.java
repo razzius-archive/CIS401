@@ -37,7 +37,7 @@ public class RequestHandler {
         server.createContext("/requests", new RequestServer());
         server.setExecutor(null); // creates a default executor
         server.start();
-        System.out.println("Server running on port " + port);
+        logger.info("server running on port " + port);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,39 +46,36 @@ public class RequestHandler {
     private class RequestServer implements HttpHandler {
         public void handle(HttpExchange t) throws IOException {
             String response = "hello world";
-            System.out.println("\nRECIEVED: " + t.getRequestMethod()); 
+            logger.info("RECIEVED: " + t.getRequestMethod());
             InputStream is = t.getRequestBody();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             response = processRequest(t, reader);
             OutputStream os = t.getResponseBody();
             t.sendResponseHeaders(200, response.length());
             os.write(response.getBytes());
-            
+
 
             reader.close();
             os.close();
         }
 
         public String processRequest(HttpExchange t, BufferedReader reader) throws IOException {
-            System.out.println("In process request");
             StringBuilder out = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 out.append(line);
             }
             String[] params = out.toString().split("&");
-            System.out.println("Recieved Parameters");
+            String paramsStr = "";
             for (int i = 0; i < params.length; i++) {
-                //System.out.println(params[i]);
+                paramsStr += params[i] + ", ";
                 params[i] = params[i].substring(params[i].indexOf("=")+1);
             }
-            // blank line after requests
-            System.out.println();
+            logger.info("Request: " + paramsStr);
 
             Request request = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
-            System.out.println("Querying AlgorithmSolver...");
+            logger.info("Sending request to AlgorithmSolver");
             CustomerResponse cr = stateManager.queryAlgorithmSolver(request);
-            System.out.println("AlgorithmSolver returned");
 
             String response = "";
             if (cr.accepted) {
@@ -86,6 +83,8 @@ public class RequestHandler {
             } else {
                 response += "Request Denied";
             }
+
+            logger.info("Server responding with: " + response);
 
             return response;
 

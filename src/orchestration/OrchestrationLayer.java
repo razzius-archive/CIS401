@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.net.InetSocketAddress;
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -42,8 +43,8 @@ public class OrchestrationLayer {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("config.json")));
         Gson g = new Gson();
         Container c = g.fromJson(br, Container.class);
-        System.out.println(c.hosts.get(0).get("memory"));
-        System.out.println(c.services.get(0).get("command"));
+        // System.out.println(c.hosts.get(0).get("memory"));
+        // System.out.println(c.services.get(0).get("command"));
 
         // set up hosts from config.json
         ArrayList<HostConfig> hostConfigs = new ArrayList<HostConfig>();
@@ -64,9 +65,9 @@ public class OrchestrationLayer {
         analytics = new Analytics();
         hardwareCluster = new HardwareCluster(hostConfigs);
 
-        System.out.println("[OrchestrationLayer] starting stateManager");
+        logger.info("Starting StateManager");
         stateManager = new StateManager(hardwareCluster);
-        System.out.println("[OrchestrationLayer] starting requesthandler");
+        logger.info("Starting RequestHandler");
         requestHandler = new RequestHandler(stateManager);
 
         // set up services from config.json

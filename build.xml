@@ -45,7 +45,7 @@
     </java>
   </target>
 
-  <target name="runrequest" description="Starts OrchestrationLayer and server">
+  <target name="request" description="Starts OrchestrationLayer and server">
     <java fork="true" failonerror="yes" classname="orchestration.HttpURLConnectionExample">
       <sysproperty key="log4j.configuration" value="file:src/orchestration/log4j.properties"/>
       <classpath>
