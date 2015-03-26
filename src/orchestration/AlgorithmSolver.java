@@ -8,7 +8,6 @@ import java.util.Set;
 
 import orchestration.Link;
 import orchestration.Switch;
-import orchestration.Machine;
 import orchestration.ServiceInstance;
 
 public class AlgorithmSolver implements AlgorithmSolverInterface {
