@@ -27,9 +27,10 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 
 	public void bootVM(VM vm) throws RemoteException {
 		logger.debug("bootVM message received");
+		String command = "python scripts/boot_vm.py " + vm.getID() + " " + String.valueOf(vm.getMemory());
 		String s = null;
 		try {
-			Process p = Runtime.getRuntime().exec("python bootVM.py");
+			Process p = Runtime.getRuntime().exec(command);
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -48,9 +49,10 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 
 	public void shutdownVM(VM vm) throws RemoteException {
         logger.debug("shutdownVM message received");
+        String command = "python scripts/shutdown_vm.py " + vm.getID();
 		String s = null;
 		try {
-			Process p = Runtime.getRuntime().exec("python shutdownVM.py");
+			Process p = Runtime.getRuntime().exec(command);
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -69,9 +71,10 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 
     public void addNetworkRoute(VM vm) throws RemoteException {
         logger.debug("addNetworkRoute message received");
+        String command = "python scripts/addNetworkRoute.py";
 		String s = null;
 		try {
-			Process p = Runtime.getRuntime().exec("python addNetworkRoute.py");
+			Process p = Runtime.getRuntime().exec(command);
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -90,9 +93,10 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 
     public void startService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
         logger.debug("startService message received");
+        String command = "python scripts/startService.py";
 		String s = null;
 		try {
-			Process p = Runtime.getRuntime().exec("python startService.py");
+			Process p = Runtime.getRuntime().exec(command);
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
