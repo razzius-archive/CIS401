@@ -122,15 +122,16 @@ public class StateManager {
 
 
     /**
-     * Dynamic Network Attributes that change over the course of a trial.
+     * Dynamic Network Attributes that change over the course of a trial are contained in the currentState.
      */
 
-    // State
-    private State currentState = new State();
-    private State idealState = new State();
+    private State currentState;
+    private State idealState;
 
     public StateManager(HardwareCluster hardwareCluster) {
         this.hardwareCluster = hardwareCluster;
+        this.currentState = new State(hardwareCluster.getRemoteHosts());
+        this.idealState = new State(hardwareCluster.getRemoteHosts());
         this.clusterUpdateThread = new ClusterUpdateThread();
         clusterUpdateThread.start();
         logger.info("clusterUpdateThread started");

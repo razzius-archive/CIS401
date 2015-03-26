@@ -15,9 +15,9 @@ public class State {
     private Map<String, RemoteHost> remoteHosts;
     private Map<Request, List<Node>> serviceChains;
 
-    public State() {
-    	remoteHosts = new HashMap<String, RemoteHost>();
-    	serviceChains = new HashMap<Request, List<Node>>();
+    public State(Map <String, RemoteHost> remoteHosts) {
+    	this.remoteHosts = remoteHosts;
+    	this.serviceChains = new HashMap<Request, List<Node>>();
     }
 
     public Map<String, RemoteHost> getRemoteHosts() {
@@ -28,10 +28,11 @@ public class State {
     	return this.serviceChains;
     }
 
-    public void duplicate(State otherState) {
+    public void copyServiceChains(State otherState) {
     	// Copy otherState's remote hosts into this state
-    	for (String key : otherState.getRemoteHosts().keySet()) {
-    		remoteHosts.put(key, otherState.getRemoteHosts().get(key));
+        Map<Request, List<Node>> otherServices = otherState.getServiceChains();
+    	for (Request key : otherServices.keySet()) {
+    		this.serviceChains.put(key, otherServices.get(key));
     	}
     }
 

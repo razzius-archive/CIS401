@@ -34,10 +34,8 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
         State currentState,
         Request request
     ) {
-        State newState = new State();
-
-        // why does it not duplicate the service chains as well??
-        newState.duplicate(currentState);
+        State newState = new State(currentState.getRemoteHosts());
+        newState.copyServiceChains(currentState);
 
         Map<String, RemoteHost> remoteHosts = currentState.getRemoteHosts();
 
