@@ -63,10 +63,15 @@ public class StateManager {
 
 	            // Get the VM Maps from each host
 
+	            logger.info("Getting VM Maps from each Host...");
+
             	HashMap<String, VM> idealVMs = idealHost.getVMs();
             	HashMap<String, VM> currentVMs = currentHost.getVMs();
 
             	// Boot the new VMs and install services on them
+
+            	logger.info("Found " + idealVMs.size() + " ideal VMs.");
+            	logger.info("Found " + currentVMs.size() + " current VMs.");
 
 	            for (String idealVMID : idealVMs.keySet()) {
 	            	VM idealVM = idealVMs.get(idealVMID);
