@@ -15,7 +15,28 @@ import orchestration.RemoteHostInterface;
 public class RemoteHost {
     private final String ip;
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
+    private HostConfig hostConfig;
     private RemoteHostInterface rmiServer;
+    Set<VM> vms;
+
+    public RemoteHost(RemoteHost other) {
+        this.hostConfig = other.getHostConfig();
+        this.ip = config.getIpAddress();
+        logger.info("ip is: " + ip);
+        try {
+            rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            logger.fatal("Unable to connect to remote server " + e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.fatal(e);
+            System.exit(1);
+        }
+        for (VM otherVM : other.getVMs()) {
+            vms.add(new VM(otherVM));
+        }
+    }
 
     public RemoteHost(HostConfig config) {
         // TODO set static parameters like memory, numcores, bandwidth
