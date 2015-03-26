@@ -27,6 +27,7 @@ public class RemoteHost extends Node {
     public RemoteHost(RemoteHost other) {
         this.hostConfig = other.getHostConfig();
         this.ip = hostConfig.getIpAddress();
+        this.nodeID = "1";
         logger.info("ip is: " + ip);
         try {
             rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
