@@ -26,32 +26,108 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 	}
 
 	public void bootVM(VM vm) throws RemoteException {
-		System.out.println("bootVM message received");
+		logger.debug("bootVM message received");
+		String s = null;
 		try {
-			Process p = Runtime.getRuntime().exec("bootVM.py");
+			Process p = Runtime.getRuntime().exec("python bootVM.py");
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			while ((s = stdInput.readLine()) != null) {
+				logger.debug("Here is StdInput from the program: ");
+                logger.debug(s);
+            }
+            while ((s = stdError.readLine()) != null) {
+            	logger.debug("Here is StdError from the program: ");
+                logger.debug(s);
+            }
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
-		
 	}
 
 	public void shutdownVM(VM vm) throws RemoteException {
-        // TODO : IMPLEMENT
+        logger.debug("shutdownVM message received");
+		String s = null;
+		try {
+			Process p = Runtime.getRuntime().exec("python shutdownVM.py");
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			while ((s = stdInput.readLine()) != null) {
+				logger.debug("Here is StdInput from the program: ");
+                logger.debug(s);
+            }
+            while ((s = stdError.readLine()) != null) {
+            	logger.debug("Here is StdError from the program: ");
+                logger.debug(s);
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public void addNetworkRoute(VM vm) throws RemoteException {
-        // TODO : IMPLEMENT
+        logger.debug("addNetworkRoute message received");
+		String s = null;
+		try {
+			Process p = Runtime.getRuntime().exec("python addNetworkRoute.py");
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			while ((s = stdInput.readLine()) != null) {
+				logger.debug("Here is StdInput from the program: ");
+                logger.debug(s);
+            }
+            while ((s = stdError.readLine()) != null) {
+            	logger.debug("Here is StdError from the program: ");
+                logger.debug(s);
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public void startService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
-        // TODO : IMPLEMENT
+        logger.debug("startService message received");
+		String s = null;
+		try {
+			Process p = Runtime.getRuntime().exec("python startService.py");
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			while ((s = stdInput.readLine()) != null) {
+				logger.debug("Here is StdInput from the program: ");
+                logger.debug(s);
+            }
+            while ((s = stdError.readLine()) != null) {
+            	logger.debug("Here is StdError from the program: ");
+                logger.debug(s);
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public void stopService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
-        // TODO : IMPLEMENT
+        logger.debug("stopService message received");
+		String s = null;
+		try {
+			Process p = Runtime.getRuntime().exec("python stopService.py");
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedWriter stdOutput = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			while ((s = stdInput.readLine()) != null) {
+				logger.debug("Here is StdInput from the program: ");
+                logger.debug(s);
+            }
+            while ((s = stdError.readLine()) != null) {
+            	logger.debug("Here is StdError from the program: ");
+                logger.debug(s);
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     public Set<VM> getRemoteHostVMs() throws RemoteException {
