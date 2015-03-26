@@ -60,16 +60,16 @@ public class StateManager {
             
 
             for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
-	            RemoteHost currentHost = currentState.getRemoteHosts.get(idealHost.getID());
+	            RemoteHost currentHost = currentState.getRemoteHosts().get(idealHost.getID());
 
 	            // Get the VM deltas from each host
 
-            	Set<VM> idealVMs = idealHost.getVMs();
-            	Set<VM> currentVMs = currentHost.getVMs();
+            	Set<VM> idealVMs = (Set<VM>) idealHost.getVMs().values();
+            	Set<VM> currentVMs = (Set<VM>) currentHost.getVMs().values();
 
             	// Boot the new VMs
 
-	            for (VM idealVM : idealHost.getVMs) {
+	            for (VM idealVM : idealHost.getVMs().values()) {
 	                if (!currentVMs.contains(idealVM)) {
 	                	hardwareCluster.bootVM(currentHost, idealVM);
 	                }
