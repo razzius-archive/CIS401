@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.rmi.Naming;
 
 import java.util.List;
+import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 
@@ -17,11 +18,11 @@ public class RemoteHost {
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
     private HostConfig hostConfig;
     private RemoteHostInterface rmiServer;
-    Set<VM> vms;
+    private HashSet<VM> vms;
 
     public RemoteHost(RemoteHost other) {
         this.hostConfig = other.getHostConfig();
-        this.ip = config.getIpAddress();
+        this.ip = hostConfig.getIpAddress();
         logger.info("ip is: " + ip);
         try {
             rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
@@ -33,7 +34,7 @@ public class RemoteHost {
             logger.fatal(e);
             System.exit(1);
         }
-        for (VM otherVM : other.getVMs()) {
+        for (VM otherVM : other.getRemoteHostVMs()) {
             vms.add(new VM(otherVM));
         }
     }
@@ -56,6 +57,10 @@ public class RemoteHost {
 
     public String getIp() {
         return this.ip;
+    }
+
+    public HostConfig getHostConfig() {
+        return hostConfig;
     }
 
     public void bootVM(VM vm) throws RemoteException {

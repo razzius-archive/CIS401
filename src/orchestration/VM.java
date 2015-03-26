@@ -26,7 +26,7 @@ public class VM implements Serializable {
 		ipAddress = other.ipAddress;
 		status = other.status;
 		for (ServiceInstance otherServiceInstance : other.serviceInstances) {
-			myServiceInstances.add(new ServiceInstance(otherServiceInstance));
+			serviceInstances.add(new ServiceInstance(otherServiceInstance));
 		}
 	}
 

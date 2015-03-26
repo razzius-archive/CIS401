@@ -30,8 +30,9 @@ public class State {
 
     public void duplicate(State otherState) {
     	// Copy otherState's remote hosts into this state
-    	for (RemoteHost otherHost : otherState.getHosts()) {
-    		remotehosts.add(new RemoteHost(otherHost));
+    	for (RemoteHost otherHost : otherState.getRemoteHosts()) {
+    		remoteHosts.add(new RemoteHost(otherHost));
     	}
     }
+
 }

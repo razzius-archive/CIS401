@@ -130,7 +130,7 @@ public class StateManager {
             switches,
             services,
             idealState);
-        if (solution != null) {
+        if (idealState != null) {
             setChangesFlag(true);
             clusterUpdateThread.notify();
             return new CustomerResponse(true);
