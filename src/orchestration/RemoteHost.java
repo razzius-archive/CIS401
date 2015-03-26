@@ -50,6 +50,7 @@ public class RemoteHost extends Node {
     public RemoteHost(HostConfig config) {
         // TODO set static parameters like memory, numcores, bandwidth
         this.ip = config.getIpAddress();
+        this.nodeID = "1";
         logger.info("ip is: " + ip);
         try {
         	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
