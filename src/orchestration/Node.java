@@ -11,8 +11,13 @@ public abstract class Node {
      * Example: bandwidth of 1024 = 1 Kbps
      */
     protected int bandwidth;
+    private String nodeID;
 
 	public int getBandwidth() {
 		return this.bandwidth;
+	}
+
+	public String getID() {
+		return nodeID;
 	}
 }

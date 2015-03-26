@@ -60,16 +60,18 @@ public class OrchestrationLayer {
         HostConfig localhostConfig = new HostConfig(1048576, 2048, 4, "127.0.0.1");
         hostConfigs.add(localhostConfig);
 
-        requestHandler = new RequestHandler();
         analytics = new Analytics();
         hardwareCluster = new HardwareCluster(hostConfigs);
 
+        System.out.println("[OrchestrationLayer] starting stateManager");
         stateManager = new StateManager(hardwareCluster);
+        System.out.println("[OrchestrationLayer] starting requesthandler");
+        requestHandler = new RequestHandler(stateManager);
 
         // set up services from config.json
         for (Map service : c.services) {
             String name = (String) service.get("name");
-            int wcet = (Integer) service.get("wcet");
+            int wcet = Integer.parseInt((String) service.get("wcet"));
             String command = (String) service.get("command");
 
             stateManager.addService(new Service(name, wcet, command));

@@ -33,39 +33,52 @@ import orchestration.CustomerResponse;
 
 public class StateManager {
 
-    private static class ClusterUpdateThread extends Thread {
+    private class ClusterUpdateThread extends Thread {
 
         public ClusterUpdateThread() {}
 
         public void run() {
+            System.out.println("thread run");
             while (true) {
-                synchronized (changesFlag) {
-                    try {
+                try {
+                    synchronized (changesFlag) {
                         changesFlag.wait();
-                    } catch (InterruptedException e) {
-                        System.out.println(e);
+                        updateCluster();
+                        changesFlag = false;
                     }
+                } catch (InterruptedException e) {
+                    System.out.println(e);
                 }
-                checkUpdate();
-            }
-        }
-
-        public synchronized void checkUpdate() {
-            if (changesFlag == true) {
-                setChangesFlag(false);
-                updateCluster();
             }
         }
 
         public void updateCluster() {
+            System.out.println("ACTUALLY UPDATE THE CLUSTER");
             // ACTUALLY UPDATE THE CLUSTER
             // use idealState
-            //for (RemoteHost host : currentState.getRemoteHosts()) {
-                // compare idealState vs. currentState
-                //for (VM vm : host.vms) {
-                    // if this vm is not in
-                //}
-            //}
+
+            
+
+            for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
+	            RemoteHost currentHost = currentState.getRemoteHosts().get(idealHost.getID());
+
+	            // Get the VM deltas from each host
+
+            	Set<VM> idealVMs = (Set<VM>) idealHost.getVMs().values();
+            	Set<VM> currentVMs = (Set<VM>) currentHost.getVMs().values();
+
+            	// Boot the new VMs
+
+	            for (VM idealVM : idealHost.getVMs().values()) {
+	                if (!currentVMs.contains(idealVM)) {
+	                	hardwareCluster.bootVM(currentHost, idealVM);
+	                }
+	            }
+
+	            // Boot the new services
+
+
+	        }
         }
     }
 
@@ -76,19 +89,19 @@ public class StateManager {
      * The State Manager also maintains a worker thread which updates the cluster and resets the flag.
      */
 
-    private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
-    private static HardwareCluster hardwareCluster;
-    private static Boolean changesFlag = false;
-    private static ClusterUpdateThread clusterUpdateThread;
+    private AlgorithmSolver algorithmSolver = new AlgorithmSolver();
+    private HardwareCluster hardwareCluster;
+    private Boolean changesFlag = false;
+    private ClusterUpdateThread clusterUpdateThread;
 
     /**
-     * Static Network Attributes that do not change.
+     * Network Attributes that do not change.
      */
 
-    private static Set<Link> links = new HashSet<Link>();
-    private static Set<Switch> switches = new HashSet<Switch>();
-    private static Set<Tenant> tenants = new HashSet<Tenant>();
-    private static Set<Service> services = new HashSet<Service>();
+    private Set<Link> links = new HashSet<Link>();
+    private Set<Switch> switches = new HashSet<Switch>();
+    private Set<Tenant> tenants = new HashSet<Tenant>();
+    private Set<Service> services = new HashSet<Service>();
 
 
     /**
@@ -96,13 +109,16 @@ public class StateManager {
      */
 
     // State
-    private static State currentState = new State();
-    private static State idealState = new State();
+    private State currentState = new State();
+    private State idealState = new State();
 
     public StateManager(HardwareCluster hardwareCluster) {
+        System.out.println("[stateManager] starting stateManager");
         this.hardwareCluster = hardwareCluster;
-        clusterUpdateThread = new ClusterUpdateThread();
-        clusterUpdateThread.run();
+        this.clusterUpdateThread = new ClusterUpdateThread();
+        System.out.println("clusterUpdateThread: " + clusterUpdateThread);
+        clusterUpdateThread.start();
+        System.out.println("thread going");
     }
 
     /*
@@ -117,20 +133,29 @@ public class StateManager {
     /**
      * Let the update thread know that there are changes to be enacted.
      */
-    private static synchronized void setChangesFlag(boolean flag) {
-        changesFlag = flag;
+    private void setChangesFlag() {
+        synchronized (changesFlag) {
+            changesFlag.notify();
+        }
+        System.out.println("Changes ready set");
     }
 
-    public static CustomerResponse queryAlgorithmSolver(Request request) {
-        idealState = algorithmSolver.solve(
+    public CustomerResponse queryAlgorithmSolver(Request request) {
+        System.out.println("[queryAlgorithmSolver] calling solve");
+        State newState = algorithmSolver.solve(
             links,
             switches,
             services,
             idealState,
             request);
-        if (idealState != null) {
-            setChangesFlag(true);
-            clusterUpdateThread.notify();
+        System.out.println("[queryAlgorithmSolver] solve returned");
+        if (newState != null) {
+            this.idealState = newState;
+            try {
+                setChangesFlag();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return new CustomerResponse(true);
         } else {
             return new CustomerResponse(false);

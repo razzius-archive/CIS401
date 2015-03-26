@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 public class VirtualSwitch extends Node {
 
-	// TODO: 
+	// TODO:
 	// implement
 	// component of path not sure of its role yet
 	public VirtualSwitch() {
