@@ -38,26 +38,22 @@ public class StateManager {
         public ClusterUpdateThread() {}
 
         public void run() {
+            System.out.println("thread run");
             while (true) {
-                synchronized (changesFlag) {
-                    try {
+                try {
+                    synchronized (changesFlag) {
                         changesFlag.wait();
-                    } catch (InterruptedException e) {
-                        System.out.println(e);
+                        updateCluster();
+                        changesFlag = false;
                     }
+                } catch (InterruptedException e) {
+                    System.out.println(e);
                 }
-                checkUpdate();
-            }
-        }
-
-        public synchronized void checkUpdate() {
-            if (changesFlag == true) {
-                setChangesFlag(false);
-                updateCluster();
             }
         }
 
         public void updateCluster() {
+            System.out.println("ACTUALLY UPDATE THE CLUSTER");
             // ACTUALLY UPDATE THE CLUSTER
             // use idealState
             //for (RemoteHost host : currentState.getRemoteHosts()) {
@@ -104,7 +100,8 @@ public class StateManager {
         this.hardwareCluster = hardwareCluster;
         this.clusterUpdateThread = new ClusterUpdateThread();
         System.out.println("clusterUpdateThread: " + clusterUpdateThread);
-        clusterUpdateThread.run();
+        clusterUpdateThread.start();
+        System.out.println("thread going");
     }
 
     /*
@@ -119,24 +116,29 @@ public class StateManager {
     /**
      * Let the update thread know that there are changes to be enacted.
      */
-    private synchronized void setChangesFlag(boolean flag) {
-        changesFlag = flag;
-        clusterUpdateThread.notify();
+    private void setChangesFlag() {
+        synchronized (changesFlag) {
+            changesFlag.notify();
+        }
+        System.out.println("Changes ready set");
     }
 
     public CustomerResponse queryAlgorithmSolver(Request request) {
         System.out.println("[queryAlgorithmSolver] calling solve");
-        idealState = algorithmSolver.solve(
+        State newState = algorithmSolver.solve(
             links,
             switches,
             services,
             idealState,
             request);
         System.out.println("[queryAlgorithmSolver] solve returned");
-        if (idealState != null) {
+        if (newState != null) {
+            this.idealState = newState;
             try {
-            setChangesFlag(true);
-            } catch (Exception e) { e.printStackTrace(); }
+                setChangesFlag();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return new CustomerResponse(true);
         } else {
             return new CustomerResponse(false);

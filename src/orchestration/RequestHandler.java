@@ -31,12 +31,16 @@ public class RequestHandler {
     }
 
     private void startServer() throws IOException {
+        try {
         int port = 8080;
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/requests", new RequestServer());
         server.setExecutor(null); // creates a default executor
         server.start();
         System.out.println("Server running on port " + port);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class RequestServer implements HttpHandler {

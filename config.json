@@ -1,7 +1,7 @@
 {
 	"hosts": [
 	{
-		"ipAddress": "165.123.176.181",
+		"ipAddress": "127.0.0.1",
 		"memory": "4096",
 		"numCores": "2",
 		"bandwidth": "1048576"
@@ -9,7 +9,7 @@
 	"services": [
 	{
 		"name": "snort",
-		"wcet": 50,
+		"wcet": "50",
 		"command": "snort"
 	}]
 
