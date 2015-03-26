@@ -22,7 +22,7 @@ public class RemoteHost extends Node {
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
     private HostConfig hostConfig;
     private RemoteHostInterface rmiServer;
-    private HashMap<Integer, VM> vms;
+    private HashMap<String, VM> vms;
 
     public RemoteHost(RemoteHost other) {
         this.hostConfig = other.getHostConfig();
@@ -40,8 +40,8 @@ public class RemoteHost extends Node {
         }
 
 
-        HashMap<Integer, VM> otherVMs = other.getVMs();
-        for (Integer i : otherVMs.keySet()) {
+        HashMap<String, VM> otherVMs = other.getVMs();
+        for (String i : otherVMs.keySet()) {
             vms.put(i, new VM(otherVMs.get(i)));
         }
     }
@@ -62,7 +62,7 @@ public class RemoteHost extends Node {
         }
     }
 
-    public HashMap<Integer, VM> getVMs() {
+    public HashMap<String, VM> getVMs() {
         return this.vms;
     }
 

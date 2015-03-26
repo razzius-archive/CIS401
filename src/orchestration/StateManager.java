@@ -54,28 +54,44 @@ public class StateManager {
 
         public void updateCluster() {
             System.out.println("ACTUALLY UPDATE THE CLUSTER");
-            // ACTUALLY UPDATE THE CLUSTER
-            // use idealState
-
             
 
             for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
 	            RemoteHost currentHost = currentState.getRemoteHosts().get(idealHost.getID());
 
-	            // Get the VM deltas from each host
+	            // Get the VM Maps from each host
 
-            	Set<VM> idealVMs = (Set<VM>) idealHost.getVMs().values();
-            	Set<VM> currentVMs = (Set<VM>) currentHost.getVMs().values();
+            	HashMap<String, VM> idealVMs = idealHost.getVMs();
+            	HashMap<String, VM> currentVMs = currentHost.getVMs();
 
-            	// Boot the new VMs
+            	// Boot the new VMs and install services on them
 
-	            for (VM idealVM : idealHost.getVMs().values()) {
-	                if (!currentVMs.contains(idealVM)) {
-	                	hardwareCluster.bootVM(currentHost, idealVM);
-	                }
+	            for (String idealVMID : idealVMs.keySet()) {
+	            	VM idealVM = idealVMs.get(idealVMID);
+
+	            	// If there is already a VM with the requisite ID, then get it from the current host and just boot services.
+	            	// Otherwise, boot the VM, then boot the services.
+	            	if (currentVMs.keySet().contains(idealVMs.get(idealVMID))) {
+	            		VM currentVM = currentVMs.get(idealVMID);
+	            		for (String idealServiceInstanceID : idealVM.getServiceInstances().keySet()) {
+	            			// Check if there already exists a ServiceInstance with the requisite ID.
+	            			if (!currentVM.getServiceInstances().keySet().contains(idealServiceInstanceID)) {
+		                		ServiceInstance idealService = idealVM.getServiceInstances().get(idealServiceInstanceID);
+			                	hardwareCluster.startService(idealVM, idealService);
+			                }
+		                }
+	            	} else {
+	            		hardwareCluster.bootVM(currentHost, idealVM);
+	                	for (String idealServiceInstanceID : idealVM.getServiceInstances().keySet()) {
+	                		ServiceInstance idealService = idealVM.getServiceInstances().get(idealServiceInstanceID);
+		                	hardwareCluster.startService(idealVM, idealService);
+		                }
+	            	}
+
+	                
+
+
 	            }
-
-	            // Boot the new services
 
 
 	        }

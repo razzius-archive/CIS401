@@ -2,7 +2,7 @@ package orchestration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.UUID;
 
 //
@@ -17,7 +17,7 @@ public class VM extends Node implements Serializable {
 	private String ipAddress;		// Get the IP address after booting
 	private String status; 			// Booting, Running, Stopped, Crashed, Terminated
 	// HashSet<Integer> serviceInstanceIDs = new HashSet<Integer>();
-	private HashSet<ServiceInstance> serviceInstances = new HashSet<ServiceInstance>();
+	private HashMap<String, ServiceInstance> serviceInstances = new HashMap<String, ServiceInstance>();
 
 	public VM(VM other) {
 		id = other.getID();
@@ -25,8 +25,8 @@ public class VM extends Node implements Serializable {
 		memoryAllocated = other.memoryAllocated;
 		ipAddress = other.ipAddress;
 		status = other.status;
-		for (ServiceInstance otherServiceInstance : other.serviceInstances) {
-			serviceInstances.add(new ServiceInstance(otherServiceInstance));
+		for (String otherServiceInstanceID : other.serviceInstances.keySet()) {
+			serviceInstances.put(otherServiceInstanceID, new ServiceInstance(other.getServiceInstances().get(otherServiceInstanceID)));
 		}
 	}
 
@@ -41,6 +41,10 @@ public class VM extends Node implements Serializable {
 
 	public int getMemory() {
 		return memoryAllocated;
+	}
+
+	public HashMap<String, ServiceInstance> getServiceInstances() {
+		return serviceInstances;
 	}
 
 }
