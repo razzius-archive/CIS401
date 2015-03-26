@@ -16,7 +16,6 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import com.cedarsoftware.util.io.JsonReader;
 
 //
 // Orchestration Layer
@@ -31,7 +30,7 @@ public class OrchestrationLayer {
    }
 
     private static StateManager stateManager;
-	private static RequestHandler requestHandler;
+    private static RequestHandler requestHandler;
     private static AlgorithmSolver algorithmSolver;
     private static Analytics analytics;
     private static HardwareCluster hardwareCluster;

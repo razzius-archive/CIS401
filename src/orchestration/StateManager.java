@@ -33,24 +33,22 @@ import orchestration.CustomerResponse;
 
 public class StateManager {
 
+    private static class ClusterUpdateThread extends Thread {
 
+        public ClusterUpdateThread() {}
 
-	class ClusterUpdateThread extends Thread {
-
-	    public ClusterUpdateThread() {}
-
-	    public void run() {
-	    	while (true) {
-		    	while (changesFlag == false) {
-		    		try {
-						wait();
-					} catch (InterruptedException e) {
-
-					}
-		    	}
+        public void run() {
+            while (true) {
+                synchronized (changesFlag) {
+                    try {
+                        changesFlag.wait();
+                    } catch (InterruptedException e) {
+                        System.out.println(e);
+                    }
+                }
                 checkUpdate();
-		    }
-	    }
+            }
+        }
 
         public synchronized void checkUpdate() {
             if (changesFlag == true) {
@@ -59,28 +57,28 @@ public class StateManager {
             }
         }
 
-	    public void updateCluster() {
-	    	// ACTUALLY UPDATE THE CLUSTER
+        public void updateCluster() {
+            // ACTUALLY UPDATE THE CLUSTER
             // use idealState
             for (RemoteHost host : currentState.getRemoteHosts()) {
                 // compare idealState vs. currentState
                 //for (VM vm : host.vms) {
-                    // if this vm is not in 
+                    // if this vm is not in
                 //}
             }
-	    }
-	}
+        }
+    }
 
-	/**
-	 * State Manager contains instances of the algorithm solver and hardware cluster.
-	 * The changesFlag indicates if the hardware cluster needs to be modified.
-	 * The State Manager sets the flag when it receives input from the algorithm solver.
-	 * The State Manager also maintains a worker thread which updates the cluster and resets the flag.
-	 */
+    /**
+     * State Manager contains instances of the algorithm solver and hardware cluster.
+     * The changesFlag indicates if the hardware cluster needs to be modified.
+     * The State Manager sets the flag when it receives input from the algorithm solver.
+     * The State Manager also maintains a worker thread which updates the cluster and resets the flag.
+     */
 
     private static AlgorithmSolver algorithmSolver = new AlgorithmSolver();
     private static HardwareCluster hardwareCluster;
-    private static boolean changesFlag = false;
+    private static Boolean changesFlag = false;
     private static ClusterUpdateThread clusterUpdateThread;
 
     /**
