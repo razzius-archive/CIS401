@@ -56,12 +56,29 @@ public class StateManager {
             System.out.println("ACTUALLY UPDATE THE CLUSTER");
             // ACTUALLY UPDATE THE CLUSTER
             // use idealState
-            //for (RemoteHost host : currentState.getRemoteHosts()) {
-                // compare idealState vs. currentState
-                //for (VM vm : host.vms) {
-                    // if this vm is not in
-                //}
-            //}
+
+            
+
+            for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
+	            RemoteHost currentHost = currentState.getRemoteHosts.get(idealHost.getID());
+
+	            // Get the VM deltas from each host
+
+            	Set<VM> idealVMs = idealHost.getVMs();
+            	Set<VM> currentVMs = currentHost.getVMs();
+
+            	// Boot the new VMs
+
+	            for (VM idealVM : idealHost.getVMs) {
+	                if (!currentVMs.contains(idealVM)) {
+	                	hardwareCluster.bootVM(currentHost, idealVM);
+	                }
+	            }
+
+	            // Boot the new services
+
+
+	        }
         }
     }
 
