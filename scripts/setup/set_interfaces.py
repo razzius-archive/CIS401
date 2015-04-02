@@ -20,7 +20,7 @@ iface ovsbr0 inet static
 	down ip link set ovsbr0 down
 """.strip()
 
-ifconfig = subprocess.check_output(['ifconfig', 'ovsbr0'])
+ifconfig = subprocess.check_output(['ifconfig', 'eth0'])
 ipv4_re = r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
 
 address_re = r"""
@@ -45,5 +45,5 @@ for line in route_info.split('\n'):
 if gateway is None:
 	print('Error: no gateway found in eth0')
 
-with open('/etc/network/interfaces') as f:
+with open('/etc/network/interfaces', 'w') as f:
 	f.write(interfaces.format(address, gateway, netmask, broadcast))
