@@ -67,7 +67,6 @@ public class OrchestrationLayer {
 
         logger.info("Starting StateManager");
         stateManager = new StateManager(hardwareCluster);
-        logger.info("Starting RequestHandler");
         requestHandler = new RequestHandler(stateManager);
 
         // set up services from config.json
