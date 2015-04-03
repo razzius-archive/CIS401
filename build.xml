@@ -10,7 +10,7 @@
     <mkdir dir="classes"/>
   </target>
 
-  <target name="compile-war" description="Compile the main classes">
+  <target name="compile-war" description="Compile the main classes" depends="init">
     <javac srcdir="${src}" destdir="target/orchestration/WEB-INF/classes" debug="on" includeAntRuntime="no">
       <classpath>
         <fileset dir="lib">
@@ -58,18 +58,6 @@
     </javac>
   </target>
 
-  <target name="run" description="Starts OrchestrationLayer and server">
-    <java fork="true" failonerror="yes" classname="orchestration.OrchestrationLayer">
-      <sysproperty key="log4j.configuration" value="file:src/orchestration/log4j.properties"/>
-      <classpath>
-        <fileset dir="lib">
-          <include name="*.jar"/>
-        </fileset>
-        <pathelement path="bin"/>
-      </classpath>
-    </java>
-  </target>
-
   <target name="request" description="Starts OrchestrationLayer and server">
     <java fork="true" failonerror="yes" classname="orchestration.HttpURLConnectionExample">
       <sysproperty key="log4j.configuration" value="file:src/orchestration/log4j.properties"/>
@@ -106,14 +94,12 @@
       <formatter type="plain"/>
       <formatter type="xml"/>
 
-      <test name="test.ExampleTest"
-             haltonfailure="no" outfile="result">
+      <test name="test.ExampleTest" haltonfailure="no" outfile="result">
 
       <formatter type="plain"/>
       <formatter type="xml"/>
 
     </test>
-
 
     </junit>
   </target>

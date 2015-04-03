@@ -4,9 +4,10 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import java.util.Set;
+import orchestration.VM;
+
 
 public interface RemoteHostInterface extends Remote {
-
     public void bootVM(VM vm) throws RemoteException;
     public void shutdownVM(VM vm) throws RemoteException;
     public void addNetworkRoute(VM vm) throws RemoteException;

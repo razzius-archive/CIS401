@@ -10,11 +10,13 @@ import java.rmi.Naming;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
 import orchestration.VM;
 import orchestration.RemoteHostInterface;
+
 
 
 public class RemoteHost extends Node {
@@ -28,7 +30,7 @@ public class RemoteHost extends Node {
         // TODO set static parameters like memory, numcores, bandwidth
         this.vms = new HashMap<String, VM>();
         this.ip = config.getIpAddress();
-        this.nodeID = "1";
+        this.nodeID = UUID.randomUUID().toString(); // uuid as string
         logger.info("ip is: " + ip);
         try {
         	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
@@ -54,6 +56,9 @@ public class RemoteHost extends Node {
         return this.hostConfig;
     }
 
+    /**
+     * Boot a vm with the specified configuration and return its IP address.
+     */
     public void bootVM(VM vm) throws RemoteException {
       rmiServer.bootVM(vm);
   }
