@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class webInterfaceServlet extends HttpServlet {
+public class WebInterfaceServlet extends HttpServlet {
 	
 	/* 
 	 * The doPost method is not used.
