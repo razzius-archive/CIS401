@@ -101,16 +101,16 @@ public class RequestServlet extends HttpServlet {
 			out.write("<html><head><title>DAAR 2015</head></title><body>");
 			out.write("Received parameters:");
 
-			// CustomerResponse cr = stateManager.queryAlgorithmSolver(request);
-			// String res = "";
-   //          if (cr.accepted) {
-   //              res += "Request Accepted";
-   //          } else {
-   //              res += "Request Denied";
-   //          }
+			CustomerResponse cr = stateManager.queryAlgorithmSolver(req);
+			String res = "";
+            if (cr.accepted) {
+                res += "Request Accepted";
+            } else {
+                res += "Request Denied";
+            }
 
-   //          logger.info("Server responding with: " + res);
-   //          out.write("<p>" + res + "</p>");
+            logger.info("Server responding with: " + res);
+            out.write("<p>" + res + "</p>");
             out.write("</body></html>");
 
 		} catch (IOException e) {

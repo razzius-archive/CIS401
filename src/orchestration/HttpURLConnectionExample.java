@@ -33,7 +33,7 @@ public class HttpURLConnectionExample {
 	// HTTP POST request
 	private void sendPost(Request req) throws Exception {
 
-		String url = "http://localhost:8080/requests";
+		String url = "http://localhost:8080/request";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
