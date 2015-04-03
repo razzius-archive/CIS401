@@ -38,12 +38,15 @@ public class RequestServlet extends HttpServlet {
     private static HardwareCluster hardwareCluster;
 
 	public void init() throws ServletException {
+		ServletContext context = getServletContext();
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("config.json")));
+			InputStream configJson = context.getResourceAsStream("/WEB-INF/config.json");
+			// new FileInputStream("config.json")
+			BufferedReader br = new BufferedReader(new InputStreamReader(configJson));
 	        Gson g = new Gson();
 	        Container c = g.fromJson(br, Container.class);
-	        // System.out.println(c.hosts.get(0).get("memory"));
-	        // System.out.println(c.services.get(0).get("command"));
+	        System.out.println(c.hosts.get(0).get("memory"));
+	        System.out.println(c.services.get(0).get("command"));
 
 	        // set up hosts from config.json
 	        ArrayList<HostConfig> hostConfigs = new ArrayList<HostConfig>();
