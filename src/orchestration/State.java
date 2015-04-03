@@ -28,12 +28,4 @@ public class State {
     	return this.serviceChains;
     }
 
-    public void copyServiceChains(State otherState) {
-    	// Copy otherState's remote hosts into this state
-        Map<Request, List<Node>> otherServices = otherState.getServiceChains();
-    	for (Request key : otherServices.keySet()) {
-    		this.serviceChains.put(key, otherServices.get(key));
-    	}
-    }
-
 }

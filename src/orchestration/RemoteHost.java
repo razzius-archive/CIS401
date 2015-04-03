@@ -10,11 +10,13 @@ import java.rmi.Naming;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
 import orchestration.VM;
 import orchestration.RemoteHostInterface;
+
 
 
 public class RemoteHost extends Node {
@@ -24,34 +26,11 @@ public class RemoteHost extends Node {
     private RemoteHostInterface rmiServer;
     private HashMap<String, VM> vms;
 
-    public RemoteHost(RemoteHost other) {
-        this.hostConfig = other.getHostConfig();
-        this.ip = hostConfig.getIpAddress();
-        this.nodeID = "1";
-        logger.info("ip is: " + ip);
-        try {
-            rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            logger.fatal("Unable to connect to remote server " + e);
-        } catch (NotBoundException | MalformedURLException e) {
-            e.printStackTrace();
-            logger.fatal(e);
-            System.exit(1);
-        }
-
-
-        HashMap<String, VM> otherVMs = other.getVMs();
-        for (String i : otherVMs.keySet()) {
-            vms.put(i, new VM(otherVMs.get(i)));
-        }
-    }
-
     public RemoteHost(HostConfig config) {
         // TODO set static parameters like memory, numcores, bandwidth
         this.vms = new HashMap<String, VM>();
         this.ip = config.getIpAddress();
-        this.nodeID = "1";
+        this.nodeID = UUID.randomUUID().toString(); // uuid as string
         logger.info("ip is: " + ip);
         try {
         	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
@@ -77,6 +56,9 @@ public class RemoteHost extends Node {
         return this.hostConfig;
     }
 
+    /**
+     * Boot a vm with the specified configuration and return its IP address.
+     */
     public void bootVM(VM vm) throws RemoteException {
       rmiServer.bootVM(vm);
   }

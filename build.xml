@@ -7,10 +7,10 @@
 
   <target name="init">
     <mkdir dir="target/orchestration/WEB-INF/classes"/>
-    <mkdir dir="classes"/>
+    <mkdir dir="target/orchestration/WEB-INF/lib"/>
   </target>
 
-  <target name="compile-war" description="Compile the main classes">
+  <target name="compile-war" description="Compile the main classes" depends="init">
     <javac srcdir="${src}" destdir="target/orchestration/WEB-INF/classes" debug="on" includeAntRuntime="no">
       <classpath>
         <fileset dir="lib">
@@ -29,12 +29,16 @@
     </jar>
   </target>
 
-  <target name="install">
+  <target name="install" depends="init">
     <get dest="lib">
       <url url="http://mirrors.ibiblio.org/maven2/log4j/log4j/1.2.12/log4j-1.2.12.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/junit/junit/4.10/junit-4.10.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/com/google/code/gson/gson/2.2.2/gson-2.2.2.jar"/>
+      <url url="http://mirrors.ibiblio.org/maven/javax.servlet/jars/servlet-api-2.2.jar"/>
     </get>
+    <copy todir="target/orchestration/WEB-INF/lib">
+      <fileset dir="lib"/>
+    </copy>
   </target>
 
   <target name="build" description="Compile the main classes">
@@ -55,18 +59,6 @@
         </fileset>
       </classpath>
     </javac>
-  </target>
-
-  <target name="run" description="Starts OrchestrationLayer and server">
-    <java fork="true" failonerror="yes" classname="orchestration.OrchestrationLayer">
-      <sysproperty key="log4j.configuration" value="file:src/orchestration/log4j.properties"/>
-      <classpath>
-        <fileset dir="lib">
-          <include name="*.jar"/>
-        </fileset>
-        <pathelement path="bin"/>
-      </classpath>
-    </java>
   </target>
 
   <target name="request" description="Starts OrchestrationLayer and server">
@@ -105,14 +97,12 @@
       <formatter type="plain"/>
       <formatter type="xml"/>
 
-      <test name="test.ExampleTest"
-             haltonfailure="no" outfile="result">
+      <test name="test.ExampleTest" haltonfailure="no" outfile="result">
 
       <formatter type="plain"/>
       <formatter type="xml"/>
 
     </test>
-
 
     </junit>
   </target>
