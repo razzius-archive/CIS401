@@ -34,6 +34,7 @@
       <url url="http://mirrors.ibiblio.org/maven2/log4j/log4j/1.2.12/log4j-1.2.12.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/junit/junit/4.10/junit-4.10.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/com/google/code/gson/gson/2.2.2/gson-2.2.2.jar"/>
+      <url url="http://mirrors.ibiblio.org/maven/javax.servlet/jars/servlet-api-2.2.jar"/>
     </get>
   </target>
 
