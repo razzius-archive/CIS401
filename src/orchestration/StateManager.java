@@ -52,32 +52,50 @@ public class StateManager {
         }
 
         public void updateCluster() {
-
             logger.info("Updating the cluster");
-            // ACTUALLY UPDATE THE CLUSTER
-            // use idealState
 
-
-
+            logger.info("Ideal remote hosts: " + idealState.getRemoteHosts().size());
+            logger.info("Current remote hosts: " + currentState.getRemoteHosts().size());
             for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
+
+                logger.info("Updating ideal host " + idealHost.getID());
 	            RemoteHost currentHost = currentState.getRemoteHosts().get(idealHost.getID());
 
-	            // Get the VM deltas from each host
+	            // Get the VM Maps from each host
 
-            	Set<VM> idealVMs = (Set<VM>) idealHost.getVMs().values();
-            	Set<VM> currentVMs = (Set<VM>) currentHost.getVMs().values();
+	            logger.info("Getting VM Maps from each Host...");
 
-            	// Boot the new VMs
+            	HashMap<String, VM> idealVMs = idealHost.getVMs();
+            	HashMap<String, VM> currentVMs = currentHost.getVMs();
 
-	            for (VM idealVM : idealHost.getVMs().values()) {
-	                if (!currentVMs.contains(idealVM)) {
-	                	hardwareCluster.bootVM(currentHost, idealVM);
-	                }
+            	// Boot the new VMs and install services on them
+
+            	logger.info("Found " + idealVMs.size() + " ideal VMs.");
+            	logger.info("Found " + currentVMs.size() + " current VMs.");
+
+	            for (String idealVMID : idealVMs.keySet()) {
+	            	VM idealVM = idealVMs.get(idealVMID);
+
+	            	// If there is already a VM with the requisite ID, then get it from the current host and just boot services.
+	            	// Otherwise, boot the VM, then boot the services.
+	            	if (currentVMs.keySet().contains(idealVMs.get(idealVMID))) {
+	            		VM currentVM = currentVMs.get(idealVMID);
+	            		for (String idealServiceInstanceID : idealVM.getServiceInstances().keySet()) {
+	            			// Check if there already exists a ServiceInstance with the requisite ID.
+	            			if (!currentVM.getServiceInstances().keySet().contains(idealServiceInstanceID)) {
+		                		ServiceInstance idealService = idealVM.getServiceInstances().get(idealServiceInstanceID);
+			                	hardwareCluster.startService(idealVM, idealService);
+			                }
+		                }
+	            	} else {
+	            		logger.info("Booting new VM");
+	            		hardwareCluster.bootVM(currentHost, idealVM);
+	                	for (String idealServiceInstanceID : idealVM.getServiceInstances().keySet()) {
+	                		ServiceInstance idealService = idealVM.getServiceInstances().get(idealServiceInstanceID);
+		                	hardwareCluster.startService(idealVM, idealService);
+		                }
+	            	}
 	            }
-
-	            // Boot the new services
-
-
 	        }
         }
     }
@@ -109,15 +127,16 @@ public class StateManager {
 
 
     /**
-     * Dynamic Network Attributes that change over the course of a trial.
+     * Dynamic Network Attributes that change over the course of a trial are contained in the currentState.
      */
 
-    // State
-    private State currentState = new State();
-    private State idealState = new State();
+    private State currentState;
+    private State idealState;
 
     public StateManager(HardwareCluster hardwareCluster) {
         this.hardwareCluster = hardwareCluster;
+        this.currentState = new State(hardwareCluster.getRemoteHosts());
+        this.idealState = new State(hardwareCluster.getRemoteHosts());
         this.clusterUpdateThread = new ClusterUpdateThread();
         clusterUpdateThread.start();
         logger.info("clusterUpdateThread started");

@@ -22,11 +22,12 @@ public class RemoteHost extends Node {
     private static Logger logger = Logger.getLogger(RemoteHost.class.getName());
     private HostConfig hostConfig;
     private RemoteHostInterface rmiServer;
-    private HashMap<Integer, VM> vms;
+    private HashMap<String, VM> vms;
 
     public RemoteHost(RemoteHost other) {
         this.hostConfig = other.getHostConfig();
         this.ip = hostConfig.getIpAddress();
+        this.nodeID = "1";
         logger.info("ip is: " + ip);
         try {
             rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
@@ -40,15 +41,17 @@ public class RemoteHost extends Node {
         }
 
 
-        HashMap<Integer, VM> otherVMs = other.getVMs();
-        for (Integer i : otherVMs.keySet()) {
+        HashMap<String, VM> otherVMs = other.getVMs();
+        for (String i : otherVMs.keySet()) {
             vms.put(i, new VM(otherVMs.get(i)));
         }
     }
 
     public RemoteHost(HostConfig config) {
         // TODO set static parameters like memory, numcores, bandwidth
+        this.vms = new HashMap<String, VM>();
         this.ip = config.getIpAddress();
+        this.nodeID = "1";
         logger.info("ip is: " + ip);
         try {
         	rmiServer = (RemoteHostInterface)Naming.lookup("rmi://" + ip + "/remote");
@@ -62,7 +65,7 @@ public class RemoteHost extends Node {
         }
     }
 
-    public HashMap<Integer, VM> getVMs() {
+    public HashMap<String, VM> getVMs() {
         return this.vms;
     }
 

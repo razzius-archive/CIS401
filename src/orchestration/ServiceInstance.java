@@ -35,4 +35,8 @@ public class ServiceInstance {
 		this.serviceID = serviceID;
 		this.vmID = vmID;
 	}
+
+	public String getServiceInstanceID() {
+		return serviceInstanceID;
+	}
 }

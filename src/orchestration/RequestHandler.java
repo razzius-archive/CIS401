@@ -73,9 +73,10 @@ public class RequestHandler {
             }
             logger.info("Request: " + paramsStr);
 
-            Request request = new Request("r4","s3_0","s3_1",72432,44,"s0-s1-s3",12000,1);
+            Request request = new Request("r4","1","1",72432,44,"s0-s1-s3",12000,1);
             logger.info("Sending request to AlgorithmSolver");
             CustomerResponse cr = stateManager.queryAlgorithmSolver(request);
+            logger.info("Algorithm responded with " + cr.accepted);
 
             String response = "";
             if (cr.accepted) {
