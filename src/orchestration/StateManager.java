@@ -197,4 +197,8 @@ public class StateManager {
         return services;
     }
 
+    public State getState() {
+        return state;
+    }
+
 }

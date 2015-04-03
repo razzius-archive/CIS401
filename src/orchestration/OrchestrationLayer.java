@@ -79,4 +79,8 @@ public class OrchestrationLayer {
         }
 
     }
+
+    static StateManager getStateManager() {
+        return stateManager;
+    }
 }

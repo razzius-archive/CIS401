@@ -13,9 +13,19 @@
      <load-on-startup>1</load-on-startup>
    </servlet>
 
+    <servlet>
+     <servlet-name>webInterface</servlet-name>
+     <servlet-class>orchestration.WebInterfaceServlet</servlet-class>
+   </servlet>
+
    <servlet-mapping>
      <servlet-name>request</servlet-name>
      <url-pattern>/request</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+     <servlet-name>webInterface</servlet-name>
+     <url-pattern>/status</url-pattern>
    </servlet-mapping>
 
 </web-app>
