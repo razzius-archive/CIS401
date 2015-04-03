@@ -7,7 +7,7 @@
 
   <target name="init">
     <mkdir dir="target/orchestration/WEB-INF/classes"/>
-    <mkdir dir="classes"/>
+    <mkdir dir="target/orchestration/WEB-INF/lib"/>
   </target>
 
   <target name="compile-war" description="Compile the main classes" depends="init">
@@ -29,13 +29,16 @@
     </jar>
   </target>
 
-  <target name="install">
+  <target name="install" depends="init">
     <get dest="lib">
       <url url="http://mirrors.ibiblio.org/maven2/log4j/log4j/1.2.12/log4j-1.2.12.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/junit/junit/4.10/junit-4.10.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/com/google/code/gson/gson/2.2.2/gson-2.2.2.jar"/>
       <url url="http://mirrors.ibiblio.org/maven/javax.servlet/jars/servlet-api-2.2.jar"/>
     </get>
+    <copy todir="target/orchestration/WEB-INF/lib">
+      <fileset dir="lib"/>
+    </copy>
   </target>
 
   <target name="build" description="Compile the main classes">
