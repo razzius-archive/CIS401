@@ -62,10 +62,9 @@ public class RequestServlet extends HttpServlet {
 	        hostConfigs.add(localhostConfig);
 
 	        analytics = new Analytics();
-	        hardwareCluster = new HardwareCluster(hostConfigs);
-
+	        hardwareCluster = new HardwareCluster();
 	        logger.info("Starting StateManager");
-	        stateManager = new StateManager(hardwareCluster);
+	        stateManager = new StateManager(hardwareCluster, hostConfigs);
 
 	        // set up services from config.json
 	        for (Map service : c.services) {
