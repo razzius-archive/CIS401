@@ -2,6 +2,7 @@ package orchestration;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 
 import java.io.PrintWriter;
@@ -128,12 +129,41 @@ public class RequestServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
+		// try {
+		// 	System.out.println("got request");
+		// 	PrintWriter out = response.getWriter();
+		// 	out.write("<html><head><title>DAAR 2015</title></head><body>");
+		// 	out.write("SEND POST REQUEST TO THIS ADDRESS WITH PARAMETERS");
+		// 	out.write("</body></html>");
+		// } catch (IOException e) {
+		// 	e.printStackTrace();
+		// }
+
 		try {
-			System.out.println("got request");
+
+			HashMap<String, VM> vms = new HashMap<String, VM>();
+
+			for (RemoteHost host : stateManager.getState().getRemoteHosts().values()) {
+				for (String vmID : host.getVMs().keySet()) {
+					vms.put(vmID, host.getVMs().get(vmID));
+				}
+			}
+
 			PrintWriter out = response.getWriter();
-			out.write("<html><head><title>DAAR 2015</title></head><body>");
-			out.write("SEND POST REQUEST TO THIS ADDRESS WITH PARAMETERS");
-			out.write("</body></html>");
+			out.write("<html><body>"
+					
+				+ "<form method=\"GET\">"
+				+ "<input type=\"submit\" value=\"Get Virtual Machine Statuses\">"
+				+ "</form>"
+				+ "<br>");
+
+				for (String vmID : vms.keySet()) {
+					out.write("Found VM " + vmID + "<br>");
+
+				}
+
+					
+				out.write("</body></html>");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
