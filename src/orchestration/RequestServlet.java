@@ -83,30 +83,61 @@ public class RequestServlet extends HttpServlet {
 
 	}
 
+	private String getParam(HttpServletRequest request, String key) {
+		String param = request.getParameter(key);
+		if (param == null) throw new IllegalArgumentException("\"" + key + "\" is not a valid parameter");
+		else return param;
+	}
+
+	private Request processInput(HttpServletRequest request, PrintWriter out) {
+
+		try {
+			String requestID = getParam(request, "requestID");
+			String startNode = getParam(request, "startNode");
+			String endNode   = getParam(request, "endNode");
+			String services  = getParam(request, "services");
+
+			int packageRate = Integer.parseInt(getParam(request, "packageRate"));
+			int deadline    = Integer.parseInt(getParam(request, "deadline"));
+			int packageSize = Integer.parseInt(getParam(request, "packageSize"));
+			int price       = Integer.parseInt(getParam(request, "price"));
+
+			Request req = new Request(
+				requestID,
+				startNode,
+				endNode,
+				packageRate,
+				deadline,
+				services,
+				packageSize,
+				price);
+
+			out.write("<html><head><title>DAAR 2015</head></title><body>");
+			out.write("Received parameters:");
+			out.write("\n  requestID = " + requestID);
+			out.write("\n, startNode = " + startNode);
+			out.write("\n, endNode = " + endNode);
+			out.write("\n, packageRate = " + packageRate);
+			out.write("\n, deadline = " + deadline);
+			out.write("\n, services = " + services);
+			out.write("\n, packageSize = " + packageSize);
+			out.write("\n, price = " + price);
+
+			return req;
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+	}
+
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			PrintWriter out = response.getWriter();
 
-			Request req = new Request(
-				request.getParameter("requestID"),
-				request.getParameter("startNode"),
-				request.getParameter("endNode"),
-				Integer.parseInt(request.getParameter("packageRate")),
-				Integer.parseInt(request.getParameter("deadline")),
-				request.getParameter("services"),
-				Integer.parseInt(request.getParameter("packageSize")),
-				Integer.parseInt(request.getParameter("price")));
+			Request req = processInput(request, out);
+			if (req == null) {
+				response.sendError(400, "invalid parameters");
+			}
 
-			out.write("<html><head><title>DAAR 2015</head></title><body>");
-			out.write("Received parameters:");
-			out.write("\n  requestID = " + request.getParameter("requestID"));
-			out.write("\n, startNode = " + request.getParameter("startNode"));
-			out.write("\n, endNode = " + request.getParameter("endNode"));
-			out.write("\n, packageRate = " + Integer.parseInt(request.getParameter("packageRate")));
-			out.write("\n, deadline = " + Integer.parseInt(request.getParameter("deadline")));
-			out.write("\n, services = " + request.getParameter("services"));
-			out.write("\n, packageSize = " + Integer.parseInt(request.getParameter("packageSize")));
-			out.write("\n, price = " + Integer.parseInt(request.getParameter("price")));
 
 			CustomerResponse cr = stateManager.queryAlgorithmSolver(req);
 			String res = "";
@@ -119,8 +150,7 @@ public class RequestServlet extends HttpServlet {
             logger.info("Server responding with: " + res);
             out.write("<p>" + res + "</p>");
             out.write("</body></html>");
-
-		} catch (IOException e) {
+	    } catch (IOException e) {
 			e.printStackTrace();
 		}
 
