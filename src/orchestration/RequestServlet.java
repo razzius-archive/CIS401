@@ -38,10 +38,7 @@ public class RequestServlet extends HttpServlet {
     private static HardwareCluster hardwareCluster;
 
 	public void init() throws ServletException {
-		System.out.println("started");
 		try {
-			File f = new File("test.txt");
-			System.out.println(f.getAbsolutePath());
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("config.json")));
 	        Gson g = new Gson();
 	        Container c = g.fromJson(br, Container.class);
@@ -100,6 +97,14 @@ public class RequestServlet extends HttpServlet {
 
 			out.write("<html><head><title>DAAR 2015</head></title><body>");
 			out.write("Received parameters:");
+			out.write("\n  requestID = " + request.getParameter("requestID"));
+			out.write("\n, startNode = " + request.getParameter("startNode"));
+			out.write("\n, endNode = " + request.getParameter("endNode"));
+			out.write("\n, packageRate = " + Integer.parseInt(request.getParameter("packageRate")));
+			out.write("\n, deadline = " + Integer.parseInt(request.getParameter("deadline")));
+			out.write("\n, services = " + request.getParameter("services"));
+			out.write("\n, packageSize = " + Integer.parseInt(request.getParameter("packageSize")));
+			out.write("\n, price = " + Integer.parseInt(request.getParameter("price")));
 
 			CustomerResponse cr = stateManager.queryAlgorithmSolver(req);
 			String res = "";
