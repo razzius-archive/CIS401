@@ -46,8 +46,8 @@ public class RequestServlet extends HttpServlet {
 			BufferedReader br = new BufferedReader(new InputStreamReader(configJson));
 	        Gson g = new Gson();
 	        Container c = g.fromJson(br, Container.class);
-	        System.out.println(c.hosts.get(0).get("memory"));
-	        System.out.println(c.services.get(0).get("command"));
+	        // System.out.println(c.hosts.get(0).get("memory"));
+	        // System.out.println(c.services.get(0).get("command"));
 
 	        // set up hosts from config.json
 	        ArrayList<HostConfig> hostConfigs = new ArrayList<HostConfig>();
@@ -181,7 +181,7 @@ public class RequestServlet extends HttpServlet {
 
 			PrintWriter out = response.getWriter();
 			out.write("<html><body>"
-					
+
 				+ "<form method=\"GET\">"
 				+ "<input type=\"submit\" value=\"Get Virtual Machine Statuses\">"
 				+ "</form>"
@@ -193,7 +193,7 @@ public class RequestServlet extends HttpServlet {
 
 				}
 
-					
+
 				out.write("</body></html>");
 		} catch (IOException e) {
 			e.printStackTrace();
