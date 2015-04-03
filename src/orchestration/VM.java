@@ -16,11 +16,9 @@ public class VM extends Node implements Serializable {
 	private int memoryAllocated; 	// MB of memory allocated
 	private String ipAddress;		// Get the IP address after booting
 	private String status; 			// Booting, Running, Stopped, Crashed, Terminated
-	// HashSet<Integer> serviceInstanceIDs = new HashSet<Integer>();
 	private HashMap<String, ServiceInstance> serviceInstances = new HashMap<String, ServiceInstance>();
 
 	public VM(double coresAllocated, int memoryAllocated) {
-		id = "1";
 		this.coresAllocated = coresAllocated;
 		this.memoryAllocated = memoryAllocated;
 	}

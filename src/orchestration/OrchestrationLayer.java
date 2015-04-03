@@ -63,11 +63,10 @@ public class OrchestrationLayer {
         hostConfigs.add(localhostConfig);
 
         analytics = new Analytics();
-        hardwareCluster = new HardwareCluster(hostConfigs);
+        hardwareCluster = new HardwareCluster();
 
         logger.info("Starting StateManager");
-        stateManager = new StateManager(hardwareCluster);
-        logger.info("Starting RequestHandler");
+        stateManager = new StateManager(hardwareCluster, hostConfigs);
         requestHandler = new RequestHandler(stateManager);
 
         // set up services from config.json

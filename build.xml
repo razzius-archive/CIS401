@@ -5,11 +5,36 @@
   <property name="test" location="src/test"/>
   <property name="build" location="bin"/>
 
+  <target name="init">
+    <mkdir dir="target/orchestration/WEB-INF/classes"/>
+    <mkdir dir="classes"/>
+  </target>
+
+  <target name="compile-war" description="Compile the main classes">
+    <javac srcdir="${src}" destdir="target/orchestration/WEB-INF/classes" debug="on" includeAntRuntime="no">
+      <classpath>
+        <fileset dir="lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="war" depends="compile-war">
+    <jar destfile="root.war">
+      <fileset dir="target/orchestration/" includes="WEB-INF/classes/**/*.class"/>
+      <fileset dir="target/orchestration/" includes="WEB-INF/lib/*.jar"/>
+      <fileset dir="target/orchestration/" includes="WEB-INF/*.xml"/>
+      <fileset dir="target/orchestration/" includes="WEB-INF/*.json"/>
+    </jar>
+  </target>
+
   <target name="install">
     <get dest="lib">
       <url url="http://mirrors.ibiblio.org/maven2/log4j/log4j/1.2.12/log4j-1.2.12.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/junit/junit/4.10/junit-4.10.jar"/>
       <url url="http://mirrors.ibiblio.org/maven2/com/google/code/gson/gson/2.2.2/gson-2.2.2.jar"/>
+      <url url="http://mirrors.ibiblio.org/maven/javax.servlet/jars/servlet-api-2.2.jar"/>
     </get>
   </target>
 

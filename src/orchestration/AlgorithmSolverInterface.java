@@ -2,6 +2,7 @@ package orchestration;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.ArrayList;
 
 import orchestration.State;
 
@@ -14,7 +15,7 @@ public interface AlgorithmSolverInterface {
      * Solves for a configuration that fulfills the specification.
      * If none can be produced, returns null.
      */
-    public State solve(
+    public ArrayList<Action> solve(
         Set<Link> links,
         Set<Switch> switches,
         Set<Service> services,
