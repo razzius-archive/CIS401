@@ -19,15 +19,15 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     public AlgorithmSolver() {
     }
 
-    // solve() function should use the current state of the fleet (myLoad)
-    // and return a Configuration object that gives the suggested configuration
-    // for the fleet.
+    // solve() function uses the current optimal (goal) state from the StateManager.
+    // The method return a List of Actions and modifies the state in place.
     // If algorithm cannot solve given the load,
     // then the method returns null and an appropriate log message is set.
+    // solve() should return null if no solution is possible.
 
     // static topology includes links, switches, and services
 
-    public State solve(
+    public ArrayList<Action> solve(
         Set<Link> links,
         Set<Switch> switches,
         Set<Service> services,
@@ -36,51 +36,56 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
     ) {
         try {
 
-            State newState = new State(currentState.getRemoteHosts());
-            newState.copyServiceChains(currentState);
+            ArrayList<Action> actions = new ArrayList<Action>();
+
+            // Get the list of Remote Hosts from the current state
 
             Map<String, RemoteHost> remoteHosts = currentState.getRemoteHosts();
-            logger.info("zize " + remoteHosts.size());
-            logger.info("key " + remoteHosts.keySet().iterator().next());
-            logger.info("startNode " + request.startNode);
-            logger.info("endNode " + request.endNode);
+            logger.info("Algorithm Solver found this many hosts: " + remoteHosts.size());
+            logger.info("Request Start Node: " + request.startNode);
+            logger.info("Request End Node: " + request.endNode);
+            
+            // Identify the start and end hosts.
 
-            // initialize startNode and endNode
-            RemoteHost currentHost = remoteHosts.get(request.startNode);
-            logger.info("currentHost " + currentHost);
+            RemoteHost startHost = remoteHosts.get(request.startNode);
             RemoteHost endHost = remoteHosts.get(request.endNode);
 
-            logger.info("endHost " + currentHost);
+            // Begin building the new service chain to add to the existing state object.
 
-            logger.info("startnode " + currentHost.getID() + " -> " + endHost.getID());
+            List<Node> newServiceChain = new ArrayList<Node>();
+            newServiceChain.add(startHost);
+            newServiceChain.add(new VirtualSwitch());
 
-            List<Node> path = new ArrayList<Node>();
-            path.add(currentHost);
-            path.add(new VirtualSwitch());
+            // Add a new VM to the startHost and Action List.
 
-            // loop through services and create VMs for each on startnode
-            // if startnode no longer has space move to a different remoteHost
+            VM newVM = new VM(1, 1);
+            startHost.getVMs().put(newVM.getID(), newVM);
+            logger.info("Updating state and queueing an action to boot the VM: " + newVM.getID());
+            newServiceChain.add(newVM);
+            newServiceChain.add(new VirtualSwitch());
+            actions.add(new Action(Action.Type.BOOTVM, startHost, newVM, null, null, null, null, null));
+
+            // Loop through services requested. For each one, add it to the indicated VM and Action List.
+
             for (String service : request.services) {
 
-                // TODO: update parameters
-                VM vm = new VM(1, 1);
-
-                currentHost.getVMs().put(vm.getID(), vm);
-                logger.info("Put vm " + vm.getID());
-
-                ServiceInstance si = new ServiceInstance(service, vm.getID());
-                path.add(vm);
-                path.add(new VirtualSwitch());
+                ServiceInstance newServiceInstance = new ServiceInstance(service, newVM.getID());
+                newVM.getServiceInstances().put(newServiceInstance.getServiceInstanceID(), newServiceInstance);
+                actions.add(new Action(Action.Type.STARTSERVICE, null, null, startHost, newVM, newServiceInstance, null, null));
 
             }
 
-            path.add(endHost);
+            // Finally, add the endHost to the new service chain.
 
-            // add serviceChain path to new state
-            newState.getServiceChains().put(request, path);
-            logger.info("done making new ideal state");
+            newServiceChain.add(endHost);
 
-            return newState;
+            // Now that we have built the new service chain, add it to the state and Action List.
+
+            currentState.getServiceChains().put(request, newServiceChain);
+            actions.add(new Action(Action.Type.ADDSERVICECHAIN, null, null, null, null, null, request, newServiceChain));
+
+            return actions;
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -63,10 +63,10 @@ public class OrchestrationLayer {
         hostConfigs.add(localhostConfig);
 
         analytics = new Analytics();
-        hardwareCluster = new HardwareCluster(hostConfigs);
+        hardwareCluster = new HardwareCluster();
 
         logger.info("Starting StateManager");
-        stateManager = new StateManager(hardwareCluster);
+        stateManager = new StateManager(hardwareCluster, hostConfigs);
         logger.info("Starting RequestHandler");
         requestHandler = new RequestHandler(stateManager);
 
