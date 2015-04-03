@@ -49,6 +49,9 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
 
             RemoteHost startHost = remoteHosts.get(request.startNode);
             RemoteHost endHost = remoteHosts.get(request.endNode);
+            if (startHost == null || endHost == null) {
+                return null;
+            }
 
             // Begin building the new service chain to add to the existing state object.
 
@@ -58,7 +61,7 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
 
             // Add a new VM to the startHost and Action List.
 
-            VM newVM = new VM(1, 1);
+            VM newVM = new VM(1, 1024);    // Cores and Memory
             startHost.getVMs().put(newVM.getID(), newVM);
             logger.info("Updating state and queueing an action to boot the VM: " + newVM.getID());
             newServiceChain.add(newVM);

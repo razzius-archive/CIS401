@@ -157,6 +157,7 @@ public class RequestServlet extends HttpServlet {
 				+ "</form>"
 				+ "<br>");
 
+				out.write("Here are the VMs:");
 				for (String vmID : vms.keySet()) {
 					out.write("Found VM " + vmID + "<br>");
 
