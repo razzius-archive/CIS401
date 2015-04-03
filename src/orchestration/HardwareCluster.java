@@ -30,8 +30,9 @@ public class HardwareCluster implements HardwareClusterInterface {
 
     public void bootVM(RemoteHost host, VM vm) {
         try {
-            host.bootVM(vm);
             logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
+            host.bootVM(vm);
+            logger.info("[HardwareCluster] Assigned IP address: " + vm.getIpAddress());
         } catch (RemoteException e) {
             // TODO think about how we will handle RemoteExceptions
             logger.fatal(e);
