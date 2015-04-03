@@ -38,12 +38,12 @@ public class StateManager {
         public ClusterUpdateThread() {}
 
         public void run() {
+        	logger.info("clusterUpdateThread started");
             while (true) {
                 try {
-                    synchronized (changesFlag) {
-                        changesFlag.wait();
+                    synchronized (updates) {
+                        updates.wait();
                         updateCluster();
-                        changesFlag = false;
                     }
                 } catch (InterruptedException e) {
                     System.out.println(e);
@@ -54,49 +54,28 @@ public class StateManager {
         public void updateCluster() {
             logger.info("Updating the cluster");
 
-            logger.info("Ideal remote hosts: " + idealState.getRemoteHosts().size());
-            logger.info("Current remote hosts: " + currentState.getRemoteHosts().size());
-            for (RemoteHost idealHost : idealState.getRemoteHosts().values()) {
+            Action update = updates.remove(0);
 
-                logger.info("Updating ideal host " + idealHost.getID());
-	            RemoteHost currentHost = currentState.getRemoteHosts().get(idealHost.getID());
+            if (update.getType() == Action.Type.BOOTVM) {
+            	// Boot the requisite VM
+            	RemoteHost targetHost = update.getVmHost();
+            	VM targetVM = update.getNewVM();
+            	hardwareCluster.bootVM(targetHost, targetVM);
+            } else if (update.getType() == Action.Type.STARTSERVICE) {
+            	// Start the requisite service on the VM
+            	RemoteHost targetHost = update.getServiceInstanceHost();
+            	VM targetVM = update.getServiceInstanceVM();
+            	ServiceInstance targetServiceInstance = update.getServiceInstance();
+            	hardwareCluster.startService(targetVM, targetServiceInstance);
+            } else if (update.getType() == Action.Type.ADDSERVICECHAIN) {
+            	// Start the service chain
+            	logger.info("Attempting to add a service chain -- not implemented!");
 
-	            // Get the VM Maps from each host
 
-	            logger.info("Getting VM Maps from each Host...");
 
-            	HashMap<String, VM> idealVMs = idealHost.getVMs();
-            	HashMap<String, VM> currentVMs = currentHost.getVMs();
-
-            	// Boot the new VMs and install services on them
-
-            	logger.info("Found " + idealVMs.size() + " ideal VMs.");
-            	logger.info("Found " + currentVMs.size() + " current VMs.");
-
-	            for (String idealVMID : idealVMs.keySet()) {
-	            	VM idealVM = idealVMs.get(idealVMID);
-
-	            	// If there is already a VM with the requisite ID, then get it from the current host and just boot services.
-	            	// Otherwise, boot the VM, then boot the services.
-	            	if (currentVMs.keySet().contains(idealVMs.get(idealVMID))) {
-	            		VM currentVM = currentVMs.get(idealVMID);
-	            		for (String idealServiceInstanceID : idealVM.getServiceInstances().keySet()) {
-	            			// Check if there already exists a ServiceInstance with the requisite ID.
-	            			if (!currentVM.getServiceInstances().keySet().contains(idealServiceInstanceID)) {
-		                		ServiceInstance idealService = idealVM.getServiceInstances().get(idealServiceInstanceID);
-			                	hardwareCluster.startService(idealVM, idealService);
-			                }
-		                }
-	            	} else {
-	            		logger.info("Booting new VM");
-	            		hardwareCluster.bootVM(currentHost, idealVM);
-	                	for (String idealServiceInstanceID : idealVM.getServiceInstances().keySet()) {
-	                		ServiceInstance idealService = idealVM.getServiceInstances().get(idealServiceInstanceID);
-		                	hardwareCluster.startService(idealVM, idealService);
-		                }
-	            	}
-	            }
-	        }
+            } else {
+            	logger.info("Unimplemented Action!");
+            }
         }
     }
 
@@ -113,8 +92,8 @@ public class StateManager {
 
     private AlgorithmSolver algorithmSolver = new AlgorithmSolver();
     private HardwareCluster hardwareCluster;
-    private Boolean changesFlag = false;
-    private ClusterUpdateThread clusterUpdateThread;
+    private ArrayList<Action> updates = new ArrayList<Action>();;
+    private ClusterUpdateThread clusterUpdateThread = new ClusterUpdateThread();
 
     /**
      * Network Attributes that do not change.
@@ -125,21 +104,21 @@ public class StateManager {
     private Set<Tenant> tenants = new HashSet<Tenant>();
     private Set<Service> services = new HashSet<Service>();
 
-
     /**
      * Dynamic Network Attributes that change over the course of a trial are contained in the currentState.
      */
 
-    private State currentState;
-    private State idealState;
+    private State state;
 
-    public StateManager(HardwareCluster hardwareCluster) {
+    public StateManager(HardwareCluster hardwareCluster, ArrayList<HostConfig> hostConfigs) {
+    	Map<String, RemoteHost> remoteHosts = new HashMap<String, RemoteHost>();
+		for (HostConfig config : hostConfigs) {
+            RemoteHost host = new RemoteHost(config);
+            remoteHosts.put(host.getID(), host);
+        }
+        this.state = new State(remoteHosts);
         this.hardwareCluster = hardwareCluster;
-        this.currentState = new State(hardwareCluster.getRemoteHosts());
-        this.idealState = new State(hardwareCluster.getRemoteHosts());
-        this.clusterUpdateThread = new ClusterUpdateThread();
         clusterUpdateThread.start();
-        logger.info("clusterUpdateThread started");
     }
 
     /*
@@ -151,31 +130,20 @@ public class StateManager {
         // Update the internal state accordingly.
     }
 
-    /**
-     * Let the update thread know that there are changes to be enacted.
-     */
-    private void setChangesFlag() {
-        synchronized (changesFlag) {
-            changesFlag.notify();
-        }
-        logger.info("changes ready set");
-    }
-
     public CustomerResponse queryAlgorithmSolver(Request request) {
-        State newState = algorithmSolver.solve(
+        List<Action> actions = algorithmSolver.solve(
             links,
             switches,
             services,
-            idealState,
+            state,
             request);
-        logger.info("AlgorithmSolver returned: " + newState);
-        if (newState != null) {
-            this.idealState = newState;
-            try {
-                setChangesFlag();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (actions != null) {
+        	synchronized (updates) {
+        		for (Action action : actions) {
+        			updates.add(action);
+        		}
+        		updates.notify();
+        	}
             return new CustomerResponse(true);
         } else {
             return new CustomerResponse(false);
