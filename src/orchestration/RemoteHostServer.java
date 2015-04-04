@@ -27,7 +27,7 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 
 	public void bootVM(VM vm) throws RemoteException {
 		logger.debug("bootVM message received");
-		String command = "python scripts/boot_vm.py " + vm.getID() + " " + String.valueOf(vm.getMemory());
+		String command = "python scripts/boot_vm.py " + vm.getID() + " " + String.valueOf(vm.getMemory()) + " " + Analytics.getEndpoint();
 		try {
 			Process p = Runtime.getRuntime().exec(command);
             BufferedReader stdOutput = new BufferedReader(new InputStreamReader(p.getInputStream()));

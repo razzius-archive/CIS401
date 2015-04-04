@@ -54,6 +54,7 @@ public class StateManager {
         public void updateCluster() {
             logger.info("Updating the cluster");
             logger.info("There are currently this many queued actions: " + updates.size());
+            if (updates.isEmpty()) return;
             Action update = updates.remove(0);
             if (update.getType() == Action.Type.BOOTVM) {
             	// Boot the requisite VM
