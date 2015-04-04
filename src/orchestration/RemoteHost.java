@@ -119,6 +119,8 @@ public boolean checkVM(VM vm) throws RemoteException {
 
 public HashSet<Integer> getVMServiceInstancePIDs(VM vm) {
     HashSet<Integer> serviceInstancePIDs = new HashSet<Integer>();
+    logger.info("Attempting to get running Service Instance PIDs from the VM: " + vm.getID());
+    logger.info("NOT IMPLEMENTED - returning empty Set of running Service Instances.");
     // TODO : IMPLEMENT
     return serviceInstancePIDs;
 }
