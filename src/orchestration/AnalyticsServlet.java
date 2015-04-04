@@ -22,12 +22,21 @@ public class AnalyticsServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
-		String action = request.getParameter("action");
+		try {
+			System.out.println("got request");
+			PrintWriter out = response.getWriter();
+			String action = request.getParameter("action");
 		// String vmID   = request.getParameter("vmID");
 
 		logger.info(action);
 
 		System.out.println("here");
+			out.write("<html><head><title>DAAR 2015</title></head><body>");
+			out.write("hello world");
+			out.write("</body></html>");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 

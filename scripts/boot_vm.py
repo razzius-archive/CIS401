@@ -7,6 +7,8 @@ from config import XEN_CONFIG_PATH, IMG_NAME, CONFIG_NAME
 def log_event(analytics_endpoint, process):
     command = 'curl --data "action=bootvm" http://{}'.format(analytics_endpoint)
     process.sendline(command)
+    for line in process:
+        print line
 
 def get_ip(process):
     process.setecho(False)
