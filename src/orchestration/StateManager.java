@@ -53,7 +53,7 @@ public class StateManager {
 
         public void updateCluster() {
             logger.info("Updating the cluster");
-
+            logger.info("There are currently this many queued actions: " + updates.size());
             Action update = updates.remove(0);
 
             if (update.getType() == Action.Type.BOOTVM) {
@@ -75,6 +75,7 @@ public class StateManager {
 
             } else {
             	logger.info("Unimplemented Action!");
+                logger.info("The type of this action is: " + update.getType());
             }
         }
     }
@@ -139,9 +140,6 @@ public class StateManager {
             request);
         if (actions != null) {
         	synchronized (updates) {
-        		for (Action action : actions) {
-        			updates.add(action);
-        		}
         		updates.notify();
         	}
             return new CustomerResponse(true);

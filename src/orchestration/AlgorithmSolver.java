@@ -44,14 +44,17 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             logger.info("Algorithm Solver found this many hosts: " + remoteHosts.size());
             logger.info("Request Start Node: " + request.startNode);
             logger.info("Request End Node: " + request.endNode);
-            
+
             // Identify the start and end hosts.
 
-            RemoteHost startHost = remoteHosts.get(request.startNode);
-            RemoteHost endHost = remoteHosts.get(request.endNode);
-            if (startHost == null || endHost == null) {
-                return null;
-            }
+            // RemoteHost startHost = remoteHosts.get(request.startNode);
+            // RemoteHost endHost = remoteHosts.get(request.endNode);
+            // if (startHost == null || endHost == null) {
+            //     return null;
+            // }
+
+            RemoteHost startHost = remoteHosts.values().iterator().next();
+            RemoteHost endHost = startHost;
 
             // Begin building the new service chain to add to the existing state object.
 
