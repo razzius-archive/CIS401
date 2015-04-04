@@ -45,18 +45,15 @@ public class Action {
     public Action(Type type, RemoteHost vmHost, VM newVM, RemoteHost serviceInstanceHost,
         VM serviceInstanceVM, ServiceInstance serviceInstance, Request request, List<Node> serviceChain) {
     	if (type == Type.BOOTVM || type == Type.SHUTDOWNVM) {
-            logger.info("VM Action Type was Specified in Action Constructor!");
             this.type = type;
             this.vmHost = vmHost;
             this.newVM = newVM;
         } else if (type == Type.STARTSERVICE || type == Type.STOPSERVICE) {
-            logger.info("Service Instance Type was Specified in Action Constructor!");
             this.type = type;
             this.serviceInstanceHost = serviceInstanceHost;
             this.serviceInstanceVM = serviceInstanceVM;
             this.serviceInstance = serviceInstance;
         } else if (type == Type.ADDSERVICECHAIN || type == Type.REMOVESERVICECHAIN) {
-            logger.info("ServiceChain Type was Specified in Action Constructor!");
             this.type = type;
             this.request = request;
             this.serviceChain = serviceChain;
