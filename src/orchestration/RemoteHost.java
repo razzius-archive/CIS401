@@ -9,6 +9,7 @@ import java.rmi.Naming;
 
 import java.util.List;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -109,6 +110,19 @@ public double getVMCPUUtilization() throws RemoteException {
 
 public void getServiceTrafficStatistics() throws RemoteException {
         // TODO : IMPLEMENT
+}
+
+public boolean checkVM(VM vm) throws RemoteException {
+    // TODO : IMPLEMENT
+    return true;
+}
+
+public HashSet<Integer> getVMServiceInstancePIDs(VM vm) {
+    HashSet<Integer> serviceInstancePIDs = new HashSet<Integer>();
+    logger.info("Attempting to get running Service Instance PIDs from the VM: " + vm.getID());
+    logger.info("NOT IMPLEMENTED - returning empty Set of running Service Instances.");
+    // TODO : IMPLEMENT
+    return serviceInstancePIDs;
 }
 
 
