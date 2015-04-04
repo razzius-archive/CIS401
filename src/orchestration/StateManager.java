@@ -85,7 +85,7 @@ public class StateManager {
         	logger.info("PollingThread started");
             while (true) {
                 try {
-                	Thread.sleep(10000);
+                	Thread.sleep(1000);
                     synchronized (state) {
                         poll();
                     }
@@ -119,12 +119,8 @@ public class StateManager {
     				} else {
     					host.getVMs().remove(vm.getID());
     				}
-
             	}
             }
-
-
-
         }
     }
 
@@ -143,6 +139,7 @@ public class StateManager {
     private HardwareCluster hardwareCluster;
     private ArrayList<Action> updates = new ArrayList<Action>();;
     private ClusterUpdateThread clusterUpdateThread = new ClusterUpdateThread();
+    private PollingThread pollingThread = new PollingThread();
 
     /**
      * Network Attributes that do not change.
@@ -168,6 +165,7 @@ public class StateManager {
         this.state = new State(remoteHosts);
         this.hardwareCluster = hardwareCluster;
         clusterUpdateThread.start();
+        pollingThread.start();
     }
 
     /*
