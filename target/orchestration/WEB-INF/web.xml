@@ -13,9 +13,20 @@
      <load-on-startup>1</load-on-startup>
    </servlet>
 
+   <servlet>
+     <servlet-name>analytics</servlet-name>
+     <servlet-class>orchestration.AnalyticsServlet</servlet-class>
+     <load-on-startup>1</load-on-startup>
+   </servlet>
+
    <servlet-mapping>
      <servlet-name>request</servlet-name>
      <url-pattern>/request</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+     <servlet-name>analytics</servlet-name>
+     <url-pattern>/analytics</url-pattern>
    </servlet-mapping>
 
 </web-app>
