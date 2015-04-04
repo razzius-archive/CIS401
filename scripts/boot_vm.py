@@ -34,8 +34,8 @@ def main():
         '/usr/local/sbin/xl',
         ['create', '-c', config_path] + xen_options,
         timeout=300)
-    boot_process.expect_exact('Will boot')
-    boot_process.sendline('\n')
+    # boot_process.expect_exact('Will boot')
+    # boot_process.sendline('\n')
     boot_process.expect_exact('login:')
     boot_process.sendline('root')
     boot_process.expect_exact('Password:')
