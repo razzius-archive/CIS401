@@ -6,7 +6,7 @@ from config import XEN_CONFIG_PATH, IMG_NAME, CONFIG_NAME
 
 def log_event(analytics_endpoint, process):
     command = 'curl --data "action=bootvm" http://{}'.format(analytics_endpoint)
-    process.sendLine(command)
+    process.sendline(command)
 
 def get_ip(process):
     process.setecho(False)
@@ -20,7 +20,6 @@ def main():
     vm_name = sys.argv[1]
     memory = sys.argv[2]
     analytics_endpoint = sys.argv[3]
-    log_event(analytics_endpoint, process)
 
     img_path = '{}/{}'.format(XEN_CONFIG_PATH, IMG_NAME)
     config_path = '{}/{}'.format(XEN_CONFIG_PATH, CONFIG_NAME)
@@ -41,7 +40,7 @@ def main():
     boot_process.sendline('password')
     boot_process.expect_exact('root@localhost:~#')
     ip_address = get_ip(boot_process)
-    log_event(analytics_endpoint, process)
+    log_event(analytics_endpoint, boot_process)
     print(ip_address)
 
 if __name__ == '__main__':
