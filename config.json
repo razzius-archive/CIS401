@@ -1,4 +1,7 @@
 {
+	"resourceManager": {
+		"1pAddress": "127.0.0.1"
+	},
 	"hosts": [
 	{
 		"ipAddress": "127.0.0.1",

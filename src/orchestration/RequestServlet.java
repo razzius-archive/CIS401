@@ -31,6 +31,7 @@ public class RequestServlet extends HttpServlet {
 	public static class Container {
     	public List<Map> hosts;
       	public List<Map> services;
+      	public Map resourceManager;
    	}
 
     private static StateManager stateManager;
@@ -46,6 +47,9 @@ public class RequestServlet extends HttpServlet {
 			BufferedReader br = new BufferedReader(new InputStreamReader(configJson));
 	        Gson g = new Gson();
 	        Container c = g.fromJson(br, Container.class);
+	        String endpoint = (String) c.resourceManager.get("analyticsEndPoint");
+			logger.info("Analyitcs endpoint: " + endpoint);
+
 	        // System.out.println(c.hosts.get(0).get("memory"));
 	        // System.out.println(c.services.get(0).get("command"));
 
@@ -65,7 +69,7 @@ public class RequestServlet extends HttpServlet {
 	        HostConfig localhostConfig = new HostConfig(1048576, 2048, 4, "127.0.0.1");
 	        hostConfigs.add(localhostConfig);
 
-	        analytics = new Analytics();
+	        analytics = new Analytics(endpoint);
 	        hardwareCluster = new HardwareCluster();
 	        logger.info("Starting StateManager");
 	        stateManager = new StateManager(hardwareCluster, hostConfigs);
@@ -158,16 +162,6 @@ public class RequestServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
-
-		// try {
-		// 	System.out.println("got request");
-		// 	PrintWriter out = response.getWriter();
-		// 	out.write("<html><head><title>DAAR 2015</title></head><body>");
-		// 	out.write("SEND POST REQUEST TO THIS ADDRESS WITH PARAMETERS");
-		// 	out.write("</body></html>");
-		// } catch (IOException e) {
-		// 	e.printStackTrace();
-		// }
 
 		try {
 
