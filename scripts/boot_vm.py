@@ -20,6 +20,7 @@ def main():
     vm_name = sys.argv[1]
     memory = sys.argv[2]
     analytics_endpoint = sys.argv[3]
+    log_event(analytics_endpoint, process)
 
     img_path = '{}/{}'.format(XEN_CONFIG_PATH, IMG_NAME)
     config_path = '{}/{}'.format(XEN_CONFIG_PATH, CONFIG_NAME)
