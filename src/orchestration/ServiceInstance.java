@@ -39,4 +39,12 @@ public class ServiceInstance {
 	public String getServiceInstanceID() {
 		return serviceInstanceID;
 	}
+
+	public int getPID() {
+		return PID;
+	}
+
+	public void setPID(int PID) {
+		this.PID = PID;
+	}
 }

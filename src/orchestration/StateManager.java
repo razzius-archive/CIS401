@@ -38,7 +38,7 @@ public class StateManager {
         public ClusterUpdateThread() {}
 
         public void run() {
-        	logger.info("clusterUpdateThread started");
+        	logger.info("ClusterUpdateThread started");
             while (true) {
                 try {
                     synchronized (updates) {
@@ -55,7 +55,6 @@ public class StateManager {
             logger.info("Updating the cluster");
             logger.info("There are currently this many queued actions: " + updates.size());
             Action update = updates.remove(0);
-
             if (update.getType() == Action.Type.BOOTVM) {
             	// Boot the requisite VM
             	RemoteHost targetHost = update.getVmHost();
@@ -70,13 +69,61 @@ public class StateManager {
             } else if (update.getType() == Action.Type.ADDSERVICECHAIN) {
             	// Start the service chain
             	logger.info("Attempting to add a service chain -- not implemented!");
-
-
-
             } else {
             	logger.info("Unimplemented Action!");
                 logger.info("The type of this action is: " + update.getType());
             }
+        }
+    }
+
+    private class PollingThread extends Thread {
+
+        public PollingThread() {}
+
+        public void run() {
+        	logger.info("PollingThread started");
+            while (true) {
+                try {
+                	Thread.sleep(10000);
+                    synchronized (state) {
+                        poll();
+                    }
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+            }
+        }
+
+        public void poll() {
+            logger.info("Polling the cluster");
+
+            // Start by returning the VMs.
+            // For each RemoteHost, check if a VM is active.
+            // When a serviceInstance starts, it should get a PID field back and store it.
+            // Now, get the PIDs of everything running on the VM.
+            // Also get the PIDs of everything that we THOUGHT was running on the VM.
+
+            for (RemoteHost host : state.getRemoteHosts().values()) {
+            	for (VM vm : host.getVMs().values()) {
+            		logger.info("Checking the status of VM: " + vm.getID());
+            		boolean vmStatus = hardwareCluster.checkVMStatus(host, vm);
+    				if (vmStatus) {
+    					HashSet<Integer> actualServicePIDs = hardwareCluster.getVMServiceInstancePIDs(host, vm);
+    					for (ServiceInstance expectedService : vm.getServiceInstances().values()) {
+    						if (!actualServicePIDs.contains(expectedService.getPID())) {
+    							vm.getServiceInstances().remove(expectedService.getServiceInstanceID());
+    						}
+    					}
+
+    				} else {
+    					host.getVMs().remove(vm.getID());
+    				}
+
+            	}
+            }
+
+
+
         }
     }
 
@@ -132,12 +179,10 @@ public class StateManager {
     }
 
     public CustomerResponse queryAlgorithmSolver(Request request) {
-        List<Action> actions = algorithmSolver.solve(
-            links,
-            switches,
-            services,
-            state,
-            request);
+    	List<Action> actions = null;
+        synchronized (state) {
+    		actions = algorithmSolver.solve(links, switches, services, state, request);
+    	}
         if (actions != null) {
         	synchronized (updates) {
         		updates.notify();
