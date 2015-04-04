@@ -85,7 +85,7 @@ public class StateManager {
         	logger.info("PollingThread started");
             while (true) {
                 try {
-                	Thread.sleep(1000);
+                	Thread.sleep(5000);
                     synchronized (state) {
                         poll();
                     }
@@ -110,9 +110,14 @@ public class StateManager {
             		boolean vmStatus = hardwareCluster.checkVMStatus(host, vm);
     				if (vmStatus) {
     					HashSet<Integer> actualServicePIDs = hardwareCluster.getVMServiceInstancePIDs(host, vm);
+
+    					logger.info("The number of expected services on the VM is: " + vm.getServiceInstances().size());
+    					logger.info("The number of actual services on the VM is: " + actualServicePIDs.size());
+
     					for (ServiceInstance expectedService : vm.getServiceInstances().values()) {
     						if (!actualServicePIDs.contains(expectedService.getPID())) {
     							vm.getServiceInstances().remove(expectedService.getServiceInstanceID());
+    							logger.info("Removing the service instance from state: " + expectedService.getServiceInstanceID());
     						}
     					}
 
