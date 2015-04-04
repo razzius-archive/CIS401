@@ -2,6 +2,7 @@ package orchestration;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -47,4 +48,23 @@ public class HardwareCluster implements HardwareClusterInterface {
     public void transferRunningService(VM oldVM, VM newVM, ServiceInstance serviceInstance) {
         logger.info("[HardwareCluster] Transferring the ServiceInstance: " + serviceInstance.serviceInstanceID);
     }
+
+    public boolean checkVMStatus(RemoteHost host, VM vm) {
+        try {
+            logger.info("Checking the status of VM: " + vm.getID());
+            return host.checkVM(vm);
+        } catch (RemoteException e) {
+            // TODO think about how we will handle RemoteExceptions
+            logger.fatal(e);
+            return false;
+        }
+    }
+
+    public HashSet<Integer> getVMServiceInstancePIDs(RemoteHost host, VM vm) {
+        return host.getVMServiceInstancePIDs(vm);
+    }
+
+
+
+
 }
