@@ -114,14 +114,29 @@ public void getServiceTrafficStatistics() throws RemoteException {
 
 public boolean checkVM(VM vm) throws RemoteException {
     logger.info("Attempting to check the VM: " + vm.getID());
-    logger.info("NOT IMPLEMENTED - returning true - the VM is up.");
-    return true;
+
+    boolean vmRunning = false;
+
+    try {
+        vmRunning = rmiServer.checkVM(vm);
+    } catch (RemoteException e) {
+        e.printStackTrace();
+    }
+
+    return vmRunning;
 }
 
 public HashSet<Integer> getVMServiceInstancePIDs(VM vm) {
-    HashSet<Integer> serviceInstancePIDs = new HashSet<Integer>();
     logger.info("Attempting to get running Service Instance PIDs from the VM: " + vm.getID());
-    logger.info("NOT IMPLEMENTED - returning empty Set of running Service Instances. No service instances are running.");
+
+    HashSet<Integer> serviceInstancePIDs = new HashSet<Integer>();
+
+    try {
+        serviceInstancePIDs = rmiServer.getVMServiceInstancePIDs(vm);
+    } catch (RemoteException e) {
+        e.printStackTrace();
+    }
+    
     return serviceInstancePIDs;
 }
 

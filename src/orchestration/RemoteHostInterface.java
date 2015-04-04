@@ -3,6 +3,7 @@ package orchestration;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import java.util.HashSet;
 import java.util.Set;
 import orchestration.VM;
 
@@ -21,5 +22,7 @@ public interface RemoteHostInterface extends Remote {
     public double getVMMemoryUtilization() throws RemoteException;
     public double getVMCPUUtilization() throws RemoteException;
     public void getServiceTrafficStatistics() throws RemoteException;
+    public boolean checkVM(VM vm) throws RemoteException;
+    public HashSet<Integer> getVMServiceInstancePIDs(VM vm) throws RemoteException;
 
 }
