@@ -41,7 +41,9 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 
 	public void shutdownVM(VM vm) throws RemoteException {
         logger.debug("shutdownVM message received");
-        String command = "python scripts/shutdown_vm.py " + vm.getID();
+        // String command = "python scripts/shutdown_vm.py " + vm.getID();
+        // This command gets the list of active VMs and uses awk to get the number used to shut it down
+        String command = "xl destroy `xl list | grep " + vm.getID() +  " | awk '{print $2}'`";
 		String s = null;
 		try {
 			Process p = Runtime.getRuntime().exec(command);
