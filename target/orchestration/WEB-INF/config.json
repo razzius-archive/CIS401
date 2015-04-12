@@ -1,4 +1,7 @@
 {
+	"resourceManager": {
+		"analyticsEndPoint": "127.0.0.1:8080"
+	},
 	"hosts": [
 	{
 		"ipAddress": "127.0.0.1",

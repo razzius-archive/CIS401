@@ -17,12 +17,12 @@ import orchestration.Request;
 public class Action {
 
     public enum Type {
-        BOOTVM, SHUTDOWNVM, STARTSERVICE, STOPSERVICE, ADDSERVICECHAIN, REMOVESERVICECHAIN 
+        BOOTVM, SHUTDOWNVM, STARTSERVICE, STOPSERVICE, ADDSERVICECHAIN, REMOVESERVICECHAIN
     }
 
     private static Logger logger = Logger.getLogger(Action.class.getName());
 
-    private static Type type;
+    private Type type;
 
     // If the Action calls for booting or shutting down a VM, use these parameters.
 
@@ -45,15 +45,20 @@ public class Action {
     public Action(Type type, RemoteHost vmHost, VM newVM, RemoteHost serviceInstanceHost,
         VM serviceInstanceVM, ServiceInstance serviceInstance, Request request, List<Node> serviceChain) {
     	if (type == Type.BOOTVM || type == Type.SHUTDOWNVM) {
+            this.type = type;
             this.vmHost = vmHost;
             this.newVM = newVM;
         } else if (type == Type.STARTSERVICE || type == Type.STOPSERVICE) {
+            this.type = type;
             this.serviceInstanceHost = serviceInstanceHost;
             this.serviceInstanceVM = serviceInstanceVM;
             this.serviceInstance = serviceInstance;
         } else if (type == Type.ADDSERVICECHAIN || type == Type.REMOVESERVICECHAIN) {
+            this.type = type;
             this.request = request;
             this.serviceChain = serviceChain;
+        } else {
+            logger.info("Null Type was Specified in Action Constructor!");
         }
     }
 

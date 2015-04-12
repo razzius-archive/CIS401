@@ -38,7 +38,7 @@ public class StateManager {
         public ClusterUpdateThread() {}
 
         public void run() {
-        	logger.info("clusterUpdateThread started");
+        	logger.info("ClusterUpdateThread started");
             while (true) {
                 try {
                     synchronized (updates) {
@@ -53,9 +53,9 @@ public class StateManager {
 
         public void updateCluster() {
             logger.info("Updating the cluster");
-
+            logger.info("There are currently this many queued actions: " + updates.size());
+            if (updates.isEmpty()) return;
             Action update = updates.remove(0);
-
             if (update.getType() == Action.Type.BOOTVM) {
             	// Boot the requisite VM
             	RemoteHost targetHost = update.getVmHost();
@@ -70,11 +70,61 @@ public class StateManager {
             } else if (update.getType() == Action.Type.ADDSERVICECHAIN) {
             	// Start the service chain
             	logger.info("Attempting to add a service chain -- not implemented!");
-
-
-
             } else {
             	logger.info("Unimplemented Action!");
+                logger.info("The type of this action is: " + update.getType());
+            }
+        }
+    }
+
+    private class PollingThread extends Thread {
+
+        public PollingThread() {}
+
+        public void run() {
+        	logger.info("PollingThread started");
+            while (true) {
+                try {
+                	Thread.sleep(5000);
+                    synchronized (state) {
+                        poll();
+                    }
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+            }
+        }
+
+        public void poll() {
+            logger.info("Polling the cluster");
+
+            // Start by returning the VMs.
+            // For each RemoteHost, check if a VM is active.
+            // When a serviceInstance starts, it should get a PID field back and store it.
+            // Now, get the PIDs of everything running on the VM.
+            // Also get the PIDs of everything that we THOUGHT was running on the VM.
+
+            for (RemoteHost host : state.getRemoteHosts().values()) {
+            	for (VM vm : host.getVMs().values()) {
+            		logger.info("Checking the status of VM: " + vm.getID());
+            		boolean vmStatus = hardwareCluster.checkVMStatus(host, vm);
+    				if (vmStatus) {
+    					HashSet<Integer> actualServicePIDs = hardwareCluster.getVMServiceInstancePIDs(host, vm);
+
+    					logger.info("The number of expected services on the VM is: " + vm.getServiceInstances().size());
+    					logger.info("The number of actual services on the VM is: " + actualServicePIDs.size());
+
+    					for (ServiceInstance expectedService : vm.getServiceInstances().values()) {
+    						if (!actualServicePIDs.contains(expectedService.getPID())) {
+    							vm.getServiceInstances().remove(expectedService.getServiceInstanceID());
+    							logger.info("Removing the service instance from state: " + expectedService.getServiceInstanceID());
+    						}
+    					}
+
+    				} else {
+    					host.getVMs().remove(vm.getID());
+    				}
+            	}
             }
         }
     }
@@ -94,6 +144,7 @@ public class StateManager {
     private HardwareCluster hardwareCluster;
     private ArrayList<Action> updates = new ArrayList<Action>();;
     private ClusterUpdateThread clusterUpdateThread = new ClusterUpdateThread();
+    private PollingThread pollingThread = new PollingThread();
 
     /**
      * Network Attributes that do not change.
@@ -119,6 +170,7 @@ public class StateManager {
         this.state = new State(remoteHosts);
         this.hardwareCluster = hardwareCluster;
         clusterUpdateThread.start();
+        pollingThread.start();
     }
 
     /*
@@ -131,17 +183,12 @@ public class StateManager {
     }
 
     public CustomerResponse queryAlgorithmSolver(Request request) {
-        List<Action> actions = algorithmSolver.solve(
-            links,
-            switches,
-            services,
-            state,
-            request);
+    	List<Action> actions = null;
+        synchronized (state) {
+    		actions = algorithmSolver.solve(links, switches, services, state, request);
+    	}
         if (actions != null) {
         	synchronized (updates) {
-        		for (Action action : actions) {
-        			updates.add(action);
-        		}
         		updates.notify();
         	}
             return new CustomerResponse(true);
@@ -195,6 +242,10 @@ public class StateManager {
 
     public Set<Service> getServices() {
         return services;
+    }
+
+    public State getState() {
+        return state;
     }
 
 }

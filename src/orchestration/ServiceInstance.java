@@ -1,11 +1,13 @@
 package orchestration;
 
+import java.io.Serializable;
 import java.rmi.Naming;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-public class ServiceInstance {
+public class ServiceInstance implements Serializable {
 
 	public String serviceInstanceID;
 	public String vmID;
@@ -38,5 +40,13 @@ public class ServiceInstance {
 
 	public String getServiceInstanceID() {
 		return serviceInstanceID;
+	}
+
+	public int getPID() {
+		return PID;
+	}
+
+	public void setPID(int PID) {
+		this.PID = PID;
 	}
 }
