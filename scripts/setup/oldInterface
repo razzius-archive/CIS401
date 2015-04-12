@@ -1,0 +1,52 @@
+auto lo
+iface lo inet loopback
+
+#auto eth0
+#iface eth0 inet dhcp
+
+auto ovsbr0
+allow-ovs ovsbr0
+iface ovsbr0 inet static 
+	ovs_type OVSBridge
+	ovs_ports eth0
+	address 165.123.176.181
+	gateway 165.123.176.1
+	netmask 255.255.252.0
+	broadcast 165.123.179.255
+	up ip link set ovsbr0 up
+	down ip link set ovsbr0 down
+
+#auto br0
+#iface br0 inet static
+#	address 165.123.176.181
+#	gateway 165.123.176.1
+#	netmask 255.255.252.0
+#	broadcast 165.123.179.255
+#	up ip link set br0 up
+#	down ip link set br0 down
+
+#auto eth0
+#iface eth0 inet manual
+#	up ifconfig $IFACE 0.0.0.0 up
+#	down ifconfig $IFACE down
+#	ovs_bridge ovsbr0
+#	ovs_type OVSPort
+
+#auto ovsbr0p1
+#iface ovsbr0p1 inet dhcp
+#	ovs_bridge ovsbr0
+#	ovs_type OVSPort
+#	ovs_extra set interface ${IFACE} external-ids:iface-id=$(hostname -s)
+
+#auto xenbr0
+#iface xenbr0 inet static
+#	bridge_ports eth0
+#	bridge_fd 0
+#	address 165.123.176.181
+#	gateway 165.123.176.1
+#	netmask 255.255.254.0
+#	broadcast 165.123.177.255
+#	up ip link set xenbr0 up
+#	up ip addr add 172.19.177.123/23 dev br0
+#	down ip link set xenbr0 down
+
