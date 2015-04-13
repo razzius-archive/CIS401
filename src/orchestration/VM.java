@@ -51,4 +51,8 @@ public class VM extends Node implements Serializable {
 	public void setMACAddr(String MACAddr) {
 		this.MACAddr = MACAddr;
 	}
+
+	public String getInfterfaceName() {
+		return "vif" + id + ".0";
+	}
 }
