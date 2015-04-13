@@ -26,12 +26,6 @@ public class LogAnalysis {
 		packetsOut = new ArrayList<Date>();
 		file = new File(fileName);
 		analyze();
-		for (Date date : packetsIn) {
-			System.out.println("Packet in: " + date.toString());
-		}
-		for (Date date : packetsOut) {
-			System.out.println("Packet out: " + date.toString());
-		}
 	}
 
 	private void analyze() {
