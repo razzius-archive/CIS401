@@ -21,6 +21,7 @@ import java.util.ArrayList;
 // Percentage of accepted requests which were met (should be 100%)
 //
 // Algorithm Data to be gathered:
+// Time required for a data packet to travel through the network
 // Percentage of requests accepted
 // Percent utilization of Remote Host Machines
 // Percent utilization of Virtual Machines
