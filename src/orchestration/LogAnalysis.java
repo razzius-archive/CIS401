@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -134,5 +135,35 @@ public class LogAnalysis {
 			e.printStackTrace();
 		}
 	}
+
+	public void generateLatencyPercentileGraph(String fileName) {
+		if (!allPacketsMadeIt()) return;
+		
+		ArrayList<Long> latencies = new ArrayList<Long>();
+		
+		for (int i = 0; i < packetsIn.size(); i++) {
+			long packetSent = packetsOut.get(i).getTime();
+			long packetReceived = packetsIn.get(i).getTime();
+			long latency = packetReceived - packetSent;
+			latencies.add(latency);
+		}
+		Collections.sort(latencies);
+		
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(fileName, "UTF-8");
+			for (int i = 1; i < 101; i++) {
+				int index = (int)(latencies.size() * i / 100.0);
+				if (index == latencies.size()) index -= 1;
+				writer.println(i + "," + latencies.get(index));
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 }
