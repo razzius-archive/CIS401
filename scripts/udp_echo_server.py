@@ -15,14 +15,14 @@ logging.basicConfig(stream=sys.stdout,
 
 logger = logging.getLogger()
 
-class MyTCPHandler(SocketServer.BaseRequestHandler):
+class MyUDPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
-        while True:
-            self.data = self.request.recv(1024).strip()
-            logger.info('Packet from {}'.format(self.client_address[0]))
-            self.request.sendall(self.data.upper())
+        data = self.request[0].strip()
+        socket = self.request[1]
+        logger.info('Packet from {}'.format(self.client_address[0]))
+        socket.sendto(data.upper(), self.client_address)
 
 
 if __name__ == '__main__':
-    server = SocketServer.TCPServer(('172.19.177.136', 9000), MyTCPHandler)
+    server = SocketServer.UDPServer(('172.19.177.136', 9000), MyUDPHandler)
     server.serve_forever()

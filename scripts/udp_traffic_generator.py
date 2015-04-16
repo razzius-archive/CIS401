@@ -16,11 +16,10 @@ logging.basicConfig(stream=sys.stdout,
 logger = logging.getLogger()
 
 if __name__ == '__main__':
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(('172.19.177.136', 9000))
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     while True:
-        s.send('Hello, world')
+        s.sendto('Hello, world', ('165.123.178.171', 9000))
         logger.info('Sent packet')
 
         data = s.recv(1024)
