@@ -112,6 +112,12 @@
     </java>
   </target>
 
+  <target name="javadoc" description="Compile the project javadocs">
+    <javadoc sourcepath="src/orchestration" destdir="docs/javadocs">
+      <fileset dir="."/>
+    </javadoc>
+  </target>
+
   <target name="test" description="Starts OrchestrationLayer and server">
     <junit printsummary="yes" haltonfailure="yes">
       <classpath>

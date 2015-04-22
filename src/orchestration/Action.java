@@ -73,42 +73,42 @@ public class Action {
         }
     }
 
-    /** Return the Type of Action specified; one of {BOOTVM, SHUTDOWNVM, STARTSERVICE, STOPSERVICE, ADDSERVICECHAIN, REMOVESERVICECHAIN} */
+    /** @return the Type of Action specified; one of {BOOTVM, SHUTDOWNVM, STARTSERVICE, STOPSERVICE, ADDSERVICECHAIN, REMOVESERVICECHAIN} */
     public Type getType() {
         return type;
     }
 
-    /** Return the RemoteHost on which a VM should be modified, if the Action calls for booting or shutting down a VM. */
+    /** @return the RemoteHost on which a VM should be modified, if the Action calls for booting or shutting down a VM. */
     public RemoteHost getVmHost() {
         return vmHost;
     }
 
-    /** Return the properties of the VM to be booted or shut down, if the Action calls for booting or shutting down a VM. */
+    /** @return the properties of the VM to be booted or shut down, if the Action calls for booting or shutting down a VM. */
     public VM getNewVM() {
         return newVM;
     }
 
-    /** Return the RemoteHost on which a ServiceInstance should be modified, if the Action calls for adding or removing a ServiceInstance. */
+    /** @return the RemoteHost on which a ServiceInstance should be modified, if the Action calls for adding or removing a ServiceInstance. */
     public RemoteHost getServiceInstanceHost() {
         return serviceInstanceHost;
     }
 
-    /** Return the VM on which a ServiceInstance should be modified, if the Action calls for adding or removing a ServiceInstance. */
+    /** @return the VM on which a ServiceInstance should be modified, if the Action calls for adding or removing a ServiceInstance. */
     public VM getServiceInstanceVM() {
         return serviceInstanceVM;
     }
 
-    /** Return the ServiceInstance to be modified, if the Action calls for adding or removing a ServiceInstance. */
+    /** @return the ServiceInstance to be modified, if the Action calls for adding or removing a ServiceInstance. */
     public ServiceInstance getServiceInstance() {
         return serviceInstance;
     }
 
-    /** Return the Request to be acted upon, if the Action calls for adding or removing a service chain. */
+    /** @return the Request to be acted upon, if the Action calls for adding or removing a service chain. */
     public Request getRequest() {
         return request;
     }
 
-    /** Return the list of nodes to comprise the service chain, if the Action calls for adding or removing a service chain. */
+    /** @return the list of nodes to comprise the service chain, if the Action calls for adding or removing a service chain. */
     public List<Node> getServiceChain() {
         return serviceChain;
     }

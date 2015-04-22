@@ -36,27 +36,27 @@ public class Link {
 		this.bandwidth = bandwidth;
 	}
 
-	/** Return the Link ID. */
+	/** @return the Link ID. */
 	public int getID() {
 		return linkID;
 	}
 
-	/** Return the first Node ID. */
+	/** @return the first Node ID. */
 	public int getNode1ID() {
 		return node1ID;
 	}
 
-	/** Return the second Node ID. */
+	/** @return the second Node ID. */
 	public int getNode2ID() {
 		return node2ID;
 	}
 
-	/** Return the Link delay in ms. */
+	/** @return the Link delay in ms. */
 	public int getDelay() {
 		return delay;
 	}
 
-	/** Return the Link bandwidth in GB/sec. */
+	/** @return the Link bandwidth in GB/sec. */
 	public double getBandwidth() {
 		return bandwidth;
 	}

@@ -34,17 +34,17 @@ public class HostConfig {
 		this.ipAddress = ipAddress;
 	}
 
-	/** Return the RAM of this host configuration in megabytes. */
+	/** @return the RAM of this host configuration in megabytes. */
 	public int getMemory() {
 		return this.memory;
 	}
 
-	/** Return the number of processor cores of this host configuration. */
+	/** @return the number of processor cores of this host configuration. */
 	public int getNumCores() {
 		return numCores;
 	}
 
-	/** Return the IPv4 address of this host configuration. */
+	/** @return the IPv4 address of this host configuration. */
 	public String getIpAddress() {
 		return this.ipAddress;
 	}
