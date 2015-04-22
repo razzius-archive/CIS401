@@ -16,12 +16,12 @@ public abstract class Node {
     /** Parameter specifying the Node ID. */
     protected String nodeID;
 
-    /** Return the Node's maximum processing bandwidth in bits/second. */
+    /** @return the Node's maximum processing bandwidth in bits/second. */
 	public int getBandwidth() {
 		return this.bandwidth;
 	}
 
-    /** Return the Node ID. */
+    /** @return the Node ID. */
 	public String getID() {
 		return nodeID;
 	}

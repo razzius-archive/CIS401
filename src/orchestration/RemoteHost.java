@@ -61,17 +61,17 @@ public class RemoteHost extends Node {
         }
     }
 
-    /** Return the virtual machines on this Host. */
+    /** @return the virtual machines on this Host. */
     public HashMap<String, VM> getVMs() {
         return this.vms;
     }
 
-    /** Return the IP address of this Host. */
+    /** @return the IP address of this Host. */
     public String getIp() {
         return this.ip;
     }
 
-    /** Return the Host Configuration associated with this Host. */
+    /** @return the Host Configuration associated with this Host. */
     public HostConfig getHostConfig() {
         return this.hostConfig;
     }
@@ -101,37 +101,37 @@ public class RemoteHost extends Node {
         rmiServer.stopService(vm, serviceInstance);
     }
 
-    /** Return the set of virtual machines on this Host. */
+    /** @return the set of virtual machines on this Host. */
     public Set<VM> getRemoteHostVMs() throws RemoteException {
         return rmiServer.getRemoteHostVMs();
     }
 
-    /** Return the percentage memory utilization of this Host. */
+    /** @return the percentage memory utilization of this Host. */
     public double getRemoteHostMemoryUtilization() throws RemoteException {
         return rmiServer.getRemoteHostMemoryUtilization();
     }
 
-    /** Return the percentage CPU utilization of this Host. */
+    /** @return the percentage CPU utilization of this Host. */
     public double getRemoteHostCPUUtilization() throws RemoteException {
         return rmiServer.getRemoteHostCPUUtilization();
     }
 
-    /** Return the percentage network bandwidth utilization of this Host. */
+    /** @return the percentage network bandwidth utilization of this Host. */
     public double getRemoteHostNetworkUtilization() throws RemoteException {
         return rmiServer.getRemoteHostNetworkUtilization();
     }
 
-    /** Return the set of all service instances running on this Host. */
+    /** @return the set of all service instances running on this Host. */
     public Set<ServiceInstance> getVMServiceInstances() throws RemoteException {
         return rmiServer.getVMServiceInstances();
     }
 
-    /** Return the percentage memory utilization of the specified VM. */
+    /** @return the percentage memory utilization of the specified VM. */
     public double getVMMemoryUtilization() throws RemoteException {
         return rmiServer.getVMMemoryUtilization();
     }
 
-    /** Return the percentage CPU utilization of the specified VM. */
+    /** @return the percentage CPU utilization of the specified VM. */
     public double getVMCPUUtilization() throws RemoteException {
         return rmiServer.getVMCPUUtilization();
     }
@@ -141,7 +141,7 @@ public class RemoteHost extends Node {
             // TODO : IMPLEMENT
     }
 
-    /** Check the status of the specified virtual machine. */
+    /** @return the status of the specified virtual machine. */
     public boolean checkVM(VM vm) throws RemoteException {
         logger.info("Attempting to check the VM: " + vm.getID());
 
@@ -156,7 +156,7 @@ public class RemoteHost extends Node {
         return vmRunning;
     }
 
-    /** Return the set of all service instances running on the specified VM. */
+    /** @return the set of all service instances running on the specified VM. */
     public HashSet<Integer> getVMServiceInstancePIDs(VM vm) {
         logger.info("Attempting to get running Service Instance PIDs from the VM: " + vm.getID());
 

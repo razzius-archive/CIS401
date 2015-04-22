@@ -56,7 +56,7 @@ public class HardwareCluster implements HardwareClusterInterface {
         logger.info("[HardwareCluster] Transferring the ServiceInstance: " + serviceInstance.serviceInstanceID);
     }
 
-    /** Return whether or not the specified virtual machine is running. */
+    /** @return whether or not the specified virtual machine is running. */
     public boolean checkVMStatus(RemoteHost host, VM vm) {
         try {
             logger.info("Checking the status of VM: " + vm.getID());
@@ -68,7 +68,7 @@ public class HardwareCluster implements HardwareClusterInterface {
         }
     }
 
-    /** Return the Set of all ServiceInstances running on a specified virtual machine on the indicated RemoteHost. */
+    /** @return the Set of all ServiceInstances running on a specified virtual machine on the indicated RemoteHost. */
     public HashSet<Integer> getVMServiceInstancePIDs(RemoteHost host, VM vm) {
         return host.getVMServiceInstancePIDs(vm);
     }
