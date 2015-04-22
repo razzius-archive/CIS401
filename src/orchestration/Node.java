@@ -1,22 +1,27 @@
 package orchestration;
 
 /**
- * Abstract class for any node specified in config.json.
+ * Abstract class for a network node specified in config.json.
+ *
+ * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
+ * @version     1.0
+ * @since       2015-04-21
  */
 
 public abstract class Node {
-    /**
-     * Bandwidth in bps
-     *
-     * Example: bandwidth of 1024 = 1 Kbps
-     */
+
+    /** Parameter specifying the Node's maximum processing bandwidth in bits/second. */
     protected int bandwidth;
+
+    /** Parameter specifying the Node ID. */
     protected String nodeID;
 
+    /** Return the Node's maximum processing bandwidth in bits/second. */
 	public int getBandwidth() {
 		return this.bandwidth;
 	}
 
+    /** Return the Node ID. */
 	public String getID() {
 		return nodeID;
 	}
