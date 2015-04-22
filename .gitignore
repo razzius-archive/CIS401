@@ -8,3 +8,4 @@ TEST-*
 .DS_Store
 .vagrant
 _build
+/docs/javadocs
