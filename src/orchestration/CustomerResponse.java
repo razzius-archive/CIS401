@@ -1,7 +1,7 @@
 package orchestration;
 
 /**
- * Indication if a Customer Request was accepted by the network.
+ * Indication of whether a Customer Request was accepted by the network.
  *
  * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
  * @version     1.0
