@@ -7,20 +7,24 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import orchestration.Link;
-import orchestration.Switch;
-import orchestration.ServiceInstance;
-import orchestration.VM;
-import orchestration.RemoteHost;
 
+/**
+ * A simple Hardware Cluster which communicates with individual RemoteHosts.
+ *
+ * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
+ * @version     1.0
+ * @since       2015-04-21
+ */
 
 public class HardwareCluster implements HardwareClusterInterface {
     private static Logger logger = Logger.getLogger(HardwareCluster.class.getName());
 
-    public HardwareCluster() {
-            
-    }
+    /**
+     * Default Constructor creates a simple HardwareCluster object.
+     */
+    public HardwareCluster() {}
 
+    /** Tell the specified RemoteHost to boot a new virtual machine with the indicated parameters. */
     public void bootVM(RemoteHost host, VM vm) {
         try {
             logger.info("[HardwareCluster] Booting the VM: " + vm.getID());
@@ -31,24 +35,28 @@ public class HardwareCluster implements HardwareClusterInterface {
             logger.fatal(e);
         }
     }
-    /*
-    public void modifyVM(VM vm, double coresAllocated, int memoryAllocated) {
-        logger.info("[HardwareCluster] Modifying the VM: " + vm.getID());
-    }
-    */
+
+    /** Tell the specified RemoteHost to shut down the virtual machine with the indicated parameters. */
     public void shutdownVM(VM vm) {
         logger.info("[HardwareCluster] Shutting down the VM: " + vm.getID());
     }
+
+    /** Tell the specified virtual machine to start a new service instance the indicated parameters. */
     public void startService(VM vm, ServiceInstance serviceInstance) {
         logger.info("[HardwareCluster] Starting the ServiceInstance: " + serviceInstance.serviceInstanceID);
     }
+
+    /** Tell the specified virtual machine to terminate the running service instance the indicated parameters. */
     public void terminateRunningService(VM vm, ServiceInstance serviceInstance) {
         logger.info("[HardwareCluster] Terminating the ServiceInstance: " + serviceInstance.serviceInstanceID);
     }
+
+    /** Tell the specified virtual machine to transfer the indicated service instance to another virtual machine. */
     public void transferRunningService(VM oldVM, VM newVM, ServiceInstance serviceInstance) {
         logger.info("[HardwareCluster] Transferring the ServiceInstance: " + serviceInstance.serviceInstanceID);
     }
 
+    /** Return whether or not the specified virtual machine is running. */
     public boolean checkVMStatus(RemoteHost host, VM vm) {
         try {
             logger.info("Checking the status of VM: " + vm.getID());
@@ -60,11 +68,8 @@ public class HardwareCluster implements HardwareClusterInterface {
         }
     }
 
+    /** Return the Set of all ServiceInstances running on a specified virtual machine on the indicated RemoteHost. */
     public HashSet<Integer> getVMServiceInstancePIDs(RemoteHost host, VM vm) {
         return host.getVMServiceInstancePIDs(vm);
     }
-
-
-
-
 }
