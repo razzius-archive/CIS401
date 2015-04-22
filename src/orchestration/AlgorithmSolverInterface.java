@@ -4,19 +4,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
 
-import orchestration.State;
-
 /**
- * Interface for the Algorithm Solver to be queried by the StateManager.
- */
-
-/**
+ * This class defines the interface for the AlgorithmSolver to be queried by the StateManager.
+ *
  * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
  * @version     1.0
  * @since       2015-04-21
  */
 
 public interface AlgorithmSolverInterface {
+
     /**
      * Solves for a network configuration that fulfills the customer specification.
      * 
