@@ -1,6 +1,6 @@
 {
 	"resourceManager": {
-		"ipAddress": "127.0.0.1"
+		"analyticsEndPoint": "127.0.0.1"
 	},
 	"hosts": [
 		{
@@ -20,17 +20,16 @@
 	"customers": [
 		{
 			"ipAddress": "127.0.0.1",
-			"requests": [
-				{
-					"services": [
-						"echo"
-					],
-					"numPackets": "1000",
-					"deadline": "100",
-					"startNode": "1",
-					"endNode": "1"
-				}
-			]
+			 "request":
+			{
+				"services": [
+					"echo"
+				],
+				"numPackets": "1000",
+				"deadline": "100",
+				"startNode": "1",
+				"endNode": "1"
+			}
 		}
 	]
 }

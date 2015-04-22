@@ -32,6 +32,7 @@ public class RequestServlet extends HttpServlet {
     	public List<Map> hosts;
       	public List<Map> services;
       	public Map resourceManager;
+      	public List<Map> customers;
    	}
 
     private static StateManager stateManager;
@@ -62,6 +63,17 @@ public class RequestServlet extends HttpServlet {
 	            String ipAddress = (String) host.get("ipAddress");
 	            HostConfig hc = new HostConfig(bandwidth, memory, numCores, ipAddress);
 	            hostConfigs.add(hc);
+	        }
+
+	        for (Map customer : c.customers) {
+	        	String ipAddress = (String) host.get("ipAddress");
+	        	Map request = (Map) customer.get("request");
+        		String numPackets= (String) request.get("numPackets");
+        		String deadline = (String) request.get("startNode");
+        		String endNode = (String) request.get("endNode");
+        		List<String> services = (List<String>) request.get("services");
+
+        		URL url = new URL("http://"+ipAddress+":8080/customer");
 	        }
 
 	        // Create a HostConfig for the local machine with 1Mbps of bandwidth, 4 cores, 2048 MB of RAM
@@ -107,15 +119,18 @@ public class RequestServlet extends HttpServlet {
 			int packageSize = Integer.parseInt(getParam(request, "packageSize"));
 			int price       = Integer.parseInt(getParam(request, "price"));
 
-			Request req = new Request(
-				requestID,
-				startNode,
-				endNode,
-				packageRate,
-				deadline,
-				services,
-				packageSize,
-				price);
+			// Request req = new Request(
+			// 	requestID,
+			// 	startNode,
+			// 	endNode,
+			// 	packageRate,
+			// 	deadline,
+			// 	services,
+			// 	packageSize,
+			// 	price);
+
+			// TODO: fix this
+			Request req = null;
 
 			out.write("<html><head><title>DAAR 2015</head></title><body>");
 			out.write("Received parameters:");

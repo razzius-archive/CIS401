@@ -17,7 +17,7 @@ public class HttpURLConnectionExample {
 	public static void main(String[] args) throws Exception {
 
 		// sample request
-		Request req = new Request("r4","1","1",72432,44,"s0-s1-s3",12000,1);
+		// Request req = new Request("r4","1","1",72432,44,"s0-s1-s3",12000,1);
 
 		HttpURLConnectionExample http = new HttpURLConnectionExample();
 
@@ -25,7 +25,7 @@ public class HttpURLConnectionExample {
 		//http.sendGet();
 
 		System.out.println("\nTesting 2 - Send Http POST request");
-		http.sendPost(req);
+		http.sendPost(null);
 
 
 	}
@@ -42,7 +42,7 @@ public class HttpURLConnectionExample {
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
 		String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
-		urlParameters = req.formatParams();
+		urlParameters = "param1=needtoreqriteparamsbecausewechangedtherequestclassparam2=SORRYparam3=MYBAD";
 
 		// Send post request
 		con.setDoOutput(true);
