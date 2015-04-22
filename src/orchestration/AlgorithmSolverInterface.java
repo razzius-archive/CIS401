@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.ArrayList;
 
 /**
- * This class defines the interface for the AlgorithmSolver to be queried by the StateManager.
+ * Defines the interface for the AlgorithmSolver to be queried by the StateManager.
  *
  * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
  * @version     1.0
@@ -24,7 +24,7 @@ public interface AlgorithmSolverInterface {
      * @param request       the request object constructed from the customer input
      * @return              a list of modifications to the state needed to achieve the specification, or null if none is available.
      * @see orchestration.RemoteHost
-     * @see orchestration.ServiceChain
+     * @see orchestration.Node
      * @see orchestration.Request
      */
     public ArrayList<Action> solve(

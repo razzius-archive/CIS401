@@ -7,26 +7,37 @@ import java.util.List;
 import java.util.Set;
 import org.apache.log4j.Logger;
 
-import orchestration.Link;
-import orchestration.Switch;
-import orchestration.ServiceInstance;
+/**
+ * A simple Algorithm Solver which provides instructions for configuring the State of the cluster to handle incoming traffic.
+ *
+ * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
+ * @version     1.0
+ * @since       2015-04-21
+ */
 
 public class AlgorithmSolver implements AlgorithmSolverInterface {
 
-
     private static Logger logger = Logger.getLogger(AlgorithmSolver.class.getName());
 
+    /**
+     * Default Constructor creates a simple AlgorithmSolver object.
+     */
     public AlgorithmSolver() {
     }
 
-    // solve() function uses the current optimal (goal) state from the StateManager.
-    // The method return a List of Actions and modifies the state in place.
-    // If algorithm cannot solve given the load,
-    // then the method returns null and an appropriate log message is set.
-    // solve() should return null if no solution is possible.
-
-    // static topology includes links, switches, and services
-
+    /**
+     * Solves for a network configuration that fulfills the customer specification.
+     * 
+     * @param links         a set of all the links in the network
+     * @param switches      a set of all the switches in the network
+     * @param services      a set of all the services already running on the network hardware
+     * @param currentState  the current State of the deployment, incorporating running RemoteHosts and ServiceChains
+     * @param request       the request object constructed from the customer input
+     * @return              a list of modifications to the state needed to achieve the specification, or null if none is available.
+     * @see orchestration.RemoteHost
+     * @see orchestration.Node
+     * @see orchestration.Request
+     */
     public ArrayList<Action> solve(
         Set<Link> links,
         Set<Switch> switches,
@@ -46,12 +57,6 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
             logger.info("Request End Node: " + request.endNode);
 
             // Identify the start and end hosts.
-
-            // RemoteHost startHost = remoteHosts.get(request.startNode);
-            // RemoteHost endHost = remoteHosts.get(request.endNode);
-            // if (startHost == null || endHost == null) {
-            //     return null;
-            // }
 
             RemoteHost startHost = remoteHosts.values().iterator().next();
             RemoteHost endHost = startHost;
@@ -78,7 +83,6 @@ public class AlgorithmSolver implements AlgorithmSolverInterface {
                 ServiceInstance newServiceInstance = new ServiceInstance(service, newVM.getID());
                 newVM.getServiceInstances().put(newServiceInstance.getServiceInstanceID(), newServiceInstance);
                 actions.add(new Action(Action.Type.STARTSERVICE, null, null, startHost, newVM, newServiceInstance, null, null));
-
             }
 
             // Finally, add the endHost to the new service chain.
