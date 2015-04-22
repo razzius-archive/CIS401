@@ -1,11 +1,13 @@
 package orchestration;
 
+import java.io.Serializable;
 import java.rmi.Naming;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-public class ServiceInstance {
+public class ServiceInstance implements Serializable {
 
 	public String serviceInstanceID;
 	public String vmID;

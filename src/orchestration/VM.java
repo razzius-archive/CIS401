@@ -17,6 +17,7 @@ public class VM extends Node implements Serializable {
 	private String ipAddress;		// Get the IP address after booting
 	private String status; 			// Booting, Running, Stopped, Crashed, Terminated
 	private HashMap<String, ServiceInstance> serviceInstances = new HashMap<String, ServiceInstance>();
+	private String MACAddr;
 
 	public VM(double coresAllocated, int memoryAllocated) {
 		this.coresAllocated = coresAllocated;
@@ -41,5 +42,17 @@ public class VM extends Node implements Serializable {
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
+	}
+
+	public String getMACAddr() {
+		return this.MACAddr;
+	}
+
+	public void setMACAddr(String MACAddr) {
+		this.MACAddr = MACAddr;
+	}
+
+	public String getInfterfaceName() {
+		return "vif" + id + ".0";
 	}
 }

@@ -1,29 +1,25 @@
 package orchestration;
 
-import orchestration.VM;
-import orchestration.RemoteHost;
-
 /**
- * Interface for the Hardware Cluster to communicate with the State Manager.
- * reconfigure method reorganizes the hardware cluster based on components
- * specified by the State Manager.
+ * Defines the interface for the Hardware Cluster to communicate with the State Manager.
+ *
+ * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
+ * @version     1.0
+ * @since       2015-04-21
  */
 
 public interface HardwareClusterInterface {
 
-    // VM Actions
-
+    /** Tell the specified RemoteHost to boot a new virtual machine with the indicated parameters. */
     public void bootVM(RemoteHost host, VM vm);
-    // public void modifyVM(VM vm, double coresAllocated, int memoryAllocated);
+
+    /** Tell the specified RemoteHost to shut down the virtual machine with the indicated parameters. */
     public void shutdownVM(VM vm);
 
-    // Service Actions
-
+    /** Tell the specified virtual machine to start a new service instance the indicated parameters. */
     public void startService(VM vm, ServiceInstance serviceInstance);
+
+    /** Tell the specified virtual machine to terminate the running service instance the indicated parameters. */
     public void terminateRunningService(VM vm, ServiceInstance serviceInstance);
-
-    // Network Actions
-    // public void addFlow(RemoteHost host, Flow flow);
-
 
 }

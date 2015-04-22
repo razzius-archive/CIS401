@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
@@ -32,6 +33,7 @@ public class RequestServlet extends HttpServlet {
     	public List<Map> hosts;
       	public List<Map> services;
       	public Map resourceManager;
+      	public List<Map> customers;
    	}
 
     private static StateManager stateManager;
@@ -62,6 +64,27 @@ public class RequestServlet extends HttpServlet {
 	            String ipAddress = (String) host.get("ipAddress");
 	            HostConfig hc = new HostConfig(bandwidth, memory, numCores, ipAddress);
 	            hostConfigs.add(hc);
+	        }
+
+	        for (Map customer : c.customers) {
+	        	String ipAddress = (String) customer.get("ipAddress");
+	        	Map request = (Map) customer.get("request");
+        		String numPackets= (String) request.get("numPackets");
+        		String deadline = (String) request.get("startNode");
+        		String endNode = (String) request.get("endNode");
+        		List<String> services = (List<String>) request.get("services");
+
+        		// send POST request to each customer
+        		URL url = new URL("http://"+ipAddress+":8080/customer");
+        		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        		connection.setRequestMethod("POST");
+        		String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+        		DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+				wr.writeBytes(urlParameters);
+				wr.flush();
+				wr.close();
+
+				int responseCode = connection.getResponseCode();
 	        }
 
 	        // Create a HostConfig for the local machine with 1Mbps of bandwidth, 4 cores, 2048 MB of RAM
@@ -107,15 +130,18 @@ public class RequestServlet extends HttpServlet {
 			int packageSize = Integer.parseInt(getParam(request, "packageSize"));
 			int price       = Integer.parseInt(getParam(request, "price"));
 
-			Request req = new Request(
-				requestID,
-				startNode,
-				endNode,
-				packageRate,
-				deadline,
-				services,
-				packageSize,
-				price);
+			// Request req = new Request(
+			// 	requestID,
+			// 	startNode,
+			// 	endNode,
+			// 	packageRate,
+			// 	deadline,
+			// 	services,
+			// 	packageSize,
+			// 	price);
+
+			// TODO: fix this
+			Request req = null;
 
 			out.write("<html><head><title>DAAR 2015</head></title><body>");
 			out.write("Received parameters:");

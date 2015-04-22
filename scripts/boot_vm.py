@@ -51,6 +51,7 @@ def main():
     log_event(analytics_endpoint, boot_process)
     print(ip_address)
 
+
 if __name__ == '__main__':
     if len(sys.argv) < 4:
         print('Usage: boot_vm.py NAME MEMORY ANALYTICS_ENDPOINT')
