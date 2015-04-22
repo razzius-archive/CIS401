@@ -62,6 +62,12 @@ public class CustomerServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
+		try {
 
+			PrintWriter out = response.getWriter();
+			out.write("hello world");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

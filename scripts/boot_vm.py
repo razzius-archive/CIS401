@@ -10,6 +10,9 @@ def log_event(analytics_endpoint, process):
     for line in process:
         print line
 
+def setup_cron(process):
+    pass
+
 def get_ip(process):
     process.setecho(False)
     process.sendline('ifconfig eth0')
@@ -44,6 +47,7 @@ def main():
     boot_process.sendline('password')
     boot_process.expect_exact('root@localhost:~#')
     ip_address = get_ip(boot_process)
+    setup_cron(boot_process)
     log_event(analytics_endpoint, boot_process)
     print(ip_address)
 
