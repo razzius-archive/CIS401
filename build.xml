@@ -113,7 +113,7 @@
   </target>
 
   <target name="javadoc" description="Compile the project javadocs">
-    <javadoc sourcepath="src/orchestration" destdir="${docs/javadocs}">
+    <javadoc sourcepath="src/orchestration" destdir="docs/javadocs">
       <fileset dir="."/>
     </javadoc>
   </target>
