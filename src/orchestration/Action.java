@@ -51,7 +51,7 @@ public class Action {
     private List<Node> serviceChain = null;
 
     /**
-     * Creates an Action with the specified parameters.
+     * Create an Action with the specified parameters.
      */
     public Action(Type type, RemoteHost vmHost, VM newVM, RemoteHost serviceInstanceHost,
         VM serviceInstanceVM, ServiceInstance serviceInstance, Request request, List<Node> serviceChain) {
