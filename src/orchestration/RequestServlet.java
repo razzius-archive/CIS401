@@ -13,8 +13,11 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.DataOutputStream;
+
 import java.net.InetSocketAddress;
 import java.net.URL;
+import java.net.HttpURLConnection;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
@@ -74,7 +77,7 @@ public class RequestServlet extends HttpServlet {
         		String endNode = (String) request.get("endNode");
         		List<String> services = (List<String>) request.get("services");
 
-        		// send POST request to each customer
+        		// POST to each customer the requests they will be making for this trial
         		URL url = new URL("http://"+ipAddress+":8080/customer");
         		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         		connection.setRequestMethod("POST");

@@ -58,7 +58,7 @@ public class RemoteHost extends Node {
     }
 
     /**
-     * Boot a vm with the specified configuration and return its IP address.
+     * Boot a vm with the specified configuration.
      */
     public void bootVM(VM vm) throws RemoteException {
       rmiServer.bootVM(vm);
@@ -66,10 +66,6 @@ public class RemoteHost extends Node {
 
   public void shutdownVM(VM vm) throws RemoteException {
     rmiServer.shutdownVM(vm);
-}
-
-public void addNetworkRoute(VM vm) throws RemoteException {
-    rmiServer.addNetworkRoute(vm);
 }
 
 public void startService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
@@ -136,7 +132,7 @@ public HashSet<Integer> getVMServiceInstancePIDs(VM vm) {
     } catch (RemoteException e) {
         e.printStackTrace();
     }
-    
+
     return serviceInstancePIDs;
 }
 
