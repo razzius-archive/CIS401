@@ -1,0 +1,32 @@
+{
+	"algorithmClass": "edu.upenn.daar.NaiveAlgorithm",
+	"customers": [
+		{
+			"id": "1",
+			"ipAddress": "127.0.0.1",
+		}
+	],
+	"requests": [
+		{
+			"customer_id": "0",
+			"services": [
+				"echo"
+			],
+			"numPackets": "1000",
+			"deadline": "100",
+			"startNode": "1",
+			"endNode": "1"
+		},
+		{
+			"customer_id": "0",
+			"services": [
+				"echo",
+				"echo"
+			],
+			"numPackets": "1000",
+			"deadline": "100",
+			"startNode": "1",
+			"endNode": "1"
+		}
+	]
+}
