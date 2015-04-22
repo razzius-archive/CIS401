@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
@@ -66,7 +67,7 @@ public class RequestServlet extends HttpServlet {
 	        }
 
 	        for (Map customer : c.customers) {
-	        	String ipAddress = (String) host.get("ipAddress");
+	        	String ipAddress = (String) customer.get("ipAddress");
 	        	Map request = (Map) customer.get("request");
         		String numPackets= (String) request.get("numPackets");
         		String deadline = (String) request.get("startNode");
