@@ -74,7 +74,17 @@ public class RequestServlet extends HttpServlet {
         		String endNode = (String) request.get("endNode");
         		List<String> services = (List<String>) request.get("services");
 
+        		// send POST request to each customer
         		URL url = new URL("http://"+ipAddress+":8080/customer");
+        		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        		connection.setRequestMethod("POST");
+        		String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+        		DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+				wr.writeBytes(urlParameters);
+				wr.flush();
+				wr.close();
+
+				int responseCode = connection.getResponseCode();
 	        }
 
 	        // Create a HostConfig for the local machine with 1Mbps of bandwidth, 4 cores, 2048 MB of RAM
