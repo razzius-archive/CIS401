@@ -1,19 +1,36 @@
 {
 	"resourceManager": {
-		"1pAddress": "127.0.0.1"
+		"ipAddress": "127.0.0.1"
 	},
 	"hosts": [
-	{
-		"ipAddress": "127.0.0.1",
-		"memory": "4096",
-		"numCores": "2",
-		"bandwidth": "1048576"
-	}],
+		{
+			"ipAddress": "127.0.0.1",
+			"memory": "4096",
+			"numCores": "2",
+			"bandwidth": "1048576"
+		}
+	],
 	"services": [
-	{
-		"name": "snort",
-		"wcet": "50",
-		"command": "snort"
-	}]
-
+		{
+			"name": "echo",
+			"wcet": "50",
+			"command": "echo"
+		}
+	],
+	"customers": [
+		{
+			"ipAddress": "127.0.0.1",
+			"requests": [
+				{
+					"services": [
+						"echo"
+					],
+					"numPackets": "1000",
+					"deadline": "100",
+					"startNode": "1",
+					"endNode": "1"
+				}
+			]
+		}
+	]
 }
