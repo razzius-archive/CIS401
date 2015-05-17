@@ -55,7 +55,7 @@ public interface RemoteHostInterface extends Remote {
     /** @return service traffic statistics associated with this Host. */
     public void getServiceTrafficStatistics() throws RemoteException;
 
-    /** @return the status of the specified virtual machine. */
+    /** @return the status of the specified virtual machine; true if running, false if stopped. */
     public boolean checkVM(VM vm) throws RemoteException;
 
     /** @return the set of all service instances running on the specified VM. */

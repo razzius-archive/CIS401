@@ -17,15 +17,24 @@ import org.apache.log4j.Logger;
 import orchestration.VM;
 import orchestration.RemoteHostInterface;
 
+/**
+ * To be instlaled on Xen hosts; provides commands that can be accepted.
+ *
+ * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
+ * @version     1.0
+ * @since       2015-04-21
+ */
 
 public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostInterface {
 	static final long serialVersionUID = 0;
 	private static transient Logger logger = Logger.getLogger(RemoteHostServer.class.getName());
 
+	/** Create a remote host server on a Xen host with the specified parameters. */
 	public RemoteHostServer() throws RemoteException {
 		super();
 	}
 
+	/** Boot a virtual machine with the specified parameters. */
 	public void bootVM(VM vm) throws RemoteException {
 		logger.debug("bootVM message received");
 		String command = "python scripts/boot_vm.py " + vm.getID() + " " + String.valueOf(vm.getMemory()) + " " + Analytics.getEndpoint();
@@ -39,6 +48,7 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 		}
 	}
 
+	/** Shut down the virtual machine. */
 	public void shutdownVM(VM vm) throws RemoteException {
         logger.debug("shutdownVM message received");
         // String command = "python scripts/shutdown_vm.py " + vm.getID();
@@ -63,6 +73,7 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 		}
     }
 
+    /** Add the specified network route on the indicated VM. */
     public void addNetworkRoute(VM vm) throws RemoteException {
         logger.debug("addNetworkRoute message received");
         String command = "python scripts/addNetworkRoute.py";
@@ -85,6 +96,7 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 		}
     }
 
+    /** Start a service instance with the specified parameters. */
     public void startService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
         logger.debug("startService message received");
         String command = "python scripts/startService.py";
@@ -107,6 +119,7 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 		}
     }
 
+    /** Stop the service instance with the specified parameters. */
     public void stopService(VM vm, ServiceInstance serviceInstance) throws RemoteException {
         logger.debug("stopService message received");
 		String s = null;
@@ -128,45 +141,54 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 		}
     }
 
+    /** UNIMPLEMENTED */
     public Set<VM> getRemoteHostVMs() throws RemoteException {
         // TODO : IMPLEMENT
         return null;
     }
 
+    /** UNIMPLEMENTED */
     public double getRemoteHostMemoryUtilization() throws RemoteException {
         // TODO : IMPLEMENT
         return 0;
     }
 
+    /** UNIMPLEMENTED */
     public double getRemoteHostCPUUtilization() throws RemoteException {
         // TODO : IMPLEMENT
         return 0;
     }
 
+    /** UNIMPLEMENTED */
     public double getRemoteHostNetworkUtilization() throws RemoteException {
         // TODO : IMPLEMENT
         return 0;
     }
 
+    /** UNIMPLEMENTED */
     public Set<ServiceInstance> getVMServiceInstances() throws RemoteException {
         // TODO : IMPLEMENT
         return null;
     }
 
+    /** UNIMPLEMENTED */
     public double getVMMemoryUtilization() throws RemoteException {
         // TODO : IMPLEMENT
         return 0;
     }
 
+    /** UNIMPLEMENTED */
     public double getVMCPUUtilization() throws RemoteException {
         // TODO : IMPLEMENT
         return 0;
     }
 
+    /** UNIMPLEMENTED */
     public void getServiceTrafficStatistics() throws RemoteException {
         // TODO : IMPLEMENT
     }
 
+    /** @return the status of the specified virtual machine; true if running, false if stopped. */
     public boolean checkVM(VM vm) throws RemoteException {
 		logger.debug("checkVM message received");
 		String command = "xl list | grep " + vm.getID();
@@ -188,6 +210,7 @@ public class RemoteHostServer extends UnicastRemoteObject implements RemoteHostI
 		return false;
 	}
 
+	/** @return the set of all service instances running on the specified VM. */
 	public HashSet<Integer> getVMServiceInstancePIDs(VM vm) throws RemoteException {
 		logger.debug("getVMServiceInstancePIDs message received");
 		// String command = "python scripts/get_vm_service_instance_pids.py " + vm.getID() + " " + String.valueOf(vm.getMemory()) + " " + Analytics.getEndpoint();

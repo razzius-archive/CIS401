@@ -18,14 +18,32 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
+/**
+ * A standalone class for generating graphs from packet data.
+ *
+ * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
+ * @version     1.0
+ * @since       2015-04-21
+ */
+
 public class LogAnalysis {
 
+	/** Timestamps of packets sent through the network */
 	HashMap<String, Date> packetsSent;
+
+	/** Timestamps of packets received from the network */
 	HashMap<String, Date> packetsReceived;
+
+	/** Timestamp of the last packet sent through the network */
 	Date lastPacketSent = new Date(0);
+
+	/** Timestamp of the last packet received from the network */
 	Date lastPacketReceived = new Date(0);
 
-	
+	/**
+     * Create a LogAnalysis object by parsing two files: one contains the timestamps
+     * of sent packets, the other contains the timestamps of received packets.
+     */
 	public LogAnalysis(String sentFileName, String receivedFileName) {
 		packetsReceived = new HashMap<String, Date>();
 		packetsSent = new HashMap<String, Date>();
@@ -66,23 +84,28 @@ public class LogAnalysis {
 		}
 	}
 
+	/** @return the map if packets received and their timestamps. */
 	public HashMap<String, Date> getPacketsReceived() {
 		return packetsReceived;
 	}
 
+	/** @return the map of packets sent and their timestamps. */
 	public HashMap<String, Date> getPacketsSent() {
 		return packetsSent;
 	}
 	
+	/** @return whether or not all sent packets were received. */
 	public boolean allPacketsMadeIt() {
 		if (packetsReceived.size() == packetsSent.size()) return true;
 		else return false;
 	}
 	
+	/** @return the maximum latency observed from any data packet. */
 	public long calculateMaxLatency() {
 		return (lastPacketReceived.getTime() - lastPacketSent.getTime());
 	}
 	
+	/** @return the mean latency observed across all data packets. */
 	public double calculateAverageLatency() {
 		double numPackets = Math.min(packetsSent.size(), packetsReceived.size());
 		double sumLatency = 0;
@@ -96,6 +119,7 @@ public class LogAnalysis {
 		return (sumLatency / numPackets);
 	}
 	
+	/** Generates a file containing (x,y) coordinates representing a scatter plot of each packet against its latency. */
 	public void generateLatencyScatterGraph(String fileName) {
 		PrintWriter writer;
 		try {
@@ -118,6 +142,10 @@ public class LogAnalysis {
 		}
 	}
 	
+	/** Generates a file containing (x,y) coordinates representing a frequency plot of each amount of latency
+	 * against how many packets observed that amount.
+	 */
+
 	public void generateLatencyFrequencyGraph(String fileName) {
 		HashMap<Long, Integer> latencies = new HashMap<Long, Integer>();
 		for (String packet : packetsSent.keySet()) {
@@ -144,6 +172,7 @@ public class LogAnalysis {
 		}
 	}
 	
+	/** Generates a file containing (x,y) coordinates representing the percentage of packets which were returned by each measure of latency. */
 	public void generateLatencyPercentileGraph(String fileName) {
 		
 		ArrayList<Long> latencies = new ArrayList<Long>();
@@ -173,20 +202,5 @@ public class LogAnalysis {
 			e.printStackTrace();
 		}
 	}
-	
-	// public static void main(String args[]) {
-	// 	LogAnalysis la = new LogAnalysis("sent9.txt", "received9.txt");
-	// 	for (String packet : la.getPacketsSent().keySet()) {
-	// 		System.out.println("Packet sent: " + packet + " at time: " + la.getPacketsSent().get(packet).getTime());
-	// 	}
-	// 	for (String packet : la.getPacketsReceived().keySet()) {
-	// 		System.out.println("Packet received: " + packet + " at time: " + la.getPacketsReceived().get(packet).getTime());
-	// 	}
-	// 	System.out.println("Maximum Packet Latency: " + la.calculateMaxLatency());
-	// 	System.out.println("Average Packet Latency: " + la.calculateAverageLatency());
-	// 	la.generateLatencyScatterGraph("LogAnalysisScatter.csv");
-	// 	la.generateLatencyFrequencyGraph("LogAnalysisFrequency.csv");
-	// 	la.generateLatencyPercentileGraph("LogAnalysisPercentile.csv");
-	// }
-	
+
 }

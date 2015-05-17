@@ -27,11 +27,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Central system component which accepts and handles customer requests.
+ *
+ * @author      Dong Young Kim, Alex Brashear, Alex Lyons, Razzi Abuissa
+ * @version     1.0
+ * @since       2015-04-21
+ */
 
 public class RequestServlet extends HttpServlet {
 
 	private static Logger logger = Logger.getLogger(RequestServlet.class.getName());
 
+	/** Static container class for network resources */
 	public static class Container {
     	public List<Map> hosts;
       	public List<Map> services;
@@ -39,11 +47,18 @@ public class RequestServlet extends HttpServlet {
       	public List<Map> customers;
    	}
 
+	/** An instance of the StateManager class, which monitors the state of network resources. */
     private static StateManager stateManager;
+
+    /** An instance of the AlgorithmSolver class, which solves for virtual configuations and can be swapped out. */
     private static AlgorithmSolver algorithmSolver;
+
     private static Analytics analytics;
+
+    /** An instance of the in-memory HardwareCluster, which is used to call methods on the network. */
     private static HardwareCluster hardwareCluster;
 
+     /** Initialize the request servlet. */
 	public void init() throws ServletException {
 		ServletContext context = getServletContext();
 		try {
@@ -114,12 +129,14 @@ public class RequestServlet extends HttpServlet {
 
 	}
 
+	/** @return the value of the indicated parameter. */
 	private String getParam(HttpServletRequest request, String key) {
 		String param = request.getParameter(key);
 		if (param == null) throw new IllegalArgumentException("\"" + key + "\" is not a valid parameter");
 		else return param;
 	}
 
+	/** @return a request object generated from the HTTP Servlet Request. */
 	private Request processInput(HttpServletRequest request, PrintWriter out) {
 
 		try {
