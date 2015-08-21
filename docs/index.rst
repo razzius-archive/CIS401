@@ -2,13 +2,14 @@
 .. =========
 
 
-
-
 Daar Project Overview
 =====================
 
 Daar is a Java library and collection of scripts for evaluating virtual machine resource management algorithms.
 
+.. note::
+
+   Not finished!
 
 Algorithms are evaluated across trials, which consist of:
 

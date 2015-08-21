@@ -12,17 +12,16 @@ signal.signal(signal.SIGINT, signal_handler)
 logging.basicConfig(stream=sys.stdout,
                     level=logging.DEBUG,
                     format='%(asctime)s\t%(levelname)s\t%(message)s')
+unused = 3
+
 
 logger = logging.getLogger()
 
 class MyUDPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
-        data = self.request[0].strip()
-        socket = self.request[1]
-        logger.info('Packet from {}'.format(self.client_address[0]))
-        socket.sendto(data.upper(), self.client_address)
-
+        data = self.request[0]
+        logger.info(data)
 
 if __name__ == '__main__':
-    server = SocketServer.UDPServer(('172.19.177.136', 9000), MyUDPHandler)
+    server = SocketServer.UDPServer(('165.123.199.173', 9000), MyUDPHandler)
     server.serve_forever()

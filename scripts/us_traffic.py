@@ -22,9 +22,9 @@ if __name__ == '__main__':
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     # packets = ['1']
-    packets = [str(i) for i in range(100000)]
+    packets = ['razzi {}'.format(i) for i in range(100000)]
     for p in packets:
-        s.sendto(p, ('172.19.177.132', 9000))
+        s.sendto(p, ('172.19.179.123', 9000))
         print('{} {}'.format(int(time.time() * 1000000), p))
 
         # data = s.recv(1024)

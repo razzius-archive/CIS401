@@ -1,22 +1,17 @@
 <project name="SeniorDesign" default="build" basedir=".">
   <description>Daar Algorithm Testing Framework</description>
 
-  <property name="src" location="src/orchestration"/>
   <property name="test" location="src/test"/>
   <property name="build" location="bin"/>
 
   <target name="init">
+    <mkdir dir="${build}"/>
     <mkdir dir="target/orchestration/WEB-INF/classes"/>
     <mkdir dir="target/orchestration/WEB-INF/lib"/>
   </target>
 
-<target name="init-customer">
-    <mkdir dir="customer/orchestration/WEB-INF/classes"/>
-    <mkdir dir="customer/orchestration/WEB-INF/lib"/>
-  </target>
-
-  <target name="compile-war" description="Compile the main classes" depends="init">
-    <javac srcdir="${src}" destdir="target/orchestration/WEB-INF/classes" debug="on" includeAntRuntime="no">
+  <target name="compile-manager-war" description="Compile the resource manager servlet" depends="init">
+    <javac srcdir="src/orchestration" destdir="target/orchestration/WEB-INF/classes" debug="on" includeAntRuntime="no">
       <classpath>
         <fileset dir="lib">
           <include name="*.jar"/>
@@ -25,17 +20,16 @@
     </javac>
   </target>
 
-  <target name="compile-customer-war" description="Compile the main classes" depends="init-customer">
-    <javac srcdir="${src}" destdir="customer/orchestration/WEB-INF/classes" debug="on" includeAntRuntime="no">
-      <classpath>
-        <fileset dir="lib">
-          <include name="*.jar"/>
-        </fileset>
-      </classpath>
-    </javac>
+  <target name="compile-customer-war" description="Compile the customer servlet" depends="init">
+    <javac srcdir="src/customer" destdir="target/customer/WEB-INF/classes" debug="on" includeAntRuntime="no">
+    <classpath>
+      <fileset dir="lib">
+        <include name="*.jar"/>
+      </fileset>
+    </classpath>
   </target>
 
-  <target name="war" depends="compile-war">
+  <target name="manager-war" depends="compile-manager-war">
     <jar destfile="root.war">
       <fileset dir="target/orchestration/" includes="WEB-INF/classes/**/*.class"/>
       <fileset dir="target/orchestration/" includes="WEB-INF/lib/*.jar"/>
@@ -46,10 +40,10 @@
 
   <target name="customer-war" depends="compile-customer-war">
     <jar destfile="customer.war">
-      <fileset dir="customer/orchestration/" includes="WEB-INF/classes/**/*.class"/>
-      <fileset dir="customer/orchestration/" includes="WEB-INF/lib/*.jar"/>
-      <fileset dir="customer/orchestration/" includes="WEB-INF/*.xml"/>
-      <fileset dir="customer/orchestration/" includes="WEB-INF/*.json"/>
+      <fileset dir="target/customer/" includes="WEB-INF/classes/**/*.class"/>
+      <fileset dir="target/customer/" includes="WEB-INF/lib/*.jar"/>
+      <fileset dir="target/customer/" includes="WEB-INF/*.xml"/>
+      <fileset dir="target/customer/" includes="WEB-INF/*.json"/>
     </jar>
   </target>
 
@@ -68,8 +62,8 @@
     </copy>
   </target>
 
-  <target name="build" description="Compile the main classes">
-    <javac srcdir="${src}" destdir="${build}" debug="on" includeAntRuntime="no">
+  <target name="build" description="Compile the standalone executable classes">
+    <javac srcdir="src" destdir="${build}" debug="on" includeAntRuntime="no">
       <classpath>
         <fileset dir="lib">
           <include name="*.jar"/>
@@ -78,7 +72,7 @@
     </javac>
   </target>
 
-  <target name="buildtest" description="Compile the main classes">
+  <target name="buildtest" description="Compile tests">
     <javac srcdir="${test}" destdir="${build}" debug="on" includeAntRuntime="no">
       <classpath>
         <fileset dir="lib">
@@ -88,19 +82,7 @@
     </javac>
   </target>
 
-  <target name="request" description="Starts OrchestrationLayer and server">
-    <java fork="true" failonerror="yes" classname="orchestration.HttpURLConnectionExample">
-      <sysproperty key="log4j.configuration" value="file:src/orchestration/log4j.properties"/>
-      <classpath>
-        <fileset dir="lib">
-          <include name="*.jar"/>
-        </fileset>
-        <pathelement path="bin"/>
-      </classpath>
-    </java>
-  </target>
-
-  <target name="remote" description="Starts RMI server on localhost">
+  <target name="remote" description="Starts RMI server">
     <java fork="true" failonerror="yes" classname="orchestration.RemoteHostServer">
       <sysproperty key="log4j.configuration" value="file:src/orchestration/log4j.properties"/>
       <classpath>

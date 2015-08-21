@@ -2,12 +2,7 @@ import time
 import socket
 import logging
 import sys
-import signal
 
-def signal_handler(*a):
-    sys.exit(0)
-
-signal.signal(signal.SIGINT, signal_handler)
 
 logging.basicConfig(stream=sys.stdout,
                     level=logging.DEBUG,
@@ -15,14 +10,19 @@ logging.basicConfig(stream=sys.stdout,
 
 logger = logging.getLogger()
 
+delay = 0.001
+
+
 if __name__ == '__main__':
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    while True:
-        s.sendto('Hello, world', ('165.123.178.171', 9000))
-        logger.info('Sent packet')
+    packets = ['1']
+    # packets = [str(i) * 50 for i in range(10000)]
+    for p in packets:
+        s.sendto(p, ('172.19.177.132', 9000))
+        logger.info(p)
 
-        data = s.recv(1024)
-        logger.info('Got back {}'.format(data))
-        time.sleep(1)
+        # data = s.recv(1024)
+        # logger.info('Got back {}'.format(data))
+        time.sleep(delay)
 
